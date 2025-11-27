@@ -1,0 +1,8 @@
+# Angular cache
+.angular/cache/
+
+# VS Code settings
+.vscode/
+
+# Node modules
+node_modules/
