@@ -1,0 +1,78 @@
+/* src/styles.css */
+@import "tailwindcss";
+
+/* Custom theme extensions for glassmorphism */
+@theme {
+  /* Glass colors */
+  --color-glass: rgba(255, 255, 255, 0.1);
+  --color-glass-dark: rgba(0, 0, 0, 0.2);
+  --color-glass-darker: rgba(0, 0, 0, 0.3);
+  
+  /* Neon colors */
+  --color-neon-blue: #00f3ff;
+  --color-neon-purple: #b967ff;
+  --color-neon-pink: #ff2df7;
+  
+  /* Backdrop blur utilities */
+  --backdrop-blur-xs: 2px;
+  
+  /* Animations */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+/* Base styles */
+body {
+  @apply bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 min-h-screen text-white;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: var(--color-glass-dark);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-darker {
+  background: var(--color-glass-darker);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.neon-text {
+  background: linear-gradient(135deg, var(--color-neon-blue), var(--color-neon-purple), var(--color-neon-pink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.neon-border {
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--color-neon-blue), var(--color-neon-purple), var(--color-neon-pink)) border-box;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px -10px var(--color-neon-blue); }
+  to { box-shadow: 0 0 20px 10px var(--color-neon-purple); }
+}
+
+.animate-float {
+  animation: var(--animate-float);
+}
+
+.animate-glow {
+  animation: var(--animate-glow);
+}

@@ -1,0 +1,90 @@
+<!-- header.component.html -->
+<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <!-- Glass Background -->
+  <div class="absolute inset-0 glass border-b border-white/10"></div>
+  
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-10 -left-10 w-20 h-20 bg-[var(--color-neon-blue)] rounded-full blur-xl opacity-20 animate-float"></div>
+    <div class="absolute -top-5 -right-5 w-16 h-16 bg-[var(--color-neon-purple)] rounded-full blur-xl opacity-30 animate-float" style="animation-delay: 2s;"></div>
+  </div>
+
+  <nav class="relative container mx-auto px-4 py-3">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 group cursor-pointer">
+        <div class="relative">
+          <div class="w-12 h-12 bg-gradient-to-br from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] rounded-2xl flex items-center justify-center border border-white/20 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <span class="text-white font-bold text-lg">NK</span>
+          </div>
+          <div class="absolute inset-0 bg-[var(--color-neon-blue)] rounded-2xl blur-md opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+        </div>
+        <div>
+          <h1 class="text-white font-bold text-xl tracking-tight">Nazmul Karim</h1>
+          <p class="text-[var(--color-neon-blue)] text-sm font-light">Study Center</p>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center space-x-1">
+        @for (item of navItems; track item.name) {
+          <a 
+            [routerLink]="item.path" 
+            class="glass px-6 py-3 rounded-xl text-white/80 hover:text-white transition-all duration-300 font-medium group relative overflow-hidden"
+            routerLinkActive="text-white bg-white/5"
+            #rla="routerLinkActive"
+          >
+            <span class="relative z-10 flex items-center space-x-2">
+              <span class="text-lg">{{ item.icon }}</span>
+              <span>{{ item.name }}</span>
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-neon-blue)]/20 to-[var(--color-neon-purple)]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </a>
+        }
+      </div>
+
+      <!-- CTA Button -->
+      <div class="hidden lg:block">
+        <button class="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-[var(--color-neon-blue)]/25 transition-all duration-300 transform hover:scale-105 border border-white/20">
+          Explore Research
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        class="lg:hidden glass p-3 rounded-xl border border-white/10 hover:bg-white/5 transition-all duration-300"
+        (click)="toggleMenu()"
+      >
+        <div class="w-6 h-6 relative">
+          <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-0.5 bg-white rounded-full transition-all duration-300"
+                [class]="isMenuOpen ? 'rotate-45' : '-translate-y-1'"></span>
+          <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-0.5 bg-white rounded-full transition-all duration-300"
+                [class]="isMenuOpen ? 'opacity-0' : ''"></span>
+          <span class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-0.5 bg-white rounded-full transition-all duration-300"
+                [class]="isMenuOpen ? '-rotate-45' : 'translate-y-1'"></span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    @if (isMenuOpen) {
+      <div class="lg:hidden mt-4 glass-darker rounded-2xl border border-white/10 p-4">
+        <div class="grid gap-2">
+          @for (item of navItems; track item.name) {
+            <a 
+              [routerLink]="item.path" 
+              class="flex items-center space-x-3 px-4 py-3 rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-all duration-200"
+              (click)="isMenuOpen = false"
+            >
+              <span class="text-lg">{{ item.icon }}</span>
+              <span class="font-medium">{{ item.name }}</span>
+            </a>
+          }
+          <button class="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-4 py-3 rounded-lg font-semibold mt-2 border border-white/20">
+            Explore Research
+          </button>
+        </div>
+      </div>
+    }
+  </nav>
+</header>

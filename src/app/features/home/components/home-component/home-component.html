@@ -1,0 +1,85 @@
+<!-- home-page.component.html -->
+<!-- Hero Section -->
+<section class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+  <!-- Animated Background -->
+  <div class="absolute inset-0">
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-[var(--color-neon-blue)] rounded-full blur-3xl opacity-20 animate-float"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[var(--color-neon-purple)] rounded-full blur-3xl opacity-30 animate-float" style="animation-delay: 3s;"></div>
+    <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-[var(--color-neon-pink)] rounded-full blur-3xl opacity-10 animate-float" style="animation-delay: 1.5s;"></div>
+  </div>
+
+  <div class="relative container mx-auto px-4 text-center">
+    <!-- Main Hero Content -->
+    <div class="glass rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl max-w-5xl mx-auto backdrop-blur-2xl">
+      <!-- Animated Badge -->
+      <div class="inline-flex items-center space-x-2 glass-dark px-4 py-2 rounded-full border border-[var(--color-neon-blue)]/30 mb-8">
+        <span class="w-2 h-2 bg-[var(--color-neon-blue)] rounded-full animate-pulse"></span>
+        <span class="text-[var(--color-neon-blue)] text-sm font-medium">University of Dhaka - Department of Sociology</span>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+        Nazmul Karim
+        <span class="neon-text block mt-2">Study Center</span>
+      </h1>
+      
+      <p class="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+        Pioneering Sociological Research & Academic Excellence through 
+        <span class="neon-text font-semibold">Innovation & Community Engagement</span>
+      </p>
+      
+      <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+        A premier research institution dedicated to exploring contemporary social issues 
+        through cutting-edge methodologies and interdisciplinary approaches under the 
+        visionary guidance of Prof. Nazmul Karim.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <button class="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-lg hover:shadow-[var(--color-neon-blue)]/25 transition-all duration-300 transform hover:scale-105 border border-white/20 text-lg">
+          🚀 Explore Research
+        </button>
+        <button class="glass px-8 py-4 rounded-2xl text-white font-semibold hover:bg-white/5 transition-all duration-300 border border-white/10 text-lg">
+          📚 Visit E-Library
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 max-w-4xl mx-auto">
+      @for (stat of stats; track stat.label) {
+        <div class="glass rounded-2xl p-6 text-center hover:bg-white/5 transition-all duration-300 group">
+          <div class="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">{{ stat.icon }}</div>
+          <div class="text-2xl md:text-3xl font-bold text-white mb-2 neon-text">{{ stat.number }}</div>
+          <div class="text-gray-300 text-sm md:text-base">{{ stat.label }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 relative">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
+  <div class="relative container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+        Our <span class="neon-text">Features</span>
+      </h2>
+      <p class="text-gray-400 text-xl max-w-2xl mx-auto">
+        Discover the comprehensive resources and opportunities available at our cutting-edge study center
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      @for (feature of features; track feature.title) {
+        <div class="glass rounded-2xl p-6 border border-white/10 hover:bg-white/5 transition-all duration-300 group hover:scale-105">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+            {{ feature.icon }}
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">{{ feature.title }}</h3>
+          <p class="text-gray-400 leading-relaxed">{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
