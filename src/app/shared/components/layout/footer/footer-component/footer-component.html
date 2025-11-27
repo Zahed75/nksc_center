@@ -1,89 +1,70 @@
 <!-- footer.component.html -->
-<footer class="relative overflow-hidden mt-20">
-  <!-- Background Effects -->
-  <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-  <div class="absolute bottom-0 left-1/4 w-32 h-32 bg-[var(--color-neon-purple)] rounded-full blur-3xl opacity-20"></div>
-  <div class="absolute bottom-0 right-1/4 w-40 h-40 bg-[var(--color-neon-blue)] rounded-full blur-3xl opacity-30"></div>
-
-  <div class="relative container mx-auto px-4 pt-16 pb-8">
-    <!-- Main Footer Content -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+<footer class="bg-neutral-900 text-white mt-20">
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
       <!-- Brand Section -->
       <div class="lg:col-span-2">
-        <div class="flex items-center space-x-3 mb-6">
-          <div class="w-12 h-12 bg-gradient-to-br from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] rounded-2xl flex items-center justify-center border border-white/20">
-            <span class="text-white font-bold">NK</span>
+        <div class="flex items-center space-x-3 mb-4">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+            <span class="text-primary font-bold text-sm">NKSC</span>
           </div>
           <div>
-            <h3 class="text-white font-bold text-xl">Nazmul Karim Study Center</h3>
-            <p class="text-[var(--color-neon-blue)] text-sm">University of Dhaka</p>
+            <h3 class="text-white font-bold text-lg">Nazmul Karim Study Center</h3>
+            <p class="text-neutral-400 text-sm">University of Dhaka</p>
           </div>
         </div>
-        <p class="text-gray-300 max-w-md text-lg leading-relaxed">
-          Advancing sociological research and education through innovative studies 
-          and community engagement under the visionary leadership of Prof. Nazmul Karim.
+        <p class="text-neutral-300 max-w-md leading-relaxed">
+          A premier research institution advancing sociological studies through innovative research, 
+          quality education, and community engagement under Professor Nazmul Karim's leadership.
         </p>
       </div>
 
       <!-- Quick Links -->
       <div>
-        <h4 class="text-white font-semibold text-lg mb-4 neon-text">Quick Links</h4>
-        <ul class="space-y-3">
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Quick Links</h4>
+        <ul class="space-y-2">
           @for (link of quickLinks; track link.name) {
             <li>
               <a 
                 [routerLink]="link.path" 
-                class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center space-x-2 group"
+                class="text-neutral-300 hover:text-white smooth-transition text-sm"
               >
-                <span class="w-1 h-1 bg-[var(--color-neon-blue)] rounded-full group-hover:scale-150 transition-transform duration-300"></span>
-                <span>{{ link.name }}</span>
+                {{ link.name }}
               </a>
             </li>
           }
         </ul>
       </div>
 
-      <!-- Contact & Social -->
+      <!-- Contact Info -->
       <div>
-        <h4 class="text-white font-semibold text-lg mb-4 neon-text">Connect With Us</h4>
-        <div class="space-y-3 text-gray-300">
-          <p class="flex items-center space-x-3">
-            <span class="text-lg">📍</span>
+        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Contact</h4>
+        <div class="space-y-2 text-neutral-300 text-sm">
+          <p class="flex items-start space-x-2">
+            <span class="mt-0.5">📍</span>
             <span>{{ contactInfo.address }}</span>
           </p>
-          <p class="flex items-center space-x-3">
-            <span class="text-lg">📧</span>
+          <p class="flex items-center space-x-2">
+            <span>📧</span>
             <span>{{ contactInfo.email }}</span>
           </p>
-          <p class="flex items-center space-x-3">
-            <span class="text-lg">📞</span>
+          <p class="flex items-center space-x-2">
+            <span>📞</span>
             <span>{{ contactInfo.phone }}</span>
           </p>
-        </div>
-        
-        <!-- Social Links -->
-        <div class="flex space-x-4 mt-6">
-          @for (social of socialLinks; track social.name) {
-            <a 
-              [href]="social.url" 
-              class="glass w-10 h-10 rounded-xl flex items-center justify-center text-lg hover:scale-110 hover:bg-white/5 transition-all duration-300"
-            >
-              {{ social.icon }}
-            </a>
-          }
         </div>
       </div>
     </div>
 
     <!-- Bottom Bar -->
-    <div class="border-t border-white/10 pt-8 flex flex-col lg:flex-row justify-between items-center">
-      <p class="text-gray-400 text-sm">
+    <div class="border-t border-neutral-800 mt-8 pt-8 flex flex-col lg:flex-row justify-between items-center">
+      <p class="text-neutral-400 text-sm text-center lg:text-left">
         © {{ currentYear }} Nazmul Karim Study Center. All rights reserved.
       </p>
-      <div class="flex space-x-6 mt-4 lg:mt-0 text-gray-400 text-sm">
-        <a href="#" class="hover:text-white transition-colors duration-200">Privacy Policy</a>
-        <a href="#" class="hover:text-white transition-colors duration-200">Terms of Service</a>
-        <a href="#" class="hover:text-white transition-colors duration-200">Accessibility</a>
+      <div class="flex space-x-6 mt-4 lg:mt-0 text-neutral-400 text-sm">
+        <a href="#" class="hover:text-white smooth-transition">Privacy</a>
+        <a href="#" class="hover:text-white smooth-transition">Terms</a>
+        <a href="#" class="hover:text-white smooth-transition">Accessibility</a>
       </div>
     </div>
   </div>

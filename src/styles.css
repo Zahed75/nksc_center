@@ -1,78 +1,114 @@
-/* src/styles.css */
+
+
 @import "tailwindcss";
 
-/* Custom theme extensions for glassmorphism */
+/* Custom theme extensions for professional light theme */
 @theme {
-  /* Glass colors */
-  --color-glass: rgba(255, 255, 255, 0.1);
-  --color-glass-dark: rgba(0, 0, 0, 0.2);
-  --color-glass-darker: rgba(0, 0, 0, 0.3);
+  /* Professional color palette */
+  --color-primary: #1e40af;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark: #1d4ed8;
   
-  /* Neon colors */
-  --color-neon-blue: #00f3ff;
-  --color-neon-purple: #b967ff;
-  --color-neon-pink: #ff2df7;
+  --color-secondary: #64748b;
+  --color-secondary-light: #94a3b8;
+  --color-secondary-dark: #475569;
+  
+  /* Neutral colors for professional look */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  
+  /* Glass effects for subtle depth */
+  --color-glass: rgba(255, 255, 255, 0.8);
+  --color-glass-light: rgba(255, 255, 255, 0.9);
+  --color-glass-dark: rgba(0, 0, 0, 0.05);
   
   /* Backdrop blur utilities */
-  --backdrop-blur-xs: 2px;
-  
-  /* Animations */
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-glow: glow 2s ease-in-out infinite alternate;
+  --backdrop-blur-sm: 4px;
 }
 
 /* Base styles */
 body {
-  @apply bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 min-h-screen text-white;
-  font-family: 'Inter', sans-serif;
+  @apply bg-neutral-50 text-neutral-800 min-h-screen;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
 }
 
-/* Glassmorphism utility classes */
+/* Professional glassmorphism */
 .glass {
   background: var(--color-glass);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.08);
+}
+
+.glass-light {
+  background: var(--color-glass-light);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
 }
 
 .glass-dark {
   background: var(--color-glass-dark);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
 }
 
-.glass-darker {
-  background: var(--color-glass-darker);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* Text utilities */
+.primary-text {
+  color: var(--color-primary);
 }
 
-.neon-text {
-  background: linear-gradient(135deg, var(--color-neon-blue), var(--color-neon-purple), var(--color-neon-pink));
+.secondary-text {
+  color: var(--color-secondary);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.neon-border {
-  border: 1px solid transparent;
-  background: linear-gradient(135deg, var(--color-neon-blue), var(--color-neon-purple), var(--color-neon-pink)) border-box;
+/* Professional shadows */
+.card-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+.card-shadow-hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
-@keyframes glow {
-  from { box-shadow: 0 0 20px -10px var(--color-neon-blue); }
-  to { box-shadow: 0 0 20px 10px var(--color-neon-purple); }
+/* Smooth transitions */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.animate-float {
-  animation: var(--animate-float);
+/* Focus states for accessibility */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
 }
 
-.animate-glow {
-  animation: var(--animate-glow);
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neutral-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-400);
 }
