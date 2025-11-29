@@ -18,7 +18,7 @@ export class HomePageComponent {
       'পিএইচডি, পাবলিক পলিসি অ্যান্ড গভর্নেন্স, সিটি ইউনিভার্সিটি অব হংকং',
       'এমফিল, পাবলিক অ্যাডমিনিস্ট্রেশন, ইউনিভার্সিটি অব বার্গেন, নরওয়ে'
     ],
-    profileImage: '/assets/images/director-profile.jpg' // Use the actual image path
+    profileImage: '/assets/images/dr.png' // ✅ Fixed path
   };
 
   aboutNKSC = {
