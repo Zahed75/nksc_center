@@ -4,8 +4,8 @@
   <div class="container mx-auto px-4">
     <div class="max-w-6xl mx-auto">
       <!-- Hero Content -->
-      <div class="text-center mb-12">
-        <div class="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+      <div class="glass rounded-3xl p-8 md:p-12 text-center mb-12 hover-lift">
+        <div class="inline-flex items-center space-x-2 glass-light text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
           <span>🏛️</span>
           <span>University of Dhaka - Department of Sociology</span>
         </div>
@@ -21,10 +21,10 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary-dark smooth-transition font-semibold shadow-sm">
+          <button class="glass bg-primary  px-8 py-3.5 rounded-lg hover:bg-primary-dark smooth-transition font-semibold shadow-sm hover-lift">
             Explore Research Publications
           </button>
-          <button class="border border-neutral-300 text-neutral-700 px-8 py-3 rounded-lg hover:border-primary hover:text-primary smooth-transition font-semibold">
+          <button class="glass border border-white/80 text-neutral-700 px-8 py-3.5 rounded-lg hover:text-primary smooth-transition font-semibold hover-lift">
             Visit Digital Library
           </button>
         </div>
@@ -33,9 +33,9 @@
       <!-- Stats -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         @for (stat of stats; track stat.label) {
-          <div class="bg-white p-6 rounded-xl card-shadow text-center hover:card-shadow-hover smooth-transition">
-            <div class="text-2xl text-primary mb-2">{{ stat.icon }}</div>
-            <div class="text-2xl font-bold text-neutral-900 mb-1">{{ stat.number }}</div>
+          <div class="glass rounded-2xl p-6 text-center hover-lift smooth-transition">
+            <div class="text-2xl text-primary mb-3">{{ stat.icon }}</div>
+            <div class="text-2xl font-bold text-neutral-900 mb-2">{{ stat.number }}</div>
             <div class="text-neutral-600 text-sm">{{ stat.label }}</div>
           </div>
         }
@@ -45,8 +45,10 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-16 bg-white">
-  <div class="container mx-auto px-4">
+<section class="py-16 relative">
+  <!-- Subtle background for glassmorphism effect -->
+  <div class="absolute inset-0 bg-linear-to-b from-white to-neutral-50"></div>
+  <div class="relative container mx-auto px-4">
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
         Academic Resources & Services
@@ -58,7 +60,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       @for (feature of features; track feature.title) {
-        <div class="bg-neutral-50 p-6 rounded-xl border border-neutral-200 hover:border-primary/20 smooth-transition group">
+        <div class="glass rounded-2xl p-6 border border-white/80 hover-lift smooth-transition group">
           <div class="text-3xl text-primary mb-4 group-hover:scale-110 smooth-transition">
             {{ feature.icon }}
           </div>
@@ -71,26 +73,27 @@
 </section>
 
 <!-- Mission Section -->
-<section class="py-16 bg-neutral-50">
-  <div class="container mx-auto px-4">
-    <div class="max-w-4xl mx-auto text-center">
+<section class="py-16 relative">
+  <div class="absolute inset-0 bg-linear-to-b from-neutral-50 to-white"></div>
+  <div class="relative container mx-auto px-4">
+    <div class="glass rounded-3xl p-8 md:p-12 max-w-4xl mx-auto text-center hover-lift">
       <h2 class="text-3xl font-bold text-neutral-900 mb-6">Our Mission</h2>
       <p class="text-lg text-neutral-600 leading-relaxed mb-8">
         The Nazmul Karim Study Center is dedicated to fostering academic excellence in sociological studies. 
         We provide a platform for innovative research, quality education, and community engagement that 
         addresses contemporary social challenges.
       </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <div class="bg-white px-4 py-2 rounded-full border border-neutral-200 text-sm text-neutral-700">
+      <div class="flex flex-wrap justify-center gap-3">
+        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
           📚 Research Excellence
         </div>
-        <div class="bg-white px-4 py-2 rounded-full border border-neutral-200 text-sm text-neutral-700">
+        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
           👥 Community Engagement
         </div>
-        <div class="bg-white px-4 py-2 rounded-full border border-neutral-200 text-sm text-neutral-700">
+        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
           🎓 Quality Education
         </div>
-        <div class="bg-white px-4 py-2 rounded-full border border-neutral-200 text-sm text-neutral-700">
+        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
           🔬 Innovative Methods
         </div>
       </div>

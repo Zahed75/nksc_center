@@ -1,6 +1,7 @@
-
-
+/* src/styles.css */
+@import "primeicons/primeicons.css";
 @import "tailwindcss";
+
 
 /* Custom theme extensions for professional light theme */
 @theme {
@@ -25,39 +26,54 @@
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
   
-  /* Glass effects for subtle depth */
-  --color-glass: rgba(255, 255, 255, 0.8);
-  --color-glass-light: rgba(255, 255, 255, 0.9);
-  --color-glass-dark: rgba(0, 0, 0, 0.05);
+  /* Glass effects for subtle depth - UPDATED FOR GLASSMORPHISM */
+  --color-glass: rgba(255, 255, 255, 0.25);
+  --color-glass-light: rgba(255, 255, 255, 0.15);
+  --color-glass-dark: rgba(255, 255, 255, 0.08);
+  --color-glass-card: rgba(255, 255, 255, 0.70);
+  --color-glass-nav: rgba(255, 255, 255, 0.85);
   
-  /* Backdrop blur utilities */
-  --backdrop-blur-sm: 4px;
+  /* Backdrop blur utilities - ENHANCED */
+  --backdrop-blur-sm: 8px;
+  --backdrop-blur-md: 12px;
+  --backdrop-blur-lg: 16px;
+  --backdrop-blur-xl: 24px;
 }
 
 /* Base styles */
 body {
-  @apply bg-neutral-50 text-neutral-800 min-h-screen;
+  @apply bg-gradient-to-br from-neutral-50 via-blue-50 to-neutral-100 text-neutral-800 min-h-screen;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   line-height: 1.6;
 }
 
-/* Professional glassmorphism */
+/* Professional glassmorphism - ENHANCED */
 .glass {
-  background: var(--color-glass);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.08);
+  background: var(--color-glass-card);
+  backdrop-filter: blur(var(--backdrop-blur-md));
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 4px 24px -2px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .glass-light {
   background: var(--color-glass-light);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(var(--backdrop-blur-sm));
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .glass-dark {
   background: var(--color-glass-dark);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--backdrop-blur-lg));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-nav {
+  background: var(--color-glass-nav);
+  backdrop-filter: blur(var(--backdrop-blur-xl));
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* Text utilities */
@@ -111,4 +127,31 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-neutral-400);
+}
+
+/* Glassmorphism hover effects */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Add this to your existing styles.css */
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
