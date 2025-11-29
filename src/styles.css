@@ -1,3 +1,21 @@
+/* Add this to the top of your styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap');
+
+/* Update body font or create Bangla specific classes */
+.bangla-font {
+  font-family: "Anek Bangla", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+/* You can also make Bangla the default for body */
+body {
+  font-family: "Anek Bangla", 'Inter', 'Segoe UI', system-ui, sans-serif;
+  /* rest of your body styles */
+}
+
+
 /* src/styles.css */
 @import "primeicons/primeicons.css";
 @import "tailwindcss";

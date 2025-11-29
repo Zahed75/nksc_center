@@ -1,40 +1,37 @@
-<!-- home-page.component.html -->
-<!-- Hero Section -->
-<section class="pt-8 pb-16 bg-linear-to-b from-white to-neutral-50">
+<section class="pt-8 pb-16 bg-gradient-to-b from-white to-neutral-50">
   <div class="container mx-auto px-4">
     <div class="max-w-6xl mx-auto">
-      <!-- Hero Content -->
-      <div class="glass rounded-3xl p-8 md:p-12 text-center mb-12 hover-lift">
+      <div class="glass rounded-3xl p-8 md:p-12 text-center mb-12 hover-lift bangla-font">
         <div class="inline-flex items-center space-x-2 glass-light text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-          <span>🏛️</span>
-          <span>University of Dhaka - Department of Sociology</span>
+          <i class="pi pi-university"></i>
+          <span>ঢাকা বিশ্ববিদ্যালয় - সমাজবিজ্ঞান বিভাগ</span>
         </div>
 
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 leading-tight">
-          Nazmul Karim
-          <span class="gradient-text block">Study Center</span>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 leading-tight bangla-font">
+          নাজমুল করিম
+          <span class="gradient-text block">স্টাডি সেন্টার</span>
         </h1>
         
-        <p class="text-xl text-neutral-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Advancing sociological research and education through innovative studies, 
-          quality academic programs, and meaningful community engagement.
+        <p class="text-xl text-neutral-700 mb-8 max-w-3xl mx-auto leading-relaxed bangla-font">
+          বাংলাদেশ সমাজবিজ্ঞানের অন্যতম পথিকৃৎ **অধ্যাপক ড. এ. কে. নাজমুল করিমের** স্মৃতি ও দর্শনকে ধারণ করে সমাজবিজ্ঞান গবেষণা ও শিক্ষার অগ্রগতি সাধন।
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button class="glass bg-primary  px-8 py-3.5 rounded-lg hover:bg-primary-dark smooth-transition font-semibold shadow-sm hover-lift">
-            Explore Research Publications
+          <button class="glass bg-primary text-white px-8 py-3.5 rounded-lg hover:bg-primary-dark smooth-transition font-semibold shadow-sm hover-lift flex items-center space-x-2">
+            <i class="pi pi-search"></i>
+            <span>গবেষণা প্রকাশনা অন্বেষণ</span>
           </button>
-          <button class="glass border border-white/80 text-neutral-700 px-8 py-3.5 rounded-lg hover:text-primary smooth-transition font-semibold hover-lift">
-            Visit Digital Library
+          <button class="glass border border-white/80 text-neutral-700 px-8 py-3.5 rounded-lg hover:text-primary smooth-transition font-semibold hover-lift flex items-center space-x-2">
+            <i class="pi pi-file-text"></i>
+            <span>স্মারক বক্তৃতাসমূহ</span>
           </button>
         </div>
       </div>
 
-      <!-- Stats -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         @for (stat of stats; track stat.label) {
-          <div class="glass rounded-2xl p-6 text-center hover-lift smooth-transition">
-            <div class="text-2xl text-primary mb-3">{{ stat.icon }}</div>
+          <div class="glass rounded-2xl p-6 text-center hover-lift smooth-transition bangla-font">
+            <i [class]="stat.icon + ' text-2xl text-primary mb-3'"></i>
             <div class="text-2xl font-bold text-neutral-900 mb-2">{{ stat.number }}</div>
             <div class="text-neutral-600 text-sm">{{ stat.label }}</div>
           </div>
@@ -44,26 +41,126 @@
   </div>
 </section>
 
-<!-- Features Section -->
-<section class="py-16 relative">
-  <!-- Subtle background for glassmorphism effect -->
-  <div class="absolute inset-0 bg-linear-to-b from-white to-neutral-50"></div>
-  <div class="relative container mx-auto px-4">
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="glass rounded-3xl p-8 md:p-12 max-w-6xl mx-auto hover-lift border-primary/20 border-l-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-4 bangla-font">
+          <span class="text-sm font-medium text-primary uppercase tracking-wider">বিশেষ গবেষণা ফোকাস</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
+            {{ bengaliWomenFeature.title }}
+          </h2>
+          <p class="text-xl font-medium text-neutral-700">
+            {{ bengaliWomenFeature.tagline }}
+          </p>
+          <p class="text-lg text-neutral-600 leading-relaxed">
+            {{ bengaliWomenFeature.description }}
+          </p>
+          <div class="flex flex-wrap gap-2 pt-4">
+            @for (keyword of bengaliWomenFeature.keywords; track keyword) {
+              <span class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">
+                {{ keyword }}
+              </span>
+            }
+          </div>
+          <button class="mt-4 bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark smooth-transition font-semibold text-sm flex items-center space-x-2">
+            <i class="pi pi-users"></i>
+            <span>সম্পর্কিত প্রকাশনা দেখুন</span>
+          </button>
+        </div>
+        
+        <div class="flex justify-center items-center">
+          <div class="w-full max-w-sm aspect-video bg-neutral-200 rounded-2xl flex items-center justify-center text-neutral-500 text-xl shadow-lg">
+            <i class="pi pi-desktop mr-2"></i> গবেষণা ও নারী ইমেজ 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-neutral-50">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="glass rounded-3xl p-8 md:p-12 hover-lift">
+        <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-8 text-center bangla-font">
+          {{ aboutNKSC.title }}
+        </h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div class="space-y-6">
+            <p class="text-lg text-neutral-600 leading-relaxed bangla-font">
+              {{ aboutNKSC.description }}
+            </p>
+            
+            <div class="space-y-3">
+              <h3 class="text-xl font-semibold text-primary bangla-font">আমাদের মূল লক্ষ্যসমূহ:</h3>
+              <ul class="space-y-2">
+                @for (highlight of aboutNKSC.highlights; track highlight) {
+                  <li class="flex items-start space-x-3 text-neutral-600 bangla-font">
+                    <i class="pi pi-check-circle text-primary mt-1"></i>
+                    <span>{{ highlight }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+
+          <div class="glass-light rounded-2xl p-6 border border-white/80">
+            <div class="text-center mb-6">
+              <div class="w-32 h-32 bg-neutral-200 rounded-full mx-auto mb-4 flex items-center justify-center text-primary text-4xl overflow-hidden">
+                <i class="pi pi-user-plus"></i>
+              </div>
+              <h3 class="text-xl font-bold text-neutral-900 bangla-font">{{ director.name }}</h3>
+              <p class="text-primary font-medium bangla-font">{{ director.position }}</p>
+              <p class="text-sm text-neutral-500 mt-1">{{ director.nameEnglish }}</p>
+              <p class="text-xs text-neutral-500">{{ director.positionEnglish }}</p>
+            </div>
+
+            <div class="space-y-3">
+              <h4 class="font-semibold text-neutral-700 bangla-font">সংক্ষিপ্ত পরিচিতি:</h4>
+              <ul class="space-y-2">
+                @for (qualification of director.qualifications; track qualification) {
+                  <li class="flex items-start space-x-2 text-sm text-neutral-600 bangla-font">
+                    <i class="pi pi-verified text-primary mt-1"></i>
+                    <span>{{ qualification }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="mt-6 flex flex-col space-y-2">
+              <button class="glass bg-primary text-white py-2.5 rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium text-sm flex items-center justify-center space-x-2">
+                <i class="pi pi-user"></i>
+                <span class="bangla-font">সম্পূর্ণ প্রোফাইল পড়ুন</span>
+              </button>
+              <button class="glass border border-primary text-primary py-2.5 rounded-lg hover:bg-primary/5 transition-all duration-200 font-medium text-sm flex items-center justify-center space-x-2">
+                <i class="pi pi-send"></i>
+                <span class="bangla-font">যোগাযোগের ফর্ম</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 relative bg-white">
+  <div class="container mx-auto px-4">
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-        Academic Resources & Services
+      <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-4 bangla-font">
+        কেন্দ্রের মূল কার্যক্রম ও সম্পদসমূহ
       </h2>
-      <p class="text-lg text-neutral-600 max-w-2xl mx-auto">
-        Comprehensive support for students, researchers, and faculty members
+      <p class="text-lg text-neutral-600 max-w-2xl mx-auto bangla-font">
+        শিক্ষার্থী, গবেষক ও শিক্ষক সদস্যদের জন্য নাজমুল করিম স্টাডি সেন্টারের বিশেষ পরিষেবা।
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       @for (feature of features; track feature.title) {
-        <div class="glass rounded-2xl p-6 border border-white/80 hover-lift smooth-transition group">
-          <div class="text-3xl text-primary mb-4 group-hover:scale-110 smooth-transition">
-            {{ feature.icon }}
-          </div>
+        <div class="glass rounded-2xl p-6 border border-white/80 hover-lift smooth-transition group text-center bangla-font">
+          <i [class]="feature.icon + ' text-3xl text-primary mb-4 group-hover:scale-110 smooth-transition'"></i>
           <h3 class="text-lg font-semibold text-neutral-900 mb-3">{{ feature.title }}</h3>
           <p class="text-neutral-600 text-sm leading-relaxed">{{ feature.description }}</p>
         </div>
@@ -72,31 +169,17 @@
   </div>
 </section>
 
-<!-- Mission Section -->
-<section class="py-16 relative">
-  <div class="absolute inset-0 bg-linear-to-b from-neutral-50 to-white"></div>
-  <div class="relative container mx-auto px-4">
-    <div class="glass rounded-3xl p-8 md:p-12 max-w-4xl mx-auto text-center hover-lift">
-      <h2 class="text-3xl font-bold text-neutral-900 mb-6">Our Mission</h2>
+<section class="py-16 bg-neutral-50">
+  <div class="container mx-auto px-4">
+    <div class="glass rounded-3xl p-8 md:p-12 max-w-4xl mx-auto text-center hover-lift bangla-font">
+      <h2 class="text-3xl font-bold text-neutral-900 mb-6">আমাদের অভিলক্ষ্য (Mission)</h2>
       <p class="text-lg text-neutral-600 leading-relaxed mb-8">
-        The Nazmul Karim Study Center is dedicated to fostering academic excellence in sociological studies. 
-        We provide a platform for innovative research, quality education, and community engagement that 
-        addresses contemporary social challenges.
+        নাজমুল করিম স্টাডি সেন্টার সমাজবিজ্ঞান শিক্ষায় **একাডেমিক শ্রেষ্ঠত্ব** অর্জনে নিবেদিত। আমরা অধ্যাপক নাজমুল করিমের সামাজিক গবেষণার উত্তরাধিকারকে এগিয়ে নিয়ে যেতে সমকালীন সামাজিক চ্যালেঞ্জ মোকাবেলায় উদ্ভাবনী গবেষণা, মানসম্মত শিক্ষা এবং **সম্প্রদায় সম্পৃক্ততার** জন্য একটি শক্তিশালী প্ল্যাটফর্ম প্রদান করি।
       </p>
-      <div class="flex flex-wrap justify-center gap-3">
-        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
-          📚 Research Excellence
-        </div>
-        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
-          👥 Community Engagement
-        </div>
-        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
-          🎓 Quality Education
-        </div>
-        <div class="glass-light px-4 py-2 rounded-full text-neutral-700 text-sm">
-          🔬 Innovative Methods
-        </div>
-      </div>
+      <a href="/mission-vision" class="inline-flex items-center space-x-2 text-primary font-semibold hover:underline smooth-transition">
+        <span>বিস্তারিত জানুন</span>
+        <i class="pi pi-arrow-right"></i>
+      </a>
     </div>
   </div>
 </section>
