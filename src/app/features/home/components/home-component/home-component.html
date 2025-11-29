@@ -1,6 +1,6 @@
 <!-- home-component.html -->
 <!-- Hero Section -->
-<section class="pt-8 pb-16 bg-gradient-to-b from-white to-neutral-50">
+<section class="pt-8 pb-16 bg-linear-to-b from-white to-neutral-50">
   <div class="container mx-auto px-4">
     <div class="max-w-6xl mx-auto">
       <div class="glass rounded-3xl p-8 md:p-12 text-center mb-12 hover-lift bangla-font">
@@ -48,6 +48,7 @@
 </section>
 
 <!-- Bengali Women Research Section -->
+
 <section class="py-16 bg-white">
   <div class="container mx-auto px-4">
     <div class="glass rounded-3xl p-8 md:p-12 max-w-6xl mx-auto hover-lift border-primary/20 border-l-8">
@@ -77,10 +78,20 @@
           </button>
         </div>
 
+        <!-- Updated Image Section -->
         <div class="flex justify-center items-center">
-          <div
-            class="w-full max-w-sm aspect-video bg-neutral-200 rounded-2xl flex items-center justify-center text-neutral-500 text-xl shadow-lg">
-            <i class="pi pi-desktop mr-2"></i> গবেষণা ও নারী ইমেজ
+          <div class="w-full max-w-sm rounded-2xl overflow-hidden shadow-lg glass border border-white/80">
+            <img 
+              [src]="bengaliWomenImage" 
+              alt="সমাজ গবেষণায় বাঙালি নারী"
+              class="w-full h-64 object-cover"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+            >
+            <div class="w-full h-64 bg-linear-to-br from-primary/20 to-secondary/20 flex flex-col items-center justify-center text-neutral-600 p-4 text-center" style="display: none;">
+              <i class="pi pi-users text-4xl mb-3 text-primary"></i>
+              <p class="text-lg font-medium bangla-font">সমাজ গবেষণায় বাঙালি নারী</p>
+              <p class="text-sm mt-2">গবেষণা ও ক্ষমতায়ন</p>
+            </div>
           </div>
         </div>
       </div>
@@ -151,7 +162,7 @@
 
             <div class="mt-6 flex flex-col space-y-2">
               <button
-                class="glass bg-primary text-white py-2.5 rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium text-sm flex items-center justify-center space-x-2">
+                class="glass bg-primary  py-2.5 rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium text-sm flex items-center justify-center space-x-2">
                 <i class="pi pi-user"></i>
                 <span class="bangla-font">সম্পূর্ণ প্রোফাইল পড়ুন</span>
               </button>
