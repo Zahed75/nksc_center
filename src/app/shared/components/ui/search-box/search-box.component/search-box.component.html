@@ -1,0 +1,20 @@
+<!-- shared/components/ui/search-box/search-box.component.html -->
+<div [class]="containerClasses">
+  <i class="pi pi-search text-neutral-400"></i>
+  <input
+    [value]="value"
+    (input)="onInputChange($any($event.target).value)"
+    (keypress)="onKeyPress($event)"
+    [placeholder]="placeholder"
+    [class]="inputClasses"
+    type="text"
+  >
+  @if (value) {
+    <button 
+      (click)="onInputChange(''); onSearch()"
+      class="glass-light w-6 h-6 rounded flex items-center justify-center text-neutral-400 hover:text-primary transition-colors duration-200"
+    >
+      <i class="pi pi-times text-xs"></i>
+    </button>
+  }
+</div>

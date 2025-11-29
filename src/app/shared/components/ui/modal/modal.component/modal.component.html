@@ -1,0 +1,32 @@
+<!-- shared/components/ui/modal/modal.component.html -->
+@if (isOpen) {
+  <div 
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in"
+    (click)="onBackdropClick($event)"
+  >
+    <div 
+      [class]="'glass rounded-2xl border border-white/80 shadow-2xl w-full ' + modalSizeClasses + ' animate-fade-in'"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Header -->
+      @if (title) {
+        <div class="flex items-center justify-between p-6 border-b border-white/30">
+          <h3 class="text-lg font-semibold text-neutral-900">{{ title }}</h3>
+          @if (closable) {
+            <button 
+              (click)="closeModal()"
+              class="glass-light w-8 h-8 rounded-lg flex items-center justify-center text-neutral-600 hover:text-primary transition-colors duration-200"
+            >
+              <i class="pi pi-times text-sm"></i>
+            </button>
+          }
+        </div>
+      }
+      
+      <!-- Content -->
+      <div class="p-6">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

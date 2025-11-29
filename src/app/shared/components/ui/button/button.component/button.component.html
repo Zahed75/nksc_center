@@ -1,0 +1,23 @@
+<!-- shared/components/ui/button/button.component.html -->
+<button 
+  [type]="type"
+  [class]="buttonClasses"
+  [disabled]="disabled || loading"
+  class="hover-lift"
+>
+  @if (loading) {
+    <i class="pi pi-spinner pi-spin text-current"></i>
+  }
+  
+  @if (icon && iconPosition === 'left' && !loading) {
+    <i [class]="icon"></i>
+  }
+  
+  <span class="whitespace-nowrap">
+    <ng-content></ng-content>
+  </span>
+  
+  @if (icon && iconPosition === 'right' && !loading) {
+    <i [class]="icon"></i>
+  }
+</button>

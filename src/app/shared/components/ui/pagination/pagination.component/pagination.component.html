@@ -1,0 +1,41 @@
+<!-- shared/components/ui/pagination/pagination.component.html -->
+@if (totalPages > 1) {
+  <div [class]="containerClasses">
+    <!-- Previous Button -->
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+      [class]="buttonClasses + ' w-9 h-9'"
+      [class.opacity-50]="currentPage === 1"
+      [class.cursor-not-allowed]="currentPage === 1"
+    >
+      <i class="pi pi-chevron-left text-sm"></i>
+    </button>
+
+    <!-- Page Numbers -->
+    @if (showPageNumbers) {
+      <div class="flex items-center space-x-1">
+        @for (page of visiblePages; track page) {
+          <button
+            (click)="goToPage(page)"
+            [class]="page === currentPage ? activeButtonClasses : buttonClasses"
+            class="w-9 h-9 text-sm"
+          >
+            {{ page }}
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Next Button -->
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+      [class]="buttonClasses + ' w-9 h-9'"
+      [class.opacity-50]="currentPage === totalPages"
+      [class.cursor-not-allowed]="currentPage === totalPages"
+    >
+      <i class="pi pi-chevron-right text-sm"></i>
+    </button>
+  </div>
+}
