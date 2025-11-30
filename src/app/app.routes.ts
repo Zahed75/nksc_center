@@ -4,6 +4,7 @@ import { HomePageComponent } from './features/home/components/home-component/hom
 import { AboutComponent } from './features/about/components/about-component/about-component';
 import { PublicationComponent } from './features/publications/components/publication-component/publication-component';
 import { ElibraryComponent } from './features/elibrary/elibrary-component/elibrary-component';
+import { GalleryComponent } from './features/gallery/components/gallery-component/gallery-component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,6 +12,7 @@ export const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'publications', component: PublicationComponent },
   { path: 'elibrary', component:ElibraryComponent },
+  {path:'gallery', component:GalleryComponent},
 
   { path: '**', redirectTo: 'home' }
 ];

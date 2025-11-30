@@ -1,6 +1,7 @@
 import {
   Title
-} from "./chunk-OYPM35IU.js";
+} from "./chunk-TNH4YEN2.js";
+import "./chunk-EHNGIVFP.js";
 import {
   HashLocationStrategy,
   LOCATION_INITIALIZED,
@@ -8,7 +9,8 @@ import {
   LocationStrategy,
   PathLocationStrategy,
   ViewportScroller
-} from "./chunk-SLVJVKBQ.js";
+} from "./chunk-EMGHOJPQ.js";
+import "./chunk-BV6YITCM.js";
 import {
   APP_BOOTSTRAP_LISTENER,
   ApplicationRef,
@@ -52,6 +54,8 @@ import {
   Subscription,
   Version,
   ViewContainerRef,
+  __spreadProps,
+  __spreadValues,
   afterNextRender,
   booleanAttribute,
   catchError,
@@ -115,11 +119,7 @@ import {
   ɵɵloadQuery,
   ɵɵqueryRefresh,
   ɵɵsanitizeUrlOrResourceUrl
-} from "./chunk-IF4XCQ2K.js";
-import {
-  __spreadProps,
-  __spreadValues
-} from "./chunk-GDDGRWFQ.js";
+} from "./chunk-L4BVHRDK.js";
 
 // node_modules/@angular/router/fesm2022/router2.mjs
 var PRIMARY_OUTLET = "primary";
