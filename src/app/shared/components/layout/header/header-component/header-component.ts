@@ -41,12 +41,15 @@ export class HeaderComponent {
   ];
 
   // Research sub-items with PrimeNG icons
-  researchSubItems = [
-    { name: 'Publications', path: '/research/publications', icon: 'pi pi-file' },
-    { name: 'Research Projects', path: '/research/projects', icon: 'pi pi-briefcase' },
-    { name: 'Methodologies', path: '/research/methodologies', icon: 'pi pi-cog' },
-    { name: 'Case Studies', path: '/research/case-studies', icon: 'pi pi-chart-bar' }
-  ];
+ // shared/components/layout/header/header-component/header-component.ts
+
+// Research sub-items with PrimeNG icons - FIX THE PATH
+researchSubItems = [
+  { name: 'Publications', path: '/publications', icon: 'pi pi-file' }, // CHANGED from '/research/publications'
+  { name: 'Research Projects', path: '/research/projects', icon: 'pi pi-briefcase' },
+  { name: 'Methodologies', path: '/research/methodologies', icon: 'pi pi-cog' },
+  { name: 'Case Studies', path: '/research/case-studies', icon: 'pi pi-chart-bar' }
+];
 
   ngOnInit() {
     this.checkScreenSize();

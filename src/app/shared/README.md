@@ -1,1 +1,0 @@
-# nksc_center

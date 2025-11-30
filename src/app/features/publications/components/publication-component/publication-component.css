@@ -1,0 +1,38 @@
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.bangla-font {
+  font-family: 'SolaimanLipi', 'Siyam Rupali', 'Kalpurush', sans-serif;
+}
+
+/* PDF Viewer Styles */
+pdf-viewer {
+  display: block;
+  min-height: 500px;
+}
+
+/* Custom scrollbar for PDF viewer */
+::ng-deep .pdfViewer .page {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin: 8px auto;
+}
+
+::ng-deep .textLayer {
+  border-radius: 8px;
+}

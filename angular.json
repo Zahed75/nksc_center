@@ -19,6 +19,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "public/assets/journals",
+                "output": "/assets/journals/"
               }
             ],
             "styles": [
