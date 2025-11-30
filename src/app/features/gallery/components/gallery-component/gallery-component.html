@@ -280,7 +280,7 @@
           <div class="flex space-x-2">
             <div *ngFor="let image of selectedAlbum.images; let i = index"
                  (click)="currentImageIndex = i"
-                 class="flex-shrink-0 w-16 h-16 border-2 rounded cursor-pointer transition-all"
+                 class="shrink-0 w-16 h-16 border-2 rounded cursor-pointer transition-all"
                  [class]="currentImageIndex === i ? 'border-primary border-2' : 'border-gray-600 border'">
               <img 
                 [src]="image" 
