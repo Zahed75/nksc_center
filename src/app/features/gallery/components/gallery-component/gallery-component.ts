@@ -32,7 +32,41 @@ export class GalleryComponent {
     { value: '2021', label: '২০২১' }
   ];
 
-  // Gallery items data
+  // Unsplash image URLs for different categories
+  unsplashImages = {
+    seminar: [
+      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    ],
+    workshop: [
+      'https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1551836026-d5c8e3b8e7e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    ],
+    conference: [
+      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    ],
+    research: [
+      'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    ],
+    cultural: [
+      'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    ]
+  };
+
+  // Gallery items data with online images
   galleryItems = [
     {
       id: 1,
@@ -41,12 +75,8 @@ export class GalleryComponent {
       year: '2024',
       date: '১৫ মার্চ, ২০২৪',
       description: 'নাজমুল করিম স্টাডি সেন্টারের বার্ষিক গবেষণা সেমিনারে বিভিন্ন বিশ্ববিদ্যালয়ের গবেষকবৃন্দ তাদের গবেষণাপত্র উপস্থাপন করেন।',
-      images: [
-        '/assets/images/gallery/seminar-2024-1.jpg',
-        '/assets/images/gallery/seminar-2024-2.jpg',
-        '/assets/images/gallery/seminar-2024-3.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/seminar-2024-1.jpg',
+      images: this.unsplashImages.seminar,
+      featuredImage: this.unsplashImages.seminar[0],
       totalImages: 45,
       location: 'নাজমুল করিম স্টাডি সেন্টার, ঢাকা',
       participants: 120,
@@ -59,11 +89,8 @@ export class GalleryComponent {
       year: '2024',
       date: '২৮ ফেব্রুয়ারি, ২০২৪',
       description: 'সামাজিক গবেষণার বিভিন্ন পদ্ধতি ও কৌশল নিয়ে দুই দিনব্যাপী বিশেষ ওয়ার্কশপ। অংশগ্রহণকারীদের হাতে-কলমে প্রশিক্ষণ প্রদান।',
-      images: [
-        '/assets/images/gallery/workshop-2024-1.jpg',
-        '/assets/images/gallery/workshop-2024-2.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/workshop-2024-1.jpg',
+      images: this.unsplashImages.workshop,
+      featuredImage: this.unsplashImages.workshop[0],
       totalImages: 32,
       location: 'সমাজবিজ্ঞান বিভাগ, ঢাকা বিশ্ববিদ্যালয়',
       participants: 45,
@@ -76,13 +103,8 @@ export class GalleryComponent {
       year: '2023',
       date: '১০-১২ ডিসেম্বর, ২০২৩',
       description: 'ত্রি-দিনব্যাপী জাতীয় সমাজবিজ্ঞান কনফারেন্সে দেশের বিভিন্ন প্রান্তের সমাজবিজ্ঞানী ও গবেষকবৃন্দ অংশগ্রহণ করেন।',
-      images: [
-        '/assets/images/gallery/conference-2023-1.jpg',
-        '/assets/images/gallery/conference-2023-2.jpg',
-        '/assets/images/gallery/conference-2023-3.jpg',
-        '/assets/images/gallery/conference-2023-4.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/conference-2023-1.jpg',
+      images: this.unsplashImages.conference,
+      featuredImage: this.unsplashImages.conference[0],
       totalImages: 78,
       location: 'বাংলাদেশ অ্যাকাডেমি ফর রুরাল ডেভেলপমেন্ট',
       participants: 250,
@@ -95,11 +117,8 @@ export class GalleryComponent {
       year: '2023',
       date: '২০ নভেম্বর, ২০২৩',
       description: 'গ্রামীণ বাংলাদেশের উন্নয়ন চ্যালেঞ্জ ও সম্ভাবনা নিয়ে বিশেষ গবেষণা সেমিনার।',
-      images: [
-        '/assets/images/gallery/research-2023-1.jpg',
-        '/assets/images/gallery/research-2023-2.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/research-2023-1.jpg',
+      images: this.unsplashImages.research,
+      featuredImage: this.unsplashImages.research[0],
       totalImages: 28,
       location: 'নাজমুল করিম স্টাডি সেন্টার',
       participants: 65,
@@ -112,12 +131,8 @@ export class GalleryComponent {
       year: '2023',
       date: '১৫ অক্টোবর, ২০২৩',
       description: 'সামাজিক গবেষণার জন্য ডেটা অ্যানালাইসিসের বিভিন্ন সফটওয়্যার ও কৌশল নিয়ে বিশেষ ওয়ার্কশপ।',
-      images: [
-        '/assets/images/gallery/workshop-2023-1.jpg',
-        '/assets/images/gallery/workshop-2023-2.jpg',
-        '/assets/images/gallery/workshop-2023-3.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/workshop-2023-1.jpg',
+      images: this.unsplashImages.workshop,
+      featuredImage: this.unsplashImages.workshop[1],
       totalImages: 36,
       location: 'কম্পিউটার ল্যাব, সমাজবিজ্ঞান বিভাগ',
       participants: 30,
@@ -130,11 +145,8 @@ export class GalleryComponent {
       year: '2022',
       date: '৫ সেপ্টেম্বর, ২০২২',
       description: 'সামাজিক পরিবর্তনের বিভিন্ন দিক নিয়ে আন্তর্জাতিক বিশেষজ্ঞদের অংশগ্রহণে বিশেষ সেমিনার।',
-      images: [
-        '/assets/images/gallery/seminar-2022-1.jpg',
-        '/assets/images/gallery/seminar-2022-2.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/seminar-2022-1.jpg',
+      images: this.unsplashImages.seminar,
+      featuredImage: this.unsplashImages.seminar[1],
       totalImages: 42,
       location: 'ইন্টারন্যাশনাল কনফারেন্স রুম',
       participants: 85,
@@ -147,12 +159,8 @@ export class GalleryComponent {
       year: '2024',
       date: '২৬ মার্চ, ২০২৪',
       description: 'স্বাধীনতা দিবস উপলক্ষে আয়োজিত সাংস্কৃতিক অনুষ্ঠান ও গবেষণায় অবদানের জন্য পুরস্কার বিতরণী ceremony।',
-      images: [
-        '/assets/images/gallery/cultural-2024-1.jpg',
-        '/assets/images/gallery/cultural-2024-2.jpg',
-        '/assets/images/gallery/cultural-2024-3.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/cultural-2024-1.jpg',
+      images: this.unsplashImages.cultural,
+      featuredImage: this.unsplashImages.cultural[0],
       totalImages: 55,
       location: 'স্টাডি সেন্টার অডিটোরিয়াম',
       participants: 200,
@@ -165,15 +173,68 @@ export class GalleryComponent {
       year: '2022',
       date: '১৮ আগস্ট, ২০২২',
       description: 'গবেষণা উপাত্ত সংগ্রহের বিভিন্ন পদ্ধতি ও নৈতিক দিক নিয়ে বিশেষ প্রশিক্ষণ কর্মশালা।',
-      images: [
-        '/assets/images/gallery/workshop-2022-1.jpg',
-        '/assets/images/gallery/workshop-2022-2.jpg'
-      ],
-      featuredImage: '/assets/images/gallery/workshop-2022-1.jpg',
+      images: this.unsplashImages.workshop,
+      featuredImage: this.unsplashImages.workshop[2],
       totalImages: 25,
       location: 'ট্রেনিং রুম, স্টাডি সেন্টার',
       participants: 40,
       isFeatured: false
+    },
+    {
+      id: 9,
+      title: 'নগর সমাজবিজ্ঞান গবেষণা সেমিনার',
+      category: 'seminar',
+      year: '2024',
+      date: '১২ এপ্রিল, ২০২৪',
+      description: 'নগর সমাজবিজ্ঞানের বিভিন্ন দিক নিয়ে বিশেষ গবেষণা সেমিনার। শহুরে জীবন ও সামাজিক পরিবর্তন বিষয়ক আলোচনা।',
+      images: this.unsplashImages.seminar,
+      featuredImage: this.unsplashImages.seminar[2],
+      totalImages: 38,
+      location: 'নাজমুল করিম স্টাডি সেন্টার',
+      participants: 90,
+      isFeatured: false
+    },
+    {
+      id: 10,
+      title: 'শিক্ষা গবেষণা কনফারেন্স',
+      category: 'conference',
+      year: '2023',
+      date: '২০ অক্টোবর, ২০২৩',
+      description: 'শিক্ষা ও সামাজিক উন্নয়ন বিষয়ক জাতীয় কনফারেন্স। শিক্ষা নীতি ও প্রযুক্তির সমন্বয় নিয়ে আলোচনা।',
+      images: this.unsplashImages.conference,
+      featuredImage: this.unsplashImages.conference[1],
+      totalImages: 62,
+      location: 'শিক্ষা মন্ত্রণালয় কনফারেন্স রুম',
+      participants: 180,
+      isFeatured: false
+    },
+    {
+      id: 11,
+      title: 'লিঙ্গ ও উন্নয়ন গবেষণা ওয়ার্কশপ',
+      category: 'workshop',
+      year: '2024',
+      date: '৮ মে, ২০২৪',
+      description: 'লিঙ্গ সমতা ও উন্নয়ন বিষয়ক গবেষণা পদ্ধতি নিয়ে বিশেষ ওয়ার্কশপ। অংশগ্রহণকারীদের জন্য ব্যবহারিক প্রশিক্ষণ।',
+      images: this.unsplashImages.workshop,
+      featuredImage: this.unsplashImages.workshop[3],
+      totalImages: 29,
+      location: 'ট্রেনিং সেন্টার, স্টাডি সেন্টার',
+      participants: 35,
+      isFeatured: false
+    },
+    {
+      id: 12,
+      title: 'সাংস্কৃতিক উৎসব ও গবেষণা প্রদর্শনী',
+      category: 'cultural',
+      year: '2024',
+      date: '২১ ফেব্রুয়ারি, ২০২৪',
+      description: 'আন্তর্জাতিক মাতৃভাষা দিবস উপলক্ষে সাংস্কৃতিক উৎসব ও গবেষণা প্রদর্শনীর আয়োজন।',
+      images: this.unsplashImages.cultural,
+      featuredImage: this.unsplashImages.cultural[1],
+      totalImages: 48,
+      location: 'স্টাডি সেন্টার প্রাঙ্গণ',
+      participants: 300,
+      isFeatured: true
     }
   ];
 
