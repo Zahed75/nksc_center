@@ -1,0 +1,11 @@
+{
+  "routes": {
+    "/": {},
+    "/about": {},
+    "/elibrary": {},
+    "/gallery": {},
+    "/home": {},
+    "/news": {},
+    "/publications": {}
+  }
+}
