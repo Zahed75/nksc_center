@@ -1,15 +1,17 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-publication-component',
-  imports: [CommonModule, FormsModule], // Removed RouterLink
+  imports: [CommonModule, FormsModule],
   templateUrl: './publication-component.html',
   styleUrls: ['./publication-component.css']
 })
 export class PublicationComponent {
+  @ViewChild('pdfContainer') pdfContainer!: ElementRef;
+
   // Publications data
   publications = [
     {
@@ -116,6 +118,7 @@ export class PublicationComponent {
   zoomLevel = 1.0;
   pdfSrc: SafeResourceUrl = '';
   isBrowser: boolean;
+  isFullscreen = false;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -185,13 +188,45 @@ export class PublicationComponent {
     this.isPdfViewerOpen = true;
     this.currentPdfPage = 1;
     this.zoomLevel = 1.0;
-    this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(publication.pdfUrl);
+    this.isFullscreen = false;
+    this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(publication.pdfUrl + '#toolbar=0&navpanes=0');
+    
+    // Prevent body scroll when PDF viewer is open
+    document.body.style.overflow = 'hidden';
   }
 
   closePdfViewer() {
     this.isPdfViewerOpen = false;
     this.selectedPdf = null;
     this.pdfSrc = '';
+    this.isFullscreen = false;
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+  }
+
+  // Fullscreen functionality
+  openFullscreen() {
+    const elem = document.documentElement;
+    if (!this.isFullscreen) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+        (elem as any).webkitRequestFullscreen();
+      } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+        (elem as any).msRequestFullscreen();
+      }
+      this.isFullscreen = true;
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) { /* Safari */
+        (document as any).webkitExitFullscreen();
+      } else if ((document as any).msExitFullscreen) { /* IE11 */
+        (document as any).msExitFullscreen();
+      }
+      this.isFullscreen = false;
+    }
   }
 
   nextPage() {
@@ -209,17 +244,26 @@ export class PublicationComponent {
   zoomIn() {
     if (this.zoomLevel < 2.0) {
       this.zoomLevel += 0.1;
+      this.updatePdfZoom();
     }
   }
 
   zoomOut() {
     if (this.zoomLevel > 0.5) {
       this.zoomLevel -= 0.1;
+      this.updatePdfZoom();
     }
   }
 
   resetZoom() {
     this.zoomLevel = 1.0;
+    this.updatePdfZoom();
+  }
+
+  updatePdfZoom() {
+    // This would update the iframe zoom if we were controlling it directly
+    // For now, we just track the zoom level
+    console.log('Zoom level:', this.zoomLevel);
   }
 
   // Handle PDF total pages from wrapper

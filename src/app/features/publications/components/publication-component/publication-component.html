@@ -249,96 +249,158 @@
       </div>
     </div>
 
-    <!-- PDF Viewer Modal -->
-    @if (isPdfViewerOpen && selectedPdf && isBrowser) {
-      <div class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
-          <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b border-gray-200">
-            <div class="flex-1">
-              <h3 class="text-xl font-bold text-gray-900">{{ selectedPdf.title }}</h3>
-              <p class="text-sm text-gray-600">{{ selectedPdf.author }} • Volume {{ selectedPdf.volume }}, Issue {{ selectedPdf.issue }} • {{ selectedPdf.pages }} pages</p>
-            </div>
+    <!-- PDF Viewer Modal - FULL SCREEN IMPROVED VERSION -->
+    @if (isPdfViewerOpen && selectedPdf) {
+      <div class="fixed inset-0 bg-black/90 z-[9999] flex flex-col">
+        <!-- Top Control Bar -->
+        <div class="bg-gray-900 text-white px-4 py-3 flex items-center justify-between border-b border-gray-700">
+          <div class="flex items-center space-x-4">
             <button 
               (click)="closePdfViewer()"
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <i class="pi pi-times text-xl text-gray-600"></i>
+              class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <i class="pi pi-times text-xl"></i>
             </button>
+            <div>
+              <h3 class="font-semibold truncate max-w-md">{{ selectedPdf.title }}</h3>
+              <p class="text-sm text-gray-300">{{ selectedPdf.volume }}, Issue {{ selectedPdf.issue }} • {{ selectedPdf.pages }} pages</p>
+            </div>
           </div>
-
-          <!-- PDF Controls -->
-          <div class="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200">
-            <div class="flex items-center space-x-3">
+          
+          <div class="flex items-center space-x-3">
+            <!-- Navigation -->
+            <div class="flex items-center space-x-2 bg-gray-800 rounded-lg p-1">
               <button 
                 (click)="previousPage()"
-                [class]="'p-2 rounded-lg ' + (currentPdfPage === 1 ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
+                [class]="'p-2 rounded ' + (currentPdfPage === 1 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700')"
                 [disabled]="currentPdfPage === 1">
                 <i class="pi pi-chevron-left"></i>
               </button>
               
-              <span class="text-sm text-gray-700">
-                Page {{ currentPdfPage }} / {{ totalPdfPages }}
-              </span>
+              <div class="px-3 py-1 text-sm">
+                <span class="text-white">{{ currentPdfPage }}</span>
+                <span class="text-gray-400"> / {{ totalPdfPages }}</span>
+              </div>
               
               <button 
                 (click)="nextPage()"
-                [class]="'p-2 rounded-lg ' + (currentPdfPage === totalPdfPages ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
+                [class]="'p-2 rounded ' + (currentPdfPage === totalPdfPages ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700')"
                 [disabled]="currentPdfPage === totalPdfPages">
                 <i class="pi pi-chevron-right"></i>
               </button>
             </div>
 
-            <div class="flex items-center space-x-3">
+            <!-- Zoom Controls -->
+            <div class="flex items-center space-x-2 bg-gray-800 rounded-lg p-1">
               <button 
                 (click)="zoomOut()"
-                class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
+                [class]="'p-2 rounded ' + (zoomLevel <= 0.5 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700')"
+                [disabled]="zoomLevel <= 0.5">
                 <i class="pi pi-search-minus"></i>
               </button>
               
-              <span class="text-sm text-gray-700">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+              <div class="px-3 py-1 text-sm text-white min-w-[60px] text-center">
+                {{ (zoomLevel * 100).toFixed(0) }}%
+              </div>
               
               <button 
                 (click)="zoomIn()"
-                class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
+                [class]="'p-2 rounded ' + (zoomLevel >= 2.0 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700')"
+                [disabled]="zoomLevel >= 2.0">
                 <i class="pi pi-search-plus"></i>
               </button>
               
               <button 
                 (click)="resetZoom()"
-                class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors text-sm">
-                Reset Zoom
+                class="p-2 text-white hover:bg-gray-700 rounded text-sm">
+                Reset
               </button>
             </div>
 
-            <div class="flex items-center space-x-3">
-              <button 
-                (click)="downloadPdf(selectedPdf)"
-                class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
-                <i class="pi pi-download"></i>
-                <span>Download</span>
-              </button>
-            </div>
+            <!-- Download Button -->
+            <button 
+              (click)="downloadPdf(selectedPdf)"
+              class="ml-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors flex items-center space-x-2">
+              <i class="pi pi-download"></i>
+              <span>Download</span>
+            </button>
           </div>
+        </div>
 
-          <!-- Native Browser PDF Viewer -->
-          <div class="flex-1">
+        <!-- PDF Container - Full Screen -->
+        <div class="flex-1 overflow-hidden">
+          @if (isBrowser) {
             <iframe 
               [src]="pdfSrc" 
               class="w-full h-full"
               frameborder="0"
-              title="PDF Viewer">
-              <div class="flex items-center justify-center h-full p-8">
-                <div class="text-center">
-                  <i class="pi pi-exclamation-triangle text-4xl text-yellow-500 mb-4"></i>
-                  <p class="text-gray-600 mb-4">Your browser cannot display PDF</p>
-                  <button 
-                    (click)="downloadPdf(selectedPdf)"
-                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
-                    Download PDF
-                  </button>
+              title="PDF Viewer"
+              allow="fullscreen"
+              style="background-color: #f5f5f5;">
+              <!-- Fallback content -->
+              <div class="flex items-center justify-center h-full p-8 bg-gray-900">
+                <div class="text-center max-w-md">
+                  <i class="pi pi-exclamation-triangle text-5xl text-yellow-500 mb-6"></i>
+                  <h3 class="text-xl font-bold text-white mb-4">PDF Viewer Not Available</h3>
+                  <p class="text-gray-300 mb-6">Your browser cannot display PDF files inline. Please download the file to view it.</p>
+                  <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button 
+                      (click)="downloadPdf(selectedPdf)"
+                      class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                      Download PDF
+                    </button>
+                    <button 
+                      (click)="closePdfViewer()"
+                      class="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                      Close Viewer
+                    </button>
+                  </div>
                 </div>
               </div>
             </iframe>
+          } @else {
+            <!-- Server-side fallback -->
+            <div class="flex items-center justify-center h-full p-8 bg-gray-900">
+              <div class="text-center max-w-md">
+                <i class="pi pi-spinner pi-spin text-5xl text-primary mb-6"></i>
+                <h3 class="text-xl font-bold text-white mb-4">Loading PDF Viewer</h3>
+                <p class="text-gray-300 mb-6">Please wait while we load the PDF viewer...</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Bottom Info Bar -->
+        <div class="bg-gray-900 text-white px-4 py-3 border-t border-gray-700">
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center space-x-6">
+              <span class="text-gray-300">
+                <i class="pi pi-file mr-2"></i>
+                {{ selectedPdf.fileSize }}
+              </span>
+              <span class="text-gray-300">
+                <i class="pi pi-calendar mr-2"></i>
+                {{ selectedPdf.year }}
+              </span>
+              <span class="text-gray-300">
+                <i class="pi pi-user mr-2"></i>
+                {{ selectedPdf.editor }}
+              </span>
+            </div>
+            <div class="flex items-center space-x-4">
+              <button 
+                (click)="openFullscreen()"
+                class="text-gray-300 hover:text-white transition-colors flex items-center space-x-2">
+                <i class="pi pi-window-maximize"></i>
+                <span>Fullscreen</span>
+              </button>
+              <a 
+                [href]="selectedPdf.doi" 
+                target="_blank"
+                class="text-blue-400 hover:text-blue-300 transition-colors flex items-center space-x-2">
+                <i class="pi pi-external-link"></i>
+                <span>DOI Link</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
