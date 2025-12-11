@@ -5,194 +5,98 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-publication-component',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule], // Removed RouterLink
   templateUrl: './publication-component.html',
   styleUrls: ['./publication-component.css']
 })
 export class PublicationComponent {
-  // All publications from your assets/journals folder
+  // Publications data
   publications = [
     {
       id: 1,
-      title: 'রঙ্গলাল সেন: জীবন ও কর্ম',
-      category: 'biography',
-      year: '২০২৪',
-      description: 'বিখ্যাত সমাজবিজ্ঞানী রঙ্গলাল সেনের জীবনী ও তাঁর গবেষণা কর্মের উপর একটি বিশদ আলোচনা।',
-      fileSize: '2.1 MB',
+      title: 'Journal of Sociology - Volume 14 Issue 1&2, 2023',
+      category: 'journal',
+      year: '2023',
+      description: 'Nazmul Karim Study Center\'s official sociology journal covering contemporary social issues and research. Includes articles from leading sociologists and researchers.',
+      fileSize: '3.8 MB',
       fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-1.jpg',
-      pdfUrl: '/assets/journals/rongo-lal-sen.pdf',
-      pages: 45,
-      author: 'সমাজবিজ্ঞান বিভাগ'
+      thumbnail: '/assets/images/pdf-thumbnail-journal-14.jpg',
+      pdfUrl: '/assets/publications/Journal-Final-24-11-24.pdf',
+      pages: 120,
+      author: 'Professor Dr. A K M Jamal Uddin (Editor)',
+      issn: '1813-2871',
+      doi: 'https://www.doi.org/10.62272/JS.V14',
+      editor: 'Professor Dr. A K M Jamal Uddin',
+      editorialBoard: [
+        'Professor Dr. Zeenat Huda',
+        'Professor Dr. A.S.M. Amanullah',
+        'Professor Dr. Fatema Rezina Iqbal',
+        'Professor Salma Akhter'
+      ],
+      subscription: 'Tk. 500.00 per issue (US$ 30 including postage)',
+      contact: 'nksc1511@gmail.com',
+      volume: '14',
+      issue: '1&2'
     },
     {
       id: 2,
-      title: 'জার্নাল ফাইনাল ২০২৪',
+      title: 'Journal of Sociology - Volume 13 Issue 1, January - June, 2022',
       category: 'journal',
-      year: '২০২৪',
-      description: 'নাজমুল করিম স্টাডি সেন্টারের সর্বশেষ গবেষণা জার্নাল। সমকালীন সামাজিক বিষয়গুলোর উপর গবেষণাপত্র সংকলন।',
-      fileSize: '3.8 MB',
+      year: '2022',
+      description: 'First issue of 2022 covering sociological research and analysis. Features articles on contemporary social issues in Bangladesh and South Asia.',
+      fileSize: '2.5 MB',
       fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-2.jpg',
-      pdfUrl: '/assets/journals/Journal-Final-24-11-24.pdf',
-      pages: 120,
-      author: 'এন কে এস সি রিসার্চ টিম'
+      thumbnail: '/assets/images/pdf-thumbnail-journal-13-1.jpg',
+      pdfUrl: '/assets/publications/Volume 13 Issue 1, January - June, 2022.pdf',
+      pages: 85,
+      author: 'Professor Dr. A K M Jamal Uddin (Editor)',
+      issn: '1813-2871',
+      doi: 'https://www.doi.org/10.62272/JS.V13',
+      editor: 'Professor Dr. A K M Jamal Uddin',
+      editorialBoard: [
+        'Professor Dr. Zeenat Huda',
+        'Professor Dr. Amanullah',
+        'Professor Salma Akhter',
+        'Professor Dr. Fatema Rezina Iqbal'
+      ],
+      editorialAssociate: [
+        'Armina Akter, Ahsanullah University of Science and Technology',
+        'Sadia Binta Zaman, Green University of Bangladesh'
+      ],
+      subscription: 'Tk. 200.00 per issue (US$ 30 including postage)',
+      contact: 'nksc1511@gmail.com',
+      volume: '13',
+      issue: '1'
     },
     {
       id: 3,
-      title: 'গ্লোবাল সাউথে সমাজবিজ্ঞান তত্ত্ব গঠন',
-      category: 'research',
-      year: '২০২৪',
-      description: 'বৈশ্বিক দক্ষিণে সমাজবিজ্ঞান তত্ত্ব গঠনের চ্যালেঞ্জ ও সম্ভাবনা নিয়ে গভীর বিশ্লেষণ।',
-      fileSize: '1.9 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-3.jpg',
-      pdfUrl: '/assets/journals/Building Sociological Theory in the Global South.pdf',
-      pages: 28,
-      author: 'ড. মোহাম্মদ আলী'
-    },
-    {
-      id: 4,
-      title: 'সালমা: নগর সমাজবিজ্ঞান গবেষণা',
-      category: 'research',
-      year: '২০২৪',
-      description: 'নগরায়ণ ও নগর সমাজের গতিশীলতা নিয়ে একটি মৌলিক গবেষণা।',
-      fileSize: '2.3 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-4.jpg',
-      pdfUrl: '/assets/journals/13.-Salma-Final-1.pdf',
-      pages: 35,
-      author: 'ড. সালমা আক্তার'
-    },
-    {
-      id: 5,
-      title: 'ড. কালিদাশ ভক্ত: গবেষণা প্রবন্ধ',
-      category: 'article',
-      year: '২০২৪',
-      description: 'সমাজবিজ্ঞানের বিভিন্ন দিক নিয়ে ড. কালিদাশ ভক্তের গবেষণামূলক প্রবন্ধ।',
-      fileSize: '1.7 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-5.jpg',
-      pdfUrl: '/assets/journals/12B.-ড.-কালিদাশ-ভক্ত-1.pdf',
-      pages: 22,
-      author: 'ড. কালিদাশ ভক্ত'
-    },
-    {
-      id: 6,
-      title: 'কাজী মিজানুর রহমান: সমাজ বিশ্লেষণ',
-      category: 'research',
-      year: '২০২৪',
-      description: 'সমসাময়িক সমাজের বিভিন্ন স্তরের বিশ্লেষণধর্মী গবেষণা।',
-      fileSize: '2.0 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-6.jpg',
-      pdfUrl: '/assets/journals/11B-কাজী-মিজানুর-রহমান-1-1.pdf',
-      pages: 30,
-      author: 'কাজী মিজানুর রহমান'
-    },
-    {
-      id: 7,
-      title: 'ড. শামীমা নাছরিন: নারীবাদী সমাজবিজ্ঞান',
-      category: 'research',
-      year: '২০২৪',
-      description: 'নারীবাদী দৃষ্টিকোণ থেকে সমাজবিজ্ঞানের বিভিন্ন বিষয়ের উপর গবেষণা।',
-      fileSize: '1.8 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-7.jpg',
-      pdfUrl: '/assets/journals/10B-ড.-শামীমা-নাছরিন-1-1.pdf',
-      pages: 25,
-      author: 'ড. শামীমা নাছরিন'
-    },
-    {
-      id: 8,
-      title: 'ড. শান্টু বড়ুয়া: সাংস্কৃতিক সমাজবিজ্ঞান',
-      category: 'research',
-      year: '২০২৪',
-      description: 'সংস্কৃতি ও সমাজের আন্তঃসম্পর্ক নিয়ে গভীর গবেষণা।',
-      fileSize: '1.9 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-8.jpg',
-      pdfUrl: '/assets/journals/09B-ড.-শান্টু-বড়ুয়া-1-1.pdf',
-      pages: 27,
-      author: 'ড. শান্টু বড়ুয়া'
-    },
-    {
-      id: 9,
-      title: 'তিতাস কুমার শীল: গ্রামীণ উন্নয়ন',
-      category: 'research',
-      year: '২০২৪',
-      description: 'গ্রামীণ বাংলাদেশের উন্নয়ন চ্যালেঞ্জ ও সম্ভাবনা নিয়ে গবেষণা।',
-      fileSize: '2.2 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-9.jpg',
-      pdfUrl: '/assets/journals/08B-তিতাস-কুমার-শীল-10-2-1.pdf',
-      pages: 32,
-      author: 'তিতাস কুমার শীল'
-    },
-    {
-      id: 10,
-      title: 'শাহানা আফরিন ও দীন দিলাফরোজ: যৌথ গবেষণা',
-      category: 'research',
-      year: '২০২৪',
-      description: 'শিক্ষা ও সামাজিক পরিবর্তন নিয়ে একটি যৌথ গবেষণা প্রকল্প।',
-      fileSize: '2.4 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-10.jpg',
-      pdfUrl: '/assets/journals/07-Shahana-Afrin-Dina-Dilafroze-Khanam-Mohammad-Mufajjal-Sarwar-1.pdf',
-      pages: 38,
-      author: 'শাহানা আফরিন, দীন দিলাফরোজ খানম'
-    },
-    {
-      id: 11,
-      title: 'গবেষণা সংকলন ২০২৪',
+      title: 'Journal of Sociology - Volume 13 Issue 2, July-December, 2022',
       category: 'journal',
-      year: '২০২৪',
-      description: 'বিভিন্ন গবেষকের গবেষণাপত্রের সংকলন। সামাজিক বিষয়গুলোর বহুমাত্রিক বিশ্লেষণ।',
+      year: '2022',
+      description: 'Second issue of 2022 featuring sociological studies, research papers, and critical analysis on social dynamics, development, and cultural studies.',
       fileSize: '2.8 MB',
       fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-11.jpg',
-      pdfUrl: '/assets/journals/06.-DOC-20241022-WA0000_6-1.pdf',
-      pages: 65,
-      author: 'বহু গবেষক'
-    },
-    {
-      id: 12,
-      title: 'নিওলিবারেলিজম ও গ্রামীণ বাংলাদেশ',
-      category: 'research',
-      year: '২০২৪',
-      description: 'নিওলিবারেল নীতি ও গ্রামীণ বাংলাদেশের অর্থনৈতিক রূপান্তর নিয়ে গবেষণা।',
-      fileSize: '2.1 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-12.jpg',
-      pdfUrl: '/assets/journals/05.-Neoliberalism and Economic Transformation in Rural Bangladesh A Study on Palsa Village.pdf',
-      pages: 40,
-      author: 'গবেষণা দল'
-    },
-    {
-      id: 13,
-      title: 'দেবাশীষ কুমার কুন্ডু: সমাজতাত্ত্বিক বিশ্লেষণ',
-      category: 'research',
-      year: '২০২৪',
-      description: 'সমসাময়িক সামাজিক সমস্যাগুলোর উপর গভীর সমাজতাত্ত্বিক বিশ্লেষণ।',
-      fileSize: '1.6 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-13.jpg',
-      pdfUrl: '/assets/journals/04B-দেবাশীষ-কুমার-কুন্ডু-Edited-1-1.pdf',
-      pages: 24,
-      author: 'দেবাশীষ কুমার কুন্ডু'
-    },
-    {
-      id: 14,
-      title: 'লিপন মন্ডল: সংশোধিত সংস্করণ',
-      category: 'research',
-      year: '২০২৪',
-      description: 'সামাজিক পরিবর্তন ও উন্নয়ন নিয়ে সংশোধিত ও পরিমার্জিত গবেষণাপত্র।',
-      fileSize: '1.9 MB',
-      fileType: 'PDF',
-      thumbnail: '/assets/images/pdf-thumbnail-14.jpg',
-      pdfUrl: '/assets/journals/03__Lipon Mondal (corrected version) (1) (1).pdf',
-      pages: 29,
-      author: 'লিপন মন্ডল'
+      thumbnail: '/assets/images/pdf-thumbnail-journal-13-2.jpg',
+      pdfUrl: '/assets/publications/Volume 13 Issue 2, July- December, 2022.pdf',
+      pages: 92,
+      author: 'Professor Dr. A K M Jamal Uddin (Editor)',
+      issn: '1813-2871',
+      doi: 'https://www.doi.org/10.62272/JS.V13',
+      editor: 'Professor Dr. A K M Jamal Uddin',
+      editorialBoard: [
+        'Professor Dr. Zeenat Huda',
+        'Professor Dr. Amanullah',
+        'Professor Salma Akhter',
+        'Professor Dr. Fatema Rezina Iqbal'
+      ],
+      editorialAssociate: [
+        'Armina Akhter, Ahsanullah University of Science and Technology',
+        'Sadia Binta Zaman, Green University of Bangladesh'
+      ],
+      subscription: 'Tk. 200.00 per issue (US$ 30 including postage)',
+      contact: 'nksc1511@gmail.com',
+      volume: '13',
+      issue: '2'
     }
   ];
 
@@ -221,12 +125,12 @@ export class PublicationComponent {
   }
 
   // Available years and categories for filters
-  years = ['২০২৪', '২০২৩', '২০২২', '২০২১'];
+  years = ['2023', '2022', '2021', '2020'];
   categories = [
-    { value: 'journal', label: 'জার্নাল' },
-    { value: 'research', label: 'গবেষণাপত্র' },
-    { value: 'article', label: 'নিবন্ধ' },
-    { value: 'biography', label: 'জীবনী' }
+    { value: 'journal', label: 'Journal' },
+    { value: 'research', label: 'Research Paper' },
+    { value: 'article', label: 'Article' },
+    { value: 'biography', label: 'Biography' }
   ];
 
   // Search functionality
@@ -342,11 +246,33 @@ export class PublicationComponent {
 
   getCategoryText(category: string): string {
     const texts = {
-      'journal': 'জার্নাল',
-      'research': 'গবেষণাপত্র',
-      'article': 'নিবন্ধ',
-      'biography': 'জীবনী'
+      'journal': 'Journal',
+      'research': 'Research Paper',
+      'article': 'Article',
+      'biography': 'Biography'
     };
     return texts[category as keyof typeof texts] || category;
+  }
+
+  // Get journal badge based on volume
+  getJournalBadge(volume: string): string {
+    if (volume === '14') return 'bg-red-100 text-red-800 border border-red-200';
+    if (volume === '13') return 'bg-indigo-100 text-indigo-800 border border-indigo-200';
+    return 'bg-gray-100 text-gray-800 border border-gray-200';
+  }
+
+  // Get journal badge text
+  getJournalBadgeText(volume: string): string {
+    return `Volume ${volume}`;
+  }
+
+  // Get count of publications by year (for the template)
+  getPublicationsCountByYear(year: string): number {
+    return this.publications.filter(p => p.year === year).length;
+  }
+
+  // Get latest year publications count
+  getLatestPublicationsCount(): number {
+    return this.getPublicationsCountByYear('2023');
   }
 }

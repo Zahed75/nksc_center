@@ -2,12 +2,12 @@
   <div class="container mx-auto px-4">
     <!-- Header Section -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4 bangla-font">প্রকাশনা সংগ্রহ</h1>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-        নাজমুল করিম স্টাডি সেন্টারের গবেষণাপত্র, জার্নাল ও শিক্ষামূলক প্রকাশনা
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Publications</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Nazmul Karim Study Center's official journals and research publications
       </p>
-      <p class="text-sm text-primary mt-2 bangla-font">
-        মোট {{filteredPublications.length}}টি প্রকাশনা পাওয়া গেছে
+      <p class="text-sm text-primary mt-2">
+        Found {{filteredPublications.length}} publications
       </p>
     </div>
 
@@ -19,10 +19,10 @@
           <div class="relative">
             <input 
               type="text" 
-              placeholder="প্রকাশনা খুঁজুন..." 
+              placeholder="Search publications..." 
               [(ngModel)]="searchTerm"
               (input)="onSearch(searchTerm)"
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font"
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             >
             <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
           </div>
@@ -33,109 +33,125 @@
           <select 
             [(ngModel)]="selectedCategory"
             (change)="onCategoryFilter(selectedCategory)"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option value="">সব বিভাগ</option>
-            <option value="journal">জার্নাল</option>
-            <option value="research">গবেষণাপত্র</option>
-            <option value="article">নিবন্ধ</option>
-            <option value="biography">জীবনী</option>
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="">All Categories</option>
+            <option value="journal">Journal</option>
+            <option value="research">Research Paper</option>
+            <option value="article">Article</option>
+            <option value="biography">Biography</option>
           </select>
 
           <select 
             [(ngModel)]="selectedYear"
             (change)="onYearFilter(selectedYear)"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option value="">সব বছর</option>
-            <option value="2024">২০২৪</option>
-            <option value="2023">২০২৩</option>
-            <option value="2022">২০২২</option>
-            <option value="2021">২০২১</option>
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="">All Years</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
           </select>
 
           <button 
             (click)="clearFilters()"
-            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors bangla-font">
+            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
             <i class="pi pi-times mr-2"></i>
-            ক্লিয়ার
+            Clear
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Journal Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="glass rounded-xl p-6 text-center">
+        <i class="pi pi-book text-3xl text-primary mb-3"></i>
+        <div class="text-2xl font-bold text-gray-900">{{publications.length}}</div>
+        <div class="text-gray-600">Total Journals</div>
+      </div>
+      <div class="glass rounded-xl p-6 text-center">
+        <i class="pi pi-calendar text-3xl text-green-600 mb-3"></i>
+        <div class="text-2xl font-bold text-gray-900">{{getLatestPublicationsCount()}}</div>
+        <div class="text-gray-600">Latest (2023)</div>
+      </div>
+      <div class="glass rounded-xl p-6 text-center">
+        <i class="pi pi-tag text-3xl text-purple-600 mb-3"></i>
+        <div class="text-2xl font-bold text-gray-900">ISSN 1813-2871</div>
+        <div class="text-gray-600">Journal ISSN</div>
       </div>
     </div>
 
     <!-- Publications Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
       @for (publication of filteredPublications; track publication.id) {
-        <div class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group">
-          <!-- PDF Thumbnail -->
-          <div class="relative mb-4 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-            <div class="aspect-[4/3] flex items-center justify-center">
-              @if (publication.thumbnail) {
-                <img 
-                  [src]="publication.thumbnail" 
-                  [alt]="publication.title"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-                >
-              }
-              <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5 text-primary p-4" 
-                   [class]="publication.thumbnail ? 'hidden' : 'flex'">
-                <i class="pi pi-file-pdf text-3xl mb-2"></i>
-                <span class="text-sm font-medium bangla-font text-center">PDF ডকুমেন্ট</span>
-                <span class="text-xs text-gray-600 mt-1">{{ publication.pages }} পৃষ্ঠা</span>
-              </div>
-            </div>
-            
-            <!-- Quick Actions Overlay -->
-            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
-              <button 
-                (click)="openPdfViewer(publication)"
-                class="bg-white text-primary p-2 rounded-full hover:bg-primary hover:text-white transition-all duration-200 transform hover:scale-110">
-                <i class="pi pi-eye text-base"></i>
-              </button>
-              <button 
-                (click)="downloadPdf(publication)"
-                class="bg-white text-green-600 p-2 rounded-full hover:bg-green-600 hover:text-white transition-all duration-200 transform hover:scale-110">
-                <i class="pi pi-download text-base"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Publication Details -->
+        <div class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group border-2 border-blue-50">
+          <!-- Publication Badges -->
           <div class="flex items-start justify-between mb-3">
-            <span [class]="'px-3 py-1 text-sm rounded-full bangla-font ' + getCategoryColor(publication.category)">
-              {{ getCategoryText(publication.category) }}
-            </span>
-            <span class="text-sm text-gray-500">{{ publication.year }}</span>
+            <div class="flex flex-wrap gap-2">
+              <span [class]="'px-3 py-1 text-sm rounded-full ' + getCategoryColor(publication.category)">
+                {{ getCategoryText(publication.category) }}
+              </span>
+              <span [class]="'px-3 py-1 text-sm rounded-full ' + getJournalBadge(publication.volume)">
+                {{ getJournalBadgeText(publication.volume) }}
+              </span>
+            </div>
+            <span class="text-sm font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">{{ publication.year }}</span>
           </div>
           
-          <h3 class="text-xl font-bold text-gray-900 mb-3 bangla-font line-clamp-2">{{ publication.title }}</h3>
+          <!-- Title -->
+          <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ publication.title }}</h3>
           
-          @if (publication.author) {
-            <p class="text-sm text-gray-600 mb-2 bangla-font">লেখক: {{ publication.author }}</p>
-          }
+          <!-- Editor Info -->
+          <div class="flex items-start mb-2">
+            <i class="pi pi-user mt-1 mr-2 text-primary"></i>
+            <div>
+              <p class="text-sm text-gray-700 font-medium">Editor: {{ publication.editor }}</p>
+              <p class="text-xs text-gray-500">ISSN: {{ publication.issn }}</p>
+            </div>
+          </div>
           
-          <p class="text-gray-600 text-sm mb-4 line-clamp-2 bangla-font">
+          <!-- Description -->
+          <p class="text-gray-600 text-sm mb-4 line-clamp-3">
             {{ publication.description }}
           </p>
           
-          <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-            <div class="flex items-center space-x-4">
+          <!-- Journal Details -->
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center text-xs text-gray-500">
+              <i class="pi pi-tag mr-2"></i>
+              <span>Volume {{ publication.volume }}, Issue {{ publication.issue }}</span>
+            </div>
+            <div class="flex items-center text-xs text-gray-500">
+              <i class="pi pi-file mr-2"></i>
+              <span>{{ publication.pages }} pages • {{ publication.fileSize }}</span>
+            </div>
+            @if (publication.doi) {
+              <div class="flex items-center text-xs text-blue-600">
+                <i class="pi pi-external-link mr-2"></i>
+                <a [href]="publication.doi" target="_blank" class="hover:underline">{{ publication.doi }}</a>
+              </div>
+            }
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center space-x-3">
               <button 
                 (click)="openPdfViewer(publication)"
-                class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors bangla-font">
+                class="flex items-center space-x-1 text-primary hover:text-primary-dark transition-colors group/view">
                 <i class="pi pi-eye"></i>
-                <span class="text-sm">প্রিভিউ</span>
+                <span class="text-sm">Preview</span>
               </button>
               <button 
                 (click)="downloadPdf(publication)"
-                class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors bangla-font">
+                class="flex items-center space-x-1 text-green-600 hover:text-green-700 transition-colors group/download">
                 <i class="pi pi-download"></i>
-                <span class="text-sm">ডাউনলোড</span>
+                <span class="text-sm">Download</span>
               </button>
             </div>
             <div class="text-right">
-              <span class="text-xs text-gray-500 block">{{ publication.fileType }}, {{ publication.fileSize }}</span>
-              <span class="text-xs text-gray-400">{{ publication.pages }} পৃষ্ঠা</span>
+              <div class="text-xs text-gray-500">{{ publication.fileType }}</div>
+              <div class="text-xs text-gray-400">{{ publication.fileSize }}</div>
             </div>
           </div>
         </div>
@@ -146,25 +162,102 @@
     @if (filteredPublications.length === 0) {
       <div class="text-center py-12">
         <i class="pi pi-search text-6xl text-gray-300 mb-4"></i>
-        <h3 class="text-xl font-bold text-gray-600 mb-2 bangla-font">কোনো প্রকাশনা পাওয়া যায়নি</h3>
-        <p class="text-gray-500 bangla-font">অনুগ্রহ করে আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করুন</p>
+        <h3 class="text-xl font-bold text-gray-600 mb-2">No publications found</h3>
+        <p class="text-gray-500">Please change your search or filter criteria</p>
         <button 
           (click)="clearFilters()"
-          class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-          সব ফিল্টার ক্লিয়ার করুন
+          class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+          Clear All Filters
         </button>
       </div>
     }
 
-    <!-- PDF Viewer Modal - UPDATED WITH NATIVE BROWSER VIEWER -->
+    <!-- Editorial Board Section -->
+    <div class="glass rounded-2xl p-8 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Journal Editorial Board</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="pi pi-user text-blue-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold text-gray-900">Editor</h4>
+          <p class="text-sm text-gray-600">Prof. Dr. A K M Jamal Uddin</p>
+          <p class="text-xs text-gray-500">University of Dhaka</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="pi pi-users text-green-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold text-gray-900">Editorial Board</h4>
+          <p class="text-sm text-gray-600">Prof. Dr. Zeenat Huda</p>
+          <p class="text-xs text-gray-500">University of Dhaka</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="pi pi-users text-purple-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold text-gray-900">Editorial Board</h4>
+          <p class="text-sm text-gray-600">Prof. Dr. A.S.M. Amanullah</p>
+          <p class="text-xs text-gray-500">University of Dhaka</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="pi pi-users text-orange-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold text-gray-900">Editorial Board</h4>
+          <p class="text-sm text-gray-600">Prof. Salma Akhter</p>
+          <p class="text-xs text-gray-500">University of Dhaka</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="text-left">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Journal Information</h3>
+          <div class="space-y-1">
+            <p class="text-gray-600 text-sm flex items-center">
+              <i class="pi pi-book mr-2 text-primary"></i>
+              ISSN: 1813-2871
+            </p>
+            <p class="text-gray-600 text-sm flex items-center">
+              <i class="pi pi-envelope mr-2 text-primary"></i>
+              Email: nksc1511@gmail.com
+            </p>
+            <p class="text-gray-600 text-sm flex items-center">
+              <i class="pi pi-map-marker mr-2 text-primary"></i>
+              Nazmul Karim Study Center, University of Dhaka
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button 
+            (click)="openPdfViewer(publications[0])"
+            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors inline-flex items-center justify-center">
+            <i class="pi pi-eye mr-2"></i>
+            View Latest Issue
+          </button>
+          <a 
+            href="mailto:nksc1511@gmail.com"
+            class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors inline-flex items-center justify-center">
+            <i class="pi pi-envelope mr-2"></i>
+            Contact Editorial
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PDF Viewer Modal -->
     @if (isPdfViewerOpen && selectedPdf && isBrowser) {
       <div class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
           <!-- Header -->
           <div class="flex items-center justify-between p-6 border-b border-gray-200">
             <div class="flex-1">
-              <h3 class="text-xl font-bold text-gray-900 bangla-font">{{ selectedPdf.title }}</h3>
-              <p class="text-sm text-gray-600 bangla-font">{{ selectedPdf.author }} • {{ selectedPdf.year }} • {{ selectedPdf.pages }} পৃষ্ঠা</p>
+              <h3 class="text-xl font-bold text-gray-900">{{ selectedPdf.title }}</h3>
+              <p class="text-sm text-gray-600">{{ selectedPdf.author }} • Volume {{ selectedPdf.volume }}, Issue {{ selectedPdf.issue }} • {{ selectedPdf.pages }} pages</p>
             </div>
             <button 
               (click)="closePdfViewer()"
@@ -183,8 +276,8 @@
                 <i class="pi pi-chevron-left"></i>
               </button>
               
-              <span class="text-sm text-gray-700 bangla-font">
-                পৃষ্ঠা {{ currentPdfPage }} / {{ totalPdfPages }}
+              <span class="text-sm text-gray-700">
+                Page {{ currentPdfPage }} / {{ totalPdfPages }}
               </span>
               
               <button 
@@ -202,7 +295,7 @@
                 <i class="pi pi-search-minus"></i>
               </button>
               
-              <span class="text-sm text-gray-700 bangla-font">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+              <span class="text-sm text-gray-700">{{ (zoomLevel * 100).toFixed(0) }}%</span>
               
               <button 
                 (click)="zoomIn()"
@@ -212,17 +305,17 @@
               
               <button 
                 (click)="resetZoom()"
-                class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors bangla-font text-sm">
-                Reset
+                class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors text-sm">
+                Reset Zoom
               </button>
             </div>
 
             <div class="flex items-center space-x-3">
               <button 
                 (click)="downloadPdf(selectedPdf)"
-                class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
+                class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
                 <i class="pi pi-download"></i>
-                <span>ডাউনলোড</span>
+                <span>Download</span>
               </button>
             </div>
           </div>
@@ -237,11 +330,11 @@
               <div class="flex items-center justify-center h-full p-8">
                 <div class="text-center">
                   <i class="pi pi-exclamation-triangle text-4xl text-yellow-500 mb-4"></i>
-                  <p class="text-gray-600 bangla-font mb-4">আপনার ব্রাউজার PDF দেখাতে পারছে না</p>
+                  <p class="text-gray-600 mb-4">Your browser cannot display PDF</p>
                   <button 
                     (click)="downloadPdf(selectedPdf)"
-                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-                    PDF ডাউনলোড করুন
+                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                    Download PDF
                   </button>
                 </div>
               </div>
@@ -250,79 +343,5 @@
         </div>
       </div>
     }
-
-    <!-- Admin Upload Section (Visible only to admins) -->
-    <div class="glass rounded-2xl p-6 border-2 border-dashed border-gray-300 mt-8">
-      <div class="text-center">
-        <i class="pi pi-cloud-upload text-4xl text-gray-400 mb-4"></i>
-        <h3 class="text-xl font-bold text-gray-900 mb-2 bangla-font">নতুন প্রকাশনা যোগ করুন</h3>
-        <p class="text-gray-600 mb-6 bangla-font">জার্নাল, গবেষণাপত্র বা বই আপলোড করুন</p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <!-- File Upload -->
-          <div class="flex-1 max-w-md">
-            <label class="block text-sm font-medium text-gray-700 mb-2 bangla-font">ফাইল নির্বাচন করুন (PDF)</label>
-            <input type="file" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg bangla-font">
-          </div>
-
-          <!-- Publication Details -->
-          <div class="flex-1 max-w-md">
-            <label class="block text-sm font-medium text-gray-700 mb-2 bangla-font">প্রকাশনার নাম</label>
-            <input type="text" placeholder="প্রকাশনার নাম লিখুন..." class="w-full px-3 py-2 border border-gray-300 rounded-lg bangla-font">
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-          <!-- Category -->
-          <div class="flex-1 max-w-md">
-            <label class="block text-sm font-medium text-gray-700 mb-2 bangla-font">বিভাগ</label>
-            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg bangla-font">
-              <option value="">বিভাগ নির্বাচন করুন</option>
-              <option value="journal">জার্নাল</option>
-              <option value="research">গবেষণাপত্র</option>
-              <option value="article">নিবন্ধ</option>
-              <option value="biography">জীবনী</option>
-            </select>
-          </div>
-
-          <!-- Year -->
-          <div class="flex-1 max-w-md">
-            <label class="block text-sm font-medium text-gray-700 mb-2 bangla-font">সাল</label>
-            <input type="number" placeholder="সাল লিখুন..." class="w-full px-3 py-2 border border-gray-300 rounded-lg bangla-font">
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div class="mt-4 max-w-2xl mx-auto">
-          <label class="block text-sm font-medium text-gray-700 mb-2 bangla-font">বর্ণনা</label>
-          <textarea 
-            rows="3" 
-            placeholder="প্রকাশনা সম্পর্কে সংক্ষিপ্ত বর্ণনা লিখুন..." 
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg bangla-font"
-          ></textarea>
-        </div>
-
-        <!-- Upload Button -->
-        <button class="mt-6 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-          <i class="pi pi-upload mr-2"></i>
-          প্রকাশনা আপলোড করুন
-        </button>
-      </div>
-    </div>
-
-    <!-- Pagination -->
-    <div class="flex justify-center mt-12">
-      <nav class="flex items-center space-x-2">
-        <button class="px-3 py-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors">
-          <i class="pi pi-chevron-left"></i>
-        </button>
-        <button class="px-3 py-2 rounded-lg bg-primary text-white">1</button>
-        <button class="px-3 py-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors">2</button>
-        <button class="px-3 py-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors">3</button>
-        <button class="px-3 py-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors">
-          <i class="pi pi-chevron-right"></i>
-        </button>
-      </nav>
-    </div>
   </div>
 </div>

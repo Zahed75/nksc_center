@@ -2,12 +2,12 @@
   <div class="container mx-auto px-4">
     <!-- Header Section -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4 bangla-font">ই-লাইব্রেরি</h1>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-        নাজমুল করিম স্টাডি সেন্টারের ডিজিটাল লাইব্রেরি - গবেষণা, বই, জার্নাল ও শিক্ষামূলক রিসোর্সের বিশাল সংগ্রহ
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">E-Library</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Nazmul Karim Study Center's Digital Library - Vast collection of research, books, journals, and educational resources
       </p>
-      <p class="text-sm text-primary mt-2 bangla-font">
-        মোট {{filteredItems.length}}টি রিসোর্স পাওয়া গেছে
+      <p class="text-sm text-primary mt-2">
+        Found {{filteredItems.length}} resources ({{getMigratedItemsCount()}} publications migrated)
       </p>
     </div>
 
@@ -19,10 +19,10 @@
           <div class="relative">
             <input 
               type="text" 
-              placeholder="বই, লেখক বা বিষয় খুঁজুন..." 
+              placeholder="Search books, authors, or topics..." 
               [(ngModel)]="searchTerm"
               (input)="applyFilters()"
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font"
+              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             >
             <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
           </div>
@@ -33,84 +33,89 @@
           <select 
             [(ngModel)]="selectedCategory"
             (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option value="">সব বিষয়</option>
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="">All Categories</option>
             <option *ngFor="let cat of categories" [value]="cat.value">{{cat.label}}</option>
           </select>
 
           <select 
             [(ngModel)]="selectedType"
             (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option value="">সব ধরন</option>
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="">All Types</option>
             <option *ngFor="let type of types" [value]="type.value">{{type.label}}</option>
           </select>
 
           <select 
             [(ngModel)]="selectedYear"
             (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option value="">সব বছর</option>
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="">All Years</option>
             <option *ngFor="let year of years" [value]="year">{{year}}</option>
           </select>
 
           <button 
             (click)="clearFilters()"
-            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors bangla-font">
+            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
             <i class="pi pi-times mr-2"></i>
-            ক্লিয়ার
+            Clear
           </button>
         </div>
       </div>
     </div>
 
     <!-- Quick Stats -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
       <div class="glass rounded-xl p-4 text-center">
         <i class="pi pi-book text-2xl text-primary mb-2"></i>
         <div class="text-2xl font-bold text-gray-900">{{getCountByType('book')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">বই</div>
+        <div class="text-gray-600 text-sm">Books</div>
       </div>
       <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-file text-2xl text-green-600 mb-2"></i>
+        <i class="pi pi-file text-2xl text-red-600 mb-2"></i>
         <div class="text-2xl font-bold text-gray-900">{{getCountByType('journal')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">জার্নাল</div>
+        <div class="text-gray-600 text-sm">Journals</div>
       </div>
       <div class="glass rounded-xl p-4 text-center">
         <i class="pi pi-graduation-cap text-2xl text-purple-600 mb-2"></i>
         <div class="text-2xl font-bold text-gray-900">{{getCountByType('thesis')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">থিসিস</div>
+        <div class="text-gray-600 text-sm">Theses</div>
       </div>
       <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-chart-line text-2xl text-orange-600 mb-2"></i>
+        <i class="pi pi-chart-line text-2xl text-green-600 mb-2"></i>
         <div class="text-2xl font-bold text-gray-900">{{getCountByType('research-paper')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">গবেষণাপত্র</div>
+        <div class="text-gray-600 text-sm">Research Papers</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center">
+        <i class="pi pi-download text-2xl text-blue-600 mb-2"></i>
+        <div class="text-2xl font-bold text-gray-900">{{getTotalDownloads() | number}}</div>
+        <div class="text-gray-600 text-sm">Total Downloads</div>
       </div>
     </div>
 
     <!-- Featured Section -->
     <div class="mb-8" *ngIf="getFeaturedItems().length > 0">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 bangla-font">বিশেষ সংগ্রহ</h2>
-        <span class="px-3 py-1 bg-primary text-white rounded-full text-sm bangla-font">প্রধান রিসোর্স</span>
+        <h2 class="text-2xl font-bold text-gray-900">Featured Collection</h2>
+        <span class="px-3 py-1 bg-primary text-white rounded-full text-sm">Featured Resources</span>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div *ngFor="let item of getFeaturedItems()" class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group border-2 border-primary/20">
           <div class="flex items-start justify-between mb-3">
-            <span [class]="'px-3 py-1 text-sm rounded-full bangla-font ' + getTypeColor(item.type)">
+            <span [class]="'px-3 py-1 text-sm rounded-full ' + getTypeColor(item.type)">
               {{ getTypeText(item.type) }}
             </span>
-            <span class="text-sm text-primary bangla-font font-semibold">প্রধান</span>
+            <span class="text-sm text-primary font-semibold">Featured</span>
           </div>
           
-          <h3 class="text-xl font-bold text-gray-900 mb-3 bangla-font line-clamp-2">{{ item.title }}</h3>
+          <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ item.title }}</h3>
           
-          <p class="text-sm text-gray-600 mb-2 bangla-font flex items-center">
+          <p class="text-sm text-gray-600 mb-2 flex items-center">
             <i class="pi pi-user mr-2 text-primary"></i>
             {{ item.author }}
           </p>
           
-          <p class="text-gray-600 text-sm mb-4 line-clamp-2 bangla-font">
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">
             {{ item.description }}
           </p>
           
@@ -118,20 +123,20 @@
             <div class="flex items-center space-x-4">
               <button 
                 (click)="previewItem(item)"
-                class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors bangla-font">
+                class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors">
                 <i class="pi pi-eye"></i>
-                <span class="text-sm">প্রিভিউ</span>
+                <span class="text-sm">Preview</span>
               </button>
               <button 
                 (click)="downloadItem(item)"
-                class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors bangla-font">
+                class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors">
                 <i class="pi pi-download"></i>
-                <span class="text-sm">ডাউনলোড</span>
+                <span class="text-sm">Download</span>
               </button>
             </div>
             <div class="text-right">
               <span class="text-xs text-gray-500 block">{{ item.fileSize }}</span>
-              <span class="text-xs text-gray-400">{{ item.pages }} পৃষ্ঠা</span>
+              <span class="text-xs text-gray-400">{{ item.pages }} pages</span>
             </div>
           </div>
         </div>
@@ -146,7 +151,10 @@
           <div class="aspect-[4/3] flex items-center justify-center">
             <div class="text-center p-4">
               <i class="pi pi-book text-4xl text-primary mb-2"></i>
-              <span class="text-sm font-medium bangla-font text-gray-600">{{ getTypeText(item.type) }}</span>
+              <span class="text-sm font-medium text-gray-600">{{ getTypeText(item.type) }}</span>
+              <div *ngIf="item.migratedFrom" class="mt-2">
+                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Migrated from {{item.migratedFrom}}</span>
+              </div>
             </div>
           </div>
           
@@ -165,30 +173,30 @@
           </div>
         </div>
 
-        <!-- Publication Details -->
+        <!-- Resource Details -->
         <div class="flex items-start justify-between mb-3">
-          <span [class]="'px-3 py-1 text-sm rounded-full bangla-font ' + getCategoryColor(item.category)">
+          <span [class]="'px-3 py-1 text-sm rounded-full ' + getCategoryColor(item.category)">
             {{ getCategoryText(item.category) }}
           </span>
           <span class="text-sm text-gray-500">{{ item.year }}</span>
         </div>
         
-        <h3 class="text-xl font-bold text-gray-900 mb-3 bangla-font line-clamp-2">{{ item.title }}</h3>
+        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ item.title }}</h3>
         
-        <p class="text-sm text-gray-600 mb-2 bangla-font flex items-center">
+        <p class="text-sm text-gray-600 mb-2 flex items-center">
           <i class="pi pi-user mr-2 text-primary"></i>
           {{ item.author }}
         </p>
         
-        <p class="text-gray-600 text-sm mb-4 line-clamp-2 bangla-font">
+        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
           {{ item.description }}
         </p>
         
         <!-- Metadata -->
         <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
-          <span class="bangla-font">{{ item.pages }} পৃষ্ঠা</span>
-          <span class="bangla-font">{{ item.fileSize }}</span>
-          <span class="bangla-font">{{ item.language }}</span>
+          <span>{{ item.pages }} pages</span>
+          <span>{{ item.fileSize }}</span>
+          <span>{{ item.language }}</span>
         </div>
 
         <!-- Rating and Downloads -->
@@ -199,7 +207,7 @@
           </div>
           <div class="flex items-center space-x-1 text-gray-600">
             <i class="pi pi-download text-sm"></i>
-            <span class="text-sm bangla-font">{{ item.downloads }}</span>
+            <span class="text-sm">{{ item.downloads }}</span>
           </div>
         </div>
         
@@ -207,15 +215,15 @@
           <div class="flex items-center space-x-4">
             <button 
               (click)="previewItem(item)"
-              class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors bangla-font">
+              class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors">
               <i class="pi pi-eye"></i>
-              <span class="text-sm">প্রিভিউ</span>
+              <span class="text-sm">Preview</span>
             </button>
             <button 
               (click)="downloadItem(item)"
-              class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors bangla-font">
+              class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors">
               <i class="pi pi-download"></i>
-              <span class="text-sm">ডাউনলোড</span>
+              <span class="text-sm">Download</span>
             </button>
           </div>
         </div>
@@ -225,27 +233,120 @@
     <!-- No Results Message -->
     <div *ngIf="filteredItems.length === 0" class="text-center py-12">
       <i class="pi pi-search text-6xl text-gray-300 mb-4"></i>
-      <h3 class="text-xl font-bold text-gray-600 mb-2 bangla-font">কোনো রিসোর্স পাওয়া যায়নি</h3>
-      <p class="text-gray-500 bangla-font">অনুগ্রহ করে আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করুন</p>
+      <h3 class="text-xl font-bold text-gray-600 mb-2">No Resources Found</h3>
+      <p class="text-gray-500">Please change your search or filter criteria</p>
       <button 
         (click)="clearFilters()"
-        class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-        সব ফিল্টার ক্লিয়ার করুন
+        class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+        Clear All Filters
       </button>
+    </div>
+
+    <!-- PDF Viewer Modal -->
+    <div *ngIf="isPdfViewerOpen && selectedPdf && isBrowser" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+        <!-- Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-gray-900">{{ selectedPdf.title }}</h3>
+            <p class="text-sm text-gray-600">{{ selectedPdf.author }} • {{ selectedPdf.year }} • {{ selectedPdf.pages }} pages</p>
+          </div>
+          <button 
+            (click)="closePdfViewer()"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <i class="pi pi-times text-xl text-gray-600"></i>
+          </button>
+        </div>
+
+        <!-- PDF Controls -->
+        <div class="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200">
+          <div class="flex items-center space-x-3">
+            <button 
+              (click)="previousPage()"
+              [class]="'p-2 rounded-lg ' + (currentPdfPage === 1 ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
+              [disabled]="currentPdfPage === 1">
+              <i class="pi pi-chevron-left"></i>
+            </button>
+            
+            <span class="text-sm text-gray-700">
+              Page {{ currentPdfPage }} / {{ totalPdfPages }}
+            </span>
+            
+            <button 
+              (click)="nextPage()"
+              [class]="'p-2 rounded-lg ' + (currentPdfPage === totalPdfPages ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
+              [disabled]="currentPdfPage === totalPdfPages">
+              <i class="pi pi-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <button 
+              (click)="zoomOut()"
+              class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
+              <i class="pi pi-search-minus"></i>
+            </button>
+            
+            <span class="text-sm text-gray-700">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+            
+            <button 
+              (click)="zoomIn()"
+              class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
+              <i class="pi pi-search-plus"></i>
+            </button>
+            
+            <button 
+              (click)="resetZoom()"
+              class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors text-sm">
+              Reset Zoom
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <button 
+              (click)="downloadItem(selectedPdf)"
+              class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+              <i class="pi pi-download"></i>
+              <span>Download</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Native Browser PDF Viewer -->
+        <div class="flex-1">
+          <iframe 
+            [src]="pdfSrc" 
+            class="w-full h-full"
+            frameborder="0"
+            title="PDF Viewer">
+            <div class="flex items-center justify-center h-full p-8">
+              <div class="text-center">
+                <i class="pi pi-exclamation-triangle text-4xl text-yellow-500 mb-4"></i>
+                <p class="text-gray-600 mb-4">Your browser cannot display PDF</p>
+                <button 
+                  (click)="downloadItem(selectedPdf)"
+                  class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          </iframe>
+        </div>
+      </div>
     </div>
 
     <!-- Call to Action -->
     <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mt-8">
       <i class="pi pi-inbox text-4xl text-primary mb-4"></i>
-      <h3 class="text-2xl font-bold text-gray-900 mb-2 bangla-font">আরও রিসোর্স খুঁজছেন?</h3>
-      <p class="text-gray-600 mb-6 bangla-font">আমাদের সম্পূর্ণ সংগ্রহ ব্রাউজ করুন অথবা বিশেষ কোনো রিসোর্সের জন্য অনুরোধ করুন</p>
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">Looking for More Resources?</h3>
+      <p class="text-gray-600 mb-6">Browse our complete collection or request specific resources</p>
       
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-          সম্পূর্ণ সংগ্রহ দেখুন
+        <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+          View Complete Collection
         </button>
-        <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors bangla-font">
-          রিসোর্স অনুরোধ করুন
+        <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+          Request Resource
         </button>
       </div>
     </div>
