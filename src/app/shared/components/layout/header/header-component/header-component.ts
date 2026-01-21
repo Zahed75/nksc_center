@@ -30,11 +30,11 @@ export class HeaderComponent {
     { name: 'News', path: '/news', icon: 'pi pi-newspaper' }
   ];
 
-<<<<<<< HEAD
+
   // Secondary items for "More" dropdown with PrimeNG icons
-=======
+
   // Secondary items for "More" dropdown with PrimeNG icons (Removed Blogs and Projects)
->>>>>>> 4e7ac41f (angular restored)
+
   moreNavItems = [
     { name: 'People', path: '/people', icon: 'pi pi-user' },
     { name: 'Events', path: '/events', icon: 'pi pi-calendar' },
