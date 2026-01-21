@@ -13,7 +13,7 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 export class App implements OnInit {
   protected readonly title = signal('nksc_center');
-  
+
   constructor(
     private meta: Meta,
     private titleService: Title
@@ -26,18 +26,18 @@ export class App implements OnInit {
   private setDefaultMetaTags() {
     const baseUrl = 'https://nkscdu.com';
     const imageUrl = `${baseUrl}/assets/images/og-image.png`;
-    
+
     console.log('Setting meta tags for:', imageUrl);
-    
+
     // Set title
     this.titleService.setTitle('Nazmul Karim Study Center - Sociology Research Publications');
-    
+
     // Remove existing meta tags
     this.removeExistingMetaTags();
-    
+
     // Add new meta tags - FIXED: Each tag must have either 'name' OR 'property', not both/undefined
     this.meta.updateTag({ name: 'description', content: 'Research publications from Nazmul Karim Study Center, Sociology Department, University of Dhaka' });
-    
+
     // Open Graph tags (use 'property')
     this.meta.updateTag({ property: 'og:title', content: 'Nazmul Karim Study Center - Sociology Research Publications' });
     this.meta.updateTag({ property: 'og:description', content: 'Research publications from Nazmul Karim Study Center, Sociology Department, University of Dhaka' });
@@ -47,7 +47,7 @@ export class App implements OnInit {
     this.meta.updateTag({ property: 'og:url', content: baseUrl });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: 'Nazmul Karim Study Center' });
-    
+
     // Twitter tags (use 'name')
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: 'Nazmul Karim Study Center - Sociology Research Publications' });
@@ -72,7 +72,7 @@ export class App implements OnInit {
       'name="twitter:description"',
       'name="twitter:image"'
     ];
-    
+
     selectors.forEach(selector => {
       const tag = this.meta.getTag(selector);
       if (tag) {

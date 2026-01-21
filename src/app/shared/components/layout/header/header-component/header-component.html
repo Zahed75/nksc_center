@@ -1,11 +1,11 @@
 <!-- header.component.html -->
-<header class="fixed top-0 left-0 right-0 z-50 glass-nav">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
   <nav class="container mx-auto px-4 py-3">
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <a [routerLink]="'/home'" class="flex items-center space-x-3 group cursor-pointer flex-shrink-0">
-        <div class="glass w-10 h-10 rounded-lg flex items-center justify-center border border-white/80 shadow-sm group-hover:scale-105 transition-transform duration-200">
-          <span class="text-primary font-bold text-sm">NKSC</span>
+        <div class="bg-primary w-10 h-10 rounded-lg flex items-center justify-center border border-primary/20 shadow-sm group-hover:scale-105 transition-transform duration-200">
+          <span class="text-white font-bold text-sm">NKSC</span>
         </div>
         <div class="hidden sm:block">
           <h1 class="text-neutral-900 font-bold text-lg leading-tight whitespace-nowrap">Nazmul Karim</h1>
@@ -16,81 +16,46 @@
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center space-x-1 flex-1 justify-center">
         @for (item of navItems; track item.name) {
-          @if (!item.hasDropdown) {
-            <!-- Regular Navigation Items -->
-            <a 
-              [routerLink]="item.path" 
-              class="glass-light px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 font-medium text-sm mx-0.5 whitespace-nowrap group"
-              routerLinkActive="text-primary bg-white/80"
-              #rla="routerLinkActive"
-              (click)="closeAllDropdowns()"
-            >
-              <span class="flex items-center space-x-2">
-                <i [class]="item.icon + ' text-base group-hover:scale-110 transition-transform duration-200'"></i>
-                <span>{{ item.name }}</span>
-              </span>
-            </a>
-          } @else {
-            <!-- Dropdown Navigation Items -->
-            <div class="relative">
-              <button 
-                class="glass-light px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 font-medium text-sm mx-0.5 flex items-center space-x-2 whitespace-nowrap group"
-                (mouseenter)="openResearchDropdown()"
-                (mouseleave)="closeResearchDropdown()"
-                [class.text-primary]="isResearchDropdownOpen"
-              >
-                <i [class]="item.icon + ' text-base group-hover:scale-110 transition-transform duration-200'"></i>
-                <span>{{ item.name }}</span>
-                <i class="pi pi-chevron-down text-xs transition-transform duration-200" [class.rotate-180]="isResearchDropdownOpen"></i>
-              </button>
-              
-              <!-- Research Dropdown Menu -->
-              @if (isResearchDropdownOpen) {
-                <div class="absolute top-full left-0 mt-1 glass rounded-xl border border-white/80 shadow-2xl p-3 min-w-48 z-50 animate-fade-in"
-                     (mouseenter)="cancelClose()"
-                     (mouseleave)="closeResearchDropdown()">
-                  <div class="space-y-1">
-                    @for (subItem of researchSubItems; track subItem.name) {
-                      <a 
-                        [routerLink]="subItem.path" 
-                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 text-sm font-medium whitespace-nowrap group"
-                        (click)="closeAllDropdowns()"
-                        (mouseenter)="cancelClose()"
-                      >
-                        <i [class]="subItem.icon + ' text-sm group-hover:scale-110 transition-transform duration-200'"></i>
-                        <span>{{ subItem.name }}</span>
-                      </a>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
-          }
+          <!-- Regular Navigation Items -->
+          <a
+            [routerLink]="item.path"
+            class="px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-primary/10 transition-all duration-200 font-medium text-sm mx-0.5 whitespace-nowrap group"
+            routerLinkActive="text-primary bg-primary/10"
+            #rla="routerLinkActive"
+            [routerLinkActiveOptions]="{exact: true}"
+            (click)="closeAllDropdowns()"
+          >
+            <span class="flex items-center space-x-2">
+              <i [class]="item.icon + ' text-base group-hover:scale-110 transition-transform duration-200'"></i>
+              <span>{{ item.name }}</span>
+            </span>
+          </a>
         }
 
         <!-- More Dropdown -->
         <div class="relative">
-          <button 
-            class="glass-light px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 font-medium text-sm mx-0.5 flex items-center space-x-2 whitespace-nowrap group"
+          <button
+            class="px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-primary/10 transition-all duration-200 font-medium text-sm mx-0.5 flex items-center space-x-2 whitespace-nowrap group"
             (mouseenter)="openMoreDropdown()"
             (mouseleave)="closeMoreDropdown()"
             [class.text-primary]="isMoreDropdownOpen"
+            [class.bg-primary/10]="isMoreDropdownOpen"
           >
             <i class="pi pi-cog text-base group-hover:scale-110 transition-transform duration-200"></i>
             <span>More</span>
             <i class="pi pi-chevron-down text-xs transition-transform duration-200" [class.rotate-180]="isMoreDropdownOpen"></i>
           </button>
-          
+
           <!-- More Dropdown Menu -->
           @if (isMoreDropdownOpen) {
-            <div class="absolute top-full left-0 mt-1 glass rounded-xl border border-white/80 shadow-2xl p-3 min-w-48 z-50 animate-fade-in"
+            <div class="absolute top-full left-0 mt-1 bg-white rounded-xl border border-gray-200 shadow-xl p-3 min-w-48 z-50 animate-fade-in"
                  (mouseenter)="cancelClose()"
                  (mouseleave)="closeMoreDropdown()">
               <div class="space-y-1">
                 @for (item of moreNavItems; track item.name) {
-                  <a 
-                    [routerLink]="item.path" 
-                    class="flex items-center space-x-2 px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 text-sm font-medium whitespace-nowrap group"
+                  <a
+                    [routerLink]="item.path"
+                    class="flex items-center space-x-2 px-4 py-2.5 rounded-lg text-neutral-700 hover:text-primary hover:bg-primary/10 transition-all duration-200 text-sm font-medium whitespace-nowrap group"
                     (click)="closeAllDropdowns()"
                     (mouseenter)="cancelClose()"
                   >
@@ -104,19 +69,19 @@
         </div>
       </div>
 
-      <!-- CTA Button -->
-      <div class="hidden lg:flex items-center shrink-0">
-        <button class="glass bg-primary px-6 py-2.5 rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium text-sm shadow-sm whitespace-nowrap hover:scale-105 flex items-center space-x-2">
-          <i class="pi pi-chart-line text-sm"></i>
+      <!-- CTA Button - Made smaller -->
+      <div class="hidden lg:flex items-center shrink-0 ml-4">
+        <button class="bg-primary px-4 py-2 rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium text-xs text-white shadow-sm whitespace-nowrap hover:scale-105 flex items-center space-x-1">
+          <i class="pi pi-chart-line text-xs"></i>
           <span>Dashboard</span>
         </button>
       </div>
 
       <!-- Mobile Menu Button -->
-      <button 
-        class="lg:hidden glass-light p-2.5 rounded-lg text-neutral-600 hover:text-primary transition-all duration-200 shrink-0"
+      <button
+        class="lg:hidden bg-primary/10 p-2.5 rounded-lg text-primary hover:bg-primary/20 transition-all duration-200 shrink-0"
         (click)="toggleMenu()"
-        [class.text-primary]="isMenuOpen"
+        [class.bg-primary/20]="isMenuOpen"
       >
         <i [class]="isMenuOpen ? 'pi pi-times text-lg' : 'pi pi-bars text-lg'"></i>
       </button>
@@ -124,73 +89,52 @@
 
     <!-- Mobile Menu -->
     @if (isMenuOpen) {
-      <div class="lg:hidden mt-3 glass rounded-2xl border border-white/80 shadow-2xl p-4 animate-fade-in">
+      <div class="lg:hidden mt-3 bg-white rounded-2xl border border-gray-200 shadow-xl p-4 animate-fade-in">
         <div class="space-y-1">
           <!-- Main Navigation Items -->
           @for (item of navItems; track item.name) {
-            @if (!item.hasDropdown) {
-              <a 
-                [routerLink]="item.path" 
-                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 text-base font-medium group"
-                (click)="onNavItemClick()"
-              >
-                <i [class]="item.icon + ' text-lg group-hover:scale-110 transition-transform duration-200'"></i>
-                <span>{{ item.name }}</span>
-              </a>
-            } @else {
-              <!-- Mobile Research Dropdown -->
-              <div class="space-y-1">
-                <button 
-                  class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-neutral-700 hover:text-primary hover:bg-white/50 transition-all duration-200 text-base font-medium group"
-                  (click)="openResearchDropdown()"
-                >
-                  <i [class]="item.icon + ' text-lg group-hover:scale-110 transition-transform duration-200'"></i>
-                  <span class="flex-1 text-left">{{ item.name }}</span>
-                  <i class="pi pi-chevron-down text-sm transition-transform duration-200" [class.rotate-180]="isResearchDropdownOpen"></i>
-                </button>
-                
-                @if (isResearchDropdownOpen) {
-                  <div class="ml-6 space-y-1 border-l-2 border-primary/30 pl-4">
-                    @for (subItem of researchSubItems; track subItem.name) {
-                      <a 
-                        [routerLink]="subItem.path" 
-                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg text-neutral-600 hover:text-primary hover:bg-white/30 transition-all duration-200 text-sm group"
-                        (click)="onNavItemClick()"
-                      >
-                        <i [class]="subItem.icon + ' text-sm group-hover:scale-110 transition-transform duration-200'"></i>
-                        <span>{{ subItem.name }}</span>
-                      </a>
-                    }
-                  </div>
+            <a
+              [routerLink]="item.path"
+              class="flex items-center space-x-3 px-4 py-3 rounded-xl text-neutral-700 hover:text-primary hover:bg-primary/10 transition-all duration-200 text-base font-medium group"
+              (click)="onNavItemClick()"
+            >
+              <i [class]="item.icon + ' text-lg group-hover:scale-110 transition-transform duration-200'"></i>
+              <span>{{ item.name }}</span>
+            </a>
+          }
+
+          <!-- Mobile More Toggle -->
+          <div class="pt-2 border-t border-gray-200">
+            <button
+              class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-neutral-700 hover:text-primary hover:bg-primary/10 transition-all duration-200 text-base font-medium group"
+              (click)="toggleMoreMobile()"
+            >
+              <i class="pi pi-cog text-lg group-hover:scale-110 transition-transform duration-200"></i>
+              <span class="flex-1 text-left">More</span>
+              <i class="pi pi-chevron-down text-sm transition-transform duration-200" [class.rotate-180]="isMoreMobileOpen"></i>
+            </button>
+
+            <!-- Mobile More Items (Conditional) -->
+            @if (isMoreMobileOpen) {
+              <div class="ml-6 space-y-1 border-l-2 border-primary/30 pl-4 mt-2">
+                @for (item of moreNavItems; track item.name) {
+                  <a
+                    [routerLink]="item.path"
+                    class="flex items-center space-x-2 px-4 py-2.5 rounded-lg text-neutral-600 hover:text-primary hover:bg-primary/10 transition-all duration-200 text-sm group"
+                    (click)="onNavItemClick()"
+                  >
+                    <i [class]="item.icon + ' text-sm group-hover:scale-110 transition-transform duration-200'"></i>
+                    <span>{{ item.name }}</span>
+                  </a>
                 }
               </div>
             }
-          }
-
-          <!-- More Items in Mobile -->
-          <div class="pt-2 border-t border-white/30">
-            <div class="space-y-1">
-              <div class="px-4 py-2 text-xs font-semibold text-neutral-500 uppercase tracking-wide flex items-center space-x-2">
-                <i class="pi pi-cog text-xs"></i>
-                <span>More</span>
-              </div>
-              @for (item of moreNavItems; track item.name) {
-                <a 
-                  [routerLink]="item.path" 
-                  class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-neutral-600 hover:text-primary hover:bg-white/30 transition-all duration-200 text-sm group"
-                  (click)="onNavItemClick()"
-                >
-                  <i [class]="item.icon + ' text-sm group-hover:scale-110 transition-transform duration-200'"></i>
-                  <span>{{ item.name }}</span>
-                </a>
-              }
-            </div>
           </div>
 
           <!-- Mobile CTA Button -->
-          <div class="pt-3 border-t border-white/30 mt-2">
-            <button class="w-full glass bg-primary text-white py-3 rounded-xl hover:bg-primary-dark transition-all duration-200 font-medium text-base hover:scale-105 flex items-center justify-center space-x-2">
-              <i class="pi pi-chart-line"></i>
+          <div class="pt-3 border-t border-gray-200 mt-2">
+            <button class="w-full bg-primary text-white py-2.5 rounded-xl hover:bg-primary-dark transition-all duration-200 font-medium text-sm hover:scale-105 flex items-center justify-center space-x-2">
+              <i class="pi pi-chart-line text-sm"></i>
               <span>Dashboard</span>
             </button>
           </div>

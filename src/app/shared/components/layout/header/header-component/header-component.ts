@@ -13,8 +13,8 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class HeaderComponent {
   isMenuOpen = false;
-  isResearchDropdownOpen = false;
   isMoreDropdownOpen = false;
+  isMoreMobileOpen = false; // Add this for mobile More toggle
   isMobile = false;
   private dropdownCloseTimer: any;
 
@@ -24,32 +24,19 @@ export class HeaderComponent {
   navItems = [
     { name: 'Home', path: '/home', icon: 'pi pi-home' },
     { name: 'About', path: '/about', icon: 'pi pi-info-circle' },
-    { name: 'Research', path: '/research', icon: 'pi pi-search', hasDropdown: true },
+    { name: 'Publications', path: '/publications', icon: 'pi pi-file' },
     { name: 'E-Library', path: '/elibrary', icon: 'pi pi-book' },
-    { name: 'Gallery', path: '/gallery', icon: 'pi pi-images' }
+    { name: 'Gallery', path: '/gallery', icon: 'pi pi-images' },
+    { name: 'News', path: '/news', icon: 'pi pi-newspaper' }
   ];
 
   // Secondary items for "More" dropdown with PrimeNG icons
   moreNavItems = [
-    { name: 'News', path: '/news', icon: 'pi pi-newspaper' },
-    { name: 'Events', path: '/events', icon: 'pi pi-calendar' },
-    { name: 'Collaboration', path: '/collaboration', icon: 'pi pi-users' },
-    { name: 'Blogs', path: '/blogs', icon: 'pi pi-pencil' },
     { name: 'People', path: '/people', icon: 'pi pi-user' },
-    { name: 'Publications', path: '/publications', icon: 'pi pi-file' },
-    { name: 'Projects', path: '/projects', icon: 'pi pi-briefcase' }
+    { name: 'Events', path: '/events', icon: 'pi pi-calendar' },
+
+
   ];
-
-  // Research sub-items with PrimeNG icons
- // shared/components/layout/header/header-component/header-component.ts
-
-// Research sub-items with PrimeNG icons - FIX THE PATH
-researchSubItems = [
-  { name: 'Publications', path: '/publications', icon: 'pi pi-file' }, // CHANGED from '/research/publications'
-  { name: 'Research Projects', path: '/research/projects', icon: 'pi pi-briefcase' },
-  { name: 'Methodologies', path: '/research/methodologies', icon: 'pi pi-cog' },
-  { name: 'Case Studies', path: '/research/case-studies', icon: 'pi pi-chart-bar' }
-];
 
   ngOnInit() {
     this.checkScreenSize();
@@ -72,49 +59,33 @@ researchSubItems = [
     this.isMenuOpen = !this.isMenuOpen;
     if (this.isMenuOpen) {
       this.closeAllDropdowns();
+      this.isMoreMobileOpen = false; // Reset mobile more toggle when menu opens
     }
-  }
-
-  openResearchDropdown() {
-    if (this.isMobile) return;
-    
-    if (this.dropdownCloseTimer) {
-      clearTimeout(this.dropdownCloseTimer);
-      this.dropdownCloseTimer = null;
-    }
-    
-    this.isResearchDropdownOpen = true;
-    this.isMoreDropdownOpen = false;
   }
 
   openMoreDropdown() {
     if (this.isMobile) return;
-    
+
     if (this.dropdownCloseTimer) {
       clearTimeout(this.dropdownCloseTimer);
       this.dropdownCloseTimer = null;
     }
-    
-    this.isMoreDropdownOpen = true;
-    this.isResearchDropdownOpen = false;
-  }
 
-  closeResearchDropdown() {
-    if (this.isMobile) return;
-    
-    this.dropdownCloseTimer = setTimeout(() => {
-      this.isResearchDropdownOpen = false;
-      this.dropdownCloseTimer = null;
-    }, 150);
+    this.isMoreDropdownOpen = true;
   }
 
   closeMoreDropdown() {
     if (this.isMobile) return;
-    
+
     this.dropdownCloseTimer = setTimeout(() => {
       this.isMoreDropdownOpen = false;
       this.dropdownCloseTimer = null;
     }, 150);
+  }
+
+  // Add toggle for mobile More section
+  toggleMoreMobile() {
+    this.isMoreMobileOpen = !this.isMoreMobileOpen;
   }
 
   cancelClose() {
@@ -129,12 +100,12 @@ researchSubItems = [
       clearTimeout(this.dropdownCloseTimer);
       this.dropdownCloseTimer = null;
     }
-    this.isResearchDropdownOpen = false;
     this.isMoreDropdownOpen = false;
   }
 
   onNavItemClick() {
     this.isMenuOpen = false;
+    this.isMoreMobileOpen = false; // Close mobile More when any nav item is clicked
     this.closeAllDropdowns();
   }
 }
