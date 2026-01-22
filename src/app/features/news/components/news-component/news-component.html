@@ -11,324 +11,426 @@
       </p>
     </div>
 
-    <!-- Breaking News Banner -->
-    <div *ngIf="getBreakingNews().length > 0" class="mb-8">
-      <div class="bg-red-50 border border-red-200 rounded-xl p-4">
-        <div class="flex items-center mb-3">
-          <i class="pi pi-bell text-red-600 text-xl mr-3"></i>
-          <h3 class="text-lg font-bold text-red-800 bangla-font">জরুরি ঘোষণা</h3>
+    <!-- Loading State -->
+    @if (isLoading) {
+      <div class="text-center py-12">
+        <i class="pi pi-spinner pi-spin text-4xl text-primary mb-4"></i>
+        <p class="text-gray-600 bangla-font">খবর লোড হচ্ছে...</p>
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (error && !isLoading) {
+      <div class="text-center py-12">
+        <i class="pi pi-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+        <h3 class="text-xl font-bold text-red-600 mb-2 bangla-font">খবর লোড করতে সমস্যা</h3>
+        <p class="text-gray-600 bangla-font">{{ error }}</p>
+        <button
+          (click)="loadNewsAndCategories()"
+          class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
+          <i class="pi pi-refresh mr-2"></i>
+          আবার চেষ্টা করুন
+        </button>
+      </div>
+    }
+
+    @if (!isLoading && !error) {
+      <!-- Breaking News Banner -->
+      @if (getBreakingNews().length > 0) {
+        <div class="mb-8">
+          <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+            <div class="flex items-center mb-3">
+              <i class="pi pi-bell text-red-600 text-xl mr-3"></i>
+              <h3 class="text-lg font-bold text-red-800 bangla-font">জরুরি ঘোষণা</h3>
+            </div>
+            <div class="space-y-2">
+              @for (news of getBreakingNews(); track news.id) {
+                <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-red-100 cursor-pointer hover:bg-red-50 transition-colors"
+                     (click)="openNewsDetail(news)">
+                  <div class="flex items-center space-x-3">
+                    <span class="px-2 py-1 bg-red-600 text-white text-xs rounded-full bangla-font">জরুরি</span>
+                    <span class="text-gray-900 font-medium bangla-font">{{ news.title }}</span>
+                  </div>
+                  <span class="text-sm text-gray-500 bangla-font">{{ formatDate(news.publish_date) }}</span>
+                </div>
+              }
+            </div>
+          </div>
         </div>
-        <div class="space-y-2">
-          <div *ngFor="let news of getBreakingNews()" 
-               class="flex items-center justify-between p-3 bg-white rounded-lg border border-red-100 cursor-pointer hover:bg-red-50 transition-colors"
+      }
+
+      <!-- Search and Filter Section -->
+      <div class="glass rounded-2xl p-6 mb-8">
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+          <!-- Search Box -->
+          <div class="flex-1 w-full md:max-w-md">
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="খবর খুঁজুন..."
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()"
+                [disabled]="isLoading"
+                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font"
+              >
+              <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <!-- Filter Options -->
+          <div class="flex flex-wrap gap-3">
+            <select
+              [(ngModel)]="selectedCategory"
+              (change)="applyFilters()"
+              [disabled]="isLoading"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
+              <option value="all">সব খবর</option>
+              @for (category of categories; track category.id) {
+                <option [value]="category.slug">{{ category.name }}</option>
+              }
+            </select>
+
+            <button
+              (click)="clearFilters()"
+              [disabled]="isLoading"
+              class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors bangla-font disabled:opacity-50">
+              <i class="pi pi-times mr-2"></i>
+              ক্লিয়ার
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-newspaper text-2xl text-primary mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getTotalNews()}}</div>
+          <div class="text-gray-600 bangla-font text-sm">মোট খবর</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-star text-2xl text-green-600 mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getFeaturedNews().length}}</div>
+          <div class="text-gray-600 bangla-font text-sm">প্রধান খবর</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-bell text-2xl text-red-600 mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getBreakingNews().length}}</div>
+          <div class="text-gray-600 bangla-font text-sm">জরুরি খবর</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-calendar text-2xl text-purple-600 mb-2"></i>
+          @if (categories.length > 0) {
+            <div class="text-2xl font-bold text-gray-900">
+              {{getNewsCountByCategory(categories[0].slug)}}
+            </div>
+            <div class="text-gray-600 bangla-font text-sm">{{categories[0].name}}</div>
+          }
+        </div>
+      </div>
+
+      <!-- Featured News Section -->
+      @if (getFeaturedNews().length > 0) {
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 bangla-font">প্রধান খবর</h2>
+            <span class="px-3 py-1 bg-primary text-white rounded-full text-sm bangla-font">গুরুত্বপূর্ণ</span>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            @for (news of getFeaturedNews(); track news.id) {
+              <div class="glass rounded-2xl overflow-hidden hover-lift transition-all duration-300 group cursor-pointer border-2 border-primary/20"
+                   (click)="openNewsDetail(news)">
+
+                <!-- News Image -->
+                <div class="relative h-48 bg-gray-200 overflow-hidden">
+                  @if (news.thumbnail_image) {
+                    <img
+                      [src]="news.thumbnail_image"
+                      [alt]="news.title"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      (error)="handleImageError($event)">
+                  } @else {
+                    <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                      <i class="pi pi-image text-4xl text-gray-400"></i>
+                    </div>
+                  }
+                  <div class="absolute top-3 left-3">
+                    <span [class]="'px-2 py-1 text-xs rounded-full text-white bg-black/60 bangla-font'">
+                      {{ getCategoryText(news.category) }}
+                    </span>
+                  </div>
+                  <div class="absolute top-3 right-3">
+                    <span class="px-2 py-1 text-xs rounded-full bg-primary text-white bangla-font">
+                      প্রধান খবর
+                    </span>
+                  </div>
+                </div>
+
+                <!-- News Content -->
+                <div class="p-6">
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-500 bangla-font">{{ formatDate(news.publish_date) }}</span>
+                    <span class="text-sm text-gray-500 bangla-font flex items-center">
+                      <i class="pi pi-clock mr-1"></i>
+                      {{ getReadTime(news.content) }}
+                    </span>
+                  </div>
+
+                  <h3 class="text-xl font-bold text-gray-900 mb-3 bangla-font line-clamp-2">
+                    {{ news.title }}
+                  </h3>
+
+                  <p class="text-gray-600 mb-4 bangla-font line-clamp-3">
+                    {{ getShortDescription(news.short_description) }}
+                  </p>
+
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600 bangla-font">{{ news.author }}</span>
+                    <button
+                      (click)="$event.stopPropagation(); shareNews(news)"
+                      class="p-2 text-gray-500 hover:text-primary transition-colors">
+                      <i class="pi pi-share-alt"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- All News Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        @for (news of filteredNews; track news.id) {
+          <div class="glass rounded-2xl overflow-hidden hover-lift transition-all duration-300 group cursor-pointer"
                (click)="openNewsDetail(news)">
-            <div class="flex items-center space-x-3">
-              <span class="px-2 py-1 bg-red-600 text-white text-xs rounded-full bangla-font">জরুরি</span>
-              <span class="text-gray-900 font-medium bangla-font">{{ news.title }}</span>
-            </div>
-            <span class="text-sm text-gray-500 bangla-font">{{ news.date }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Search and Filter Section -->
-    <div class="glass rounded-2xl p-6 mb-8">
-      <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search Box -->
-        <div class="flex-1 w-full md:max-w-md">
-          <div class="relative">
-            <input 
-              type="text" 
-              placeholder="খবর খুঁজুন..." 
-              [(ngModel)]="searchTerm"
-              (input)="applyFilters()"
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font"
-            >
-            <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-          </div>
-        </div>
-
-        <!-- Filter Options -->
-        <div class="flex flex-wrap gap-3">
-          <select 
-            [(ngModel)]="selectedCategory"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option *ngFor="let cat of categories" [value]="cat.value">{{cat.label}}</option>
-          </select>
-
-          <select 
-            [(ngModel)]="selectedYear"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option *ngFor="let year of years" [value]="year.value">{{year.label}}</option>
-          </select>
-
-          <button 
-            (click)="clearFilters()"
-            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors bangla-font">
-            <i class="pi pi-times mr-2"></i>
-            ক্লিয়ার
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-newspaper text-2xl text-primary mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getTotalNews()}}</div>
-        <div class="text-gray-600 bangla-font text-sm">মোট খবর</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-star text-2xl text-green-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getFeaturedNews().length}}</div>
-        <div class="text-gray-600 bangla-font text-sm">প্রধান খবর</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-bell text-2xl text-red-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getBreakingNews().length}}</div>
-        <div class="text-gray-600 bangla-font text-sm">জরুরি খবর</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-calendar text-2xl text-purple-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getNewsCountByCategory('research')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">গবেষণা খবর</div>
-      </div>
-    </div>
-
-    <!-- Featured News Section -->
-    <div class="mb-8" *ngIf="getFeaturedNews().length > 0">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 bangla-font">প্রধান খবর</h2>
-        <span class="px-3 py-1 bg-primary text-white rounded-full text-sm bangla-font">গুরুত্বপূর্ণ</span>
-      </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div *ngFor="let news of getFeaturedNews()" 
-             class="glass rounded-2xl overflow-hidden hover-lift transition-all duration-300 group cursor-pointer border-2 border-primary/20"
-             (click)="openNewsDetail(news)">
-          
-          <!-- News Image -->
-          <div class="relative h-48 bg-gray-200 overflow-hidden">
-            <img 
-              [src]="news.image" 
-              [alt]="news.title"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              (error)="handleImageError($event)">
-            <div class="absolute top-3 left-3">
-              <span [class]="'px-2 py-1 text-xs rounded-full text-white bg-black/60 bangla-font'">
-                {{ getCategoryText(news.category) }}
-              </span>
-            </div>
-            <div class="absolute top-3 right-3">
-              <span class="px-2 py-1 text-xs rounded-full bg-primary text-white bangla-font">
-                প্রধান খবর
-              </span>
-            </div>
-          </div>
-
-          <!-- News Content -->
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-gray-500 bangla-font">{{ news.date }}</span>
-              <span class="text-sm text-gray-500 bangla-font flex items-center">
-                <i class="pi pi-clock mr-1"></i>
-                {{ news.readTime }}
-              </span>
-            </div>
-            
-            <h3 class="text-xl font-bold text-gray-900 mb-3 bangla-font line-clamp-2">
-              {{ news.title }}
-            </h3>
-            
-            <p class="text-gray-600 mb-4 bangla-font line-clamp-3">
-              {{ news.summary }}
-            </p>
-            
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-gray-600 bangla-font">লেখক: {{ news.author }}</span>
-              <button 
-                (click)="$event.stopPropagation(); shareNews(news)"
-                class="p-2 text-gray-500 hover:text-primary transition-colors">
-                <i class="pi pi-share-alt"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- All News Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      <div *ngFor="let news of filteredNews" 
-           class="glass rounded-2xl overflow-hidden hover-lift transition-all duration-300 group cursor-pointer"
-           (click)="openNewsDetail(news)">
-        
-        <!-- News Image -->
-        <div class="relative h-40 bg-gray-200 overflow-hidden">
-          <img 
-            [src]="news.image" 
-            [alt]="news.title"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            (error)="handleImageError($event)">
-          <div class="absolute top-3 left-3">
-            <span [class]="'px-2 py-1 text-xs rounded-full text-white bg-black/60 bangla-font'">
-              {{ getCategoryText(news.category) }}
-            </span>
-          </div>
-          <div *ngIf="news.isBreaking" class="absolute top-3 right-3">
-            <span class="px-2 py-1 text-xs rounded-full bg-red-600 text-white bangla-font">
-              জরুরি
-            </span>
-          </div>
-        </div>
-
-        <!-- News Content -->
-        <div class="p-5">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-sm text-gray-500 bangla-font">{{ news.date }}</span>
-            <span class="text-sm text-gray-500 bangla-font flex items-center">
-              <i class="pi pi-clock mr-1"></i>
-              {{ news.readTime }}
-            </span>
-          </div>
-          
-          <h3 class="text-lg font-bold text-gray-900 mb-3 bangla-font line-clamp-2">
-            {{ news.title }}
-          </h3>
-          
-          <p class="text-gray-600 text-sm mb-4 bangla-font line-clamp-3">
-            {{ news.summary }}
-          </p>
-          
-          <!-- Tags -->
-          <div class="flex flex-wrap gap-1 mb-3">
-            <span *ngFor="let tag of news.tags" 
-                  class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded bangla-font">
-              #{{ tag }}
-            </span>
-          </div>
-          
-          <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-            <span class="text-sm text-gray-600 bangla-font">{{ news.author }}</span>
-            <button 
-              (click)="$event.stopPropagation(); shareNews(news)"
-              class="p-1 text-gray-500 hover:text-primary transition-colors">
-              <i class="pi pi-share-alt text-sm"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- No Results Message -->
-    <div *ngIf="filteredNews.length === 0" class="text-center py-12">
-      <i class="pi pi-search text-6xl text-gray-300 mb-4"></i>
-      <h3 class="text-xl font-bold text-gray-600 mb-2 bangla-font">কোনো খবর পাওয়া যায়নি</h3>
-      <p class="text-gray-500 bangla-font">অনুগ্রহ করে আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করুন</p>
-      <button 
-        (click)="clearFilters()"
-        class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-        সব ফিল্টার ক্লিয়ার করুন
-      </button>
-    </div>
-
-    <!-- News Detail Modal -->
-    <div *ngIf="isNewsDetailOpen && selectedNews" 
-         class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-        
-        <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-          <div class="flex-1">
-            <span [class]="'px-3 py-1 text-sm rounded-full bangla-font mr-3 ' + getCategoryColor(selectedNews.category)">
-              {{ getCategoryText(selectedNews.category) }}
-            </span>
-            <span *ngIf="selectedNews.isBreaking" class="px-2 py-1 bg-red-600 text-white text-xs rounded-full bangla-font mr-3">
-              জরুরি
-            </span>
-            <span class="text-sm text-gray-500 bangla-font">{{ selectedNews.date }}</span>
-          </div>
-          <div class="flex items-center space-x-2">
-            <button 
-              (click)="shareNews(selectedNews)"
-              class="p-2 text-gray-600 hover:text-primary transition-colors">
-              <i class="pi pi-share-alt"></i>
-            </button>
-            <button 
-              (click)="closeNewsDetail()"
-              class="p-2 text-gray-600 hover:text-red-600 transition-colors">
-              <i class="pi pi-times text-xl"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Content -->
-        <div class="flex-1 overflow-auto">
-          <!-- News Image -->
-          <div class="relative h-64 bg-gray-200">
-            <img 
-              [src]="selectedNews.image" 
-              [alt]="selectedNews.title"
-              class="w-full h-full object-cover"
-              (error)="handleImageError($event)">
-          </div>
-
-          <!-- News Details -->
-          <div class="p-6">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4 bangla-font leading-tight">
-              {{ selectedNews.title }}
-            </h1>
-            
-            <div class="flex items-center space-x-4 mb-6 text-sm text-gray-600">
-              <span class="bangla-font flex items-center">
-                <i class="pi pi-user mr-2"></i>
-                {{ selectedNews.author }}
-              </span>
-              <span class="bangla-font flex items-center">
-                <i class="pi pi-clock mr-2"></i>
-                {{ selectedNews.readTime }}
-              </span>
-              <span class="bangla-font flex items-center">
-                <i class="pi pi-calendar mr-2"></i>
-                {{ selectedNews.year }}
-              </span>
-            </div>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span *ngFor="let tag of selectedNews.tags" 
-                    class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full bangla-font">
-                #{{ tag }}
-              </span>
+            <!-- News Image -->
+            <div class="relative h-40 bg-gray-200 overflow-hidden">
+              @if (news.thumbnail_image) {
+                <img
+                  [src]="news.thumbnail_image"
+                  [alt]="news.title"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  (error)="handleImageError($event)">
+              } @else {
+                <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                  <i class="pi pi-image text-3xl text-gray-400"></i>
+                </div>
+              }
+              <div class="absolute top-3 left-3">
+                <span [class]="'px-2 py-1 text-xs rounded-full text-white bg-black/60 bangla-font'">
+                  {{ getCategoryText(news.category) }}
+                </span>
+              </div>
+              @if (news.urgency === 'urgent') {
+                <div class="absolute top-3 right-3">
+                  <span class="px-2 py-1 text-xs rounded-full bg-red-600 text-white bangla-font">
+                    জরুরি
+                  </span>
+                </div>
+              }
             </div>
 
             <!-- News Content -->
-            <div class="prose max-w-none bangla-font text-gray-700 leading-relaxed text-lg">
-              <p class="whitespace-pre-line">{{ selectedNews.content }}</p>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-gray-500 bangla-font">{{ formatDate(news.publish_date) }}</span>
+                <span class="text-sm text-gray-500 bangla-font flex items-center">
+                  <i class="pi pi-clock mr-1"></i>
+                  {{ getReadTime(news.content) }}
+                </span>
+              </div>
+
+              <h3 class="text-lg font-bold text-gray-900 mb-3 bangla-font line-clamp-2">
+                {{ news.title }}
+              </h3>
+
+              <p class="text-gray-600 text-sm mb-4 bangla-font line-clamp-3">
+                {{ getShortDescription(news.short_description) }}
+              </p>
+
+              <!-- Tags -->
+              @if (news.tags_list && news.tags_list.length > 0) {
+                <div class="flex flex-wrap gap-1 mb-3">
+                  @for (tag of news.tags_list; track tag) {
+                    <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded bangla-font">
+                      #{{ tag }}
+                    </span>
+                  }
+                </div>
+              }
+
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <span class="text-sm text-gray-600 bangla-font">{{ news.author }}</span>
+                <button
+                  (click)="$event.stopPropagation(); shareNews(news)"
+                  class="p-1 text-gray-500 hover:text-primary transition-colors">
+                  <i class="pi pi-share-alt text-sm"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- No Results Message -->
+      @if (filteredNews.length === 0 && !isLoading) {
+        <div class="text-center py-12">
+          <i class="pi pi-search text-6xl text-gray-300 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-600 mb-2 bangla-font">কোনো খবর পাওয়া যায়নি</h3>
+          <p class="text-gray-500 bangla-font">অনুগ্রহ করে আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করুন</p>
+          <button
+            (click)="clearFilters()"
+            class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
+            সব ফিল্টার ক্লিয়ার করুন
+          </button>
+        </div>
+      }
+
+      <!-- News Detail Modal -->
+      @if (isNewsDetailOpen && selectedNews) {
+        <div class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+              <div class="flex-1">
+                <span [class]="'px-3 py-1 text-sm rounded-full bangla-font mr-3 ' + getCategoryColor(selectedNews.category)">
+                  {{ getCategoryText(selectedNews.category) }}
+                </span>
+                @if (selectedNews.urgency === 'urgent') {
+                  <span class="px-2 py-1 bg-red-600 text-white text-xs rounded-full bangla-font mr-3">
+                    জরুরি
+                  </span>
+                }
+                <span class="text-sm text-gray-500 bangla-font">{{ formatDate(selectedNews.publish_date) }}</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  (click)="shareNews(selectedNews)"
+                  class="p-2 text-gray-600 hover:text-primary transition-colors">
+                  <i class="pi pi-share-alt"></i>
+                </button>
+                <button
+                  (click)="closeNewsDetail()"
+                  class="p-2 text-gray-600 hover:text-red-600 transition-colors">
+                  <i class="pi pi-times text-xl"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-auto">
+              <!-- News Image -->
+              <div class="relative h-64 bg-gray-200">
+                @if (selectedNews.banner_image) {
+                  <img
+                    [src]="selectedNews.banner_image"
+                    [alt]="selectedNews.title"
+                    class="w-full h-full object-cover"
+                    (error)="handleImageError($event)">
+                } @else if (selectedNews.thumbnail_image) {
+                  <img
+                    [src]="selectedNews.thumbnail_image"
+                    [alt]="selectedNews.title"
+                    class="w-full h-full object-cover"
+                    (error)="handleImageError($event)">
+                } @else {
+                  <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                    <i class="pi pi-image text-6xl text-gray-400"></i>
+                  </div>
+                }
+              </div>
+
+              <!-- News Details -->
+              <div class="p-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4 bangla-font leading-tight">
+                  {{ selectedNews.title }}
+                </h1>
+
+                <div class="flex items-center space-x-4 mb-6 text-sm text-gray-600">
+                  <span class="bangla-font flex items-center">
+                    <i class="pi pi-user mr-2"></i>
+                    {{ selectedNews.author }}
+                  </span>
+                  <span class="bangla-font flex items-center">
+                    <i class="pi pi-clock mr-2"></i>
+                    {{ getReadTime(selectedNews.content) }}
+                  </span>
+                  <span class="bangla-font flex items-center">
+                    <i class="pi pi-calendar mr-2"></i>
+                    {{ getYearFromDate(selectedNews.publish_date) }}
+                  </span>
+                </div>
+
+                <!-- Tags -->
+                @if (selectedNews.tags_list && selectedNews.tags_list.length > 0) {
+                  <div class="flex flex-wrap gap-2 mb-6">
+                    @for (tag of selectedNews.tags_list; track tag) {
+                      <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full bangla-font">
+                        #{{ tag }}
+                      </span>
+                    }
+                  </div>
+                }
+
+                <!-- Research Info -->
+                @if (selectedNews.is_research) {
+                  <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <div class="flex items-center mb-2">
+                      <i class="pi pi-book text-blue-600 mr-2"></i>
+                      <h4 class="font-semibold text-blue-800 bangla-font">গবেষণা তথ্য</h4>
+                    </div>
+                    <div class="space-y-1">
+                      <p class="text-sm text-gray-700 bangla-font">
+                        <span class="font-medium">গবেষণা বিষয়:</span> {{ selectedNews.research_topic }}
+                      </p>
+                      <p class="text-sm text-gray-700 bangla-font">
+                        <span class="font-medium">বিভাগ:</span> {{ selectedNews.research_department }}
+                      </p>
+                    </div>
+                  </div>
+                }
+
+                <!-- News Content -->
+                <div class="prose max-w-none bangla-font text-gray-700 leading-relaxed text-lg">
+                  <div [innerHTML]="selectedNews.content"></div>
+                </div>
+
+                <!-- Attachment -->
+                @if (selectedNews.attachment_file) {
+                  <div class="mt-8 pt-6 border-t border-gray-200">
+                    <a [href]="selectedNews.attachment_file"
+                       target="_blank"
+                       class="inline-flex items-center space-x-2 text-primary hover:text-primary-dark">
+                      <i class="pi pi-download"></i>
+                      <span class="bangla-font">সংযুক্ত ফাইল ডাউনলোড করুন</span>
+                    </a>
+                  </div>
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      }
 
-    <!-- Newsletter Subscription -->
-    <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mt-8">
-      <i class="pi pi-envelope text-4xl text-primary mb-4"></i>
-      <h3 class="text-2xl font-bold text-gray-900 mb-2 bangla-font">নিয়মিত খবর পান</h3>
-      <p class="text-gray-600 mb-6 bangla-font">সর্বশেষ খবর ও গবেষণা আপডেট ইমেইলে পেতে নিউজলেটারে সাবস্ক্রাইব করুন</p>
-      
-      <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-        <input 
-          type="email" 
-          placeholder="আপনার ইমেইল ঠিকানা" 
-          class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-        <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font font-semibold">
-          সাবস্ক্রাইব করুন
-        </button>
+      <!-- Newsletter Subscription -->
+      <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mt-8">
+        <i class="pi pi-envelope text-4xl text-primary mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2 bangla-font">নিয়মিত খবর পান</h3>
+        <p class="text-gray-600 mb-6 bangla-font">সর্বশেষ খবর ও গবেষণা আপডেট ইমেইলে পেতে নিউজলেটারে সাবস্ক্রাইব করুন</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="আপনার ইমেইল ঠিকানা"
+            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
+          <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font font-semibold">
+            সাবস্ক্রাইব করুন
+          </button>
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>
