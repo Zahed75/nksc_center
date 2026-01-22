@@ -31,9 +31,6 @@ export class HeaderComponent {
   ];
 
 
-  // Secondary items for "More" dropdown with PrimeNG icons
-
-  // Secondary items for "More" dropdown with PrimeNG icons (Removed Blogs and Projects)
 
   moreNavItems = [
     { name: 'People', path: '/people', icon: 'pi pi-user' },

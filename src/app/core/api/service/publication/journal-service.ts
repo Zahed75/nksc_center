@@ -1,8 +1,6 @@
-// services/api.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../enviornments/enviornment';
 
 export interface Journal {
   id: number;
@@ -69,7 +67,7 @@ export interface FilterResponse {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = environment.apiUrl || 'https://api.nkscdu.com';
+  private baseUrl = 'https://api.nkscdu.com'; // Your production URL
 
   constructor(private http: HttpClient) {}
 
@@ -103,20 +101,6 @@ export class ApiService {
     return this.http.get<FilterResponse>(
       `${this.baseUrl}/api/journals/filter/`,
       { params: { search: query } }
-    );
-  }
-
-  // Get unique years for filter dropdown
-  getUniqueYears(): Observable<number[]> {
-    return this.http.get<number[]>(
-      `${this.baseUrl}/api/journals/unique-years/`
-    );
-  }
-
-  // Get journal statistics
-  getJournalStats(): Observable<any> {
-    return this.http.get<any>(
-      `${this.baseUrl}/api/journals/stats/`
     );
   }
 }
