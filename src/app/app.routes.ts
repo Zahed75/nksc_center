@@ -6,6 +6,7 @@ import { PublicationComponent } from './features/publications/components/publica
 import { ElibraryComponent } from './features/elibrary/elibrary-component/elibrary-component';
 import { GalleryComponent } from './features/gallery/components/gallery-component/gallery-component';
 import { NewsComponent } from './features/news/components/news-component/news-component';
+import {  PeopleComponent } from './features/people/components/people/people';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'elibrary', component: ElibraryComponent },
   { path: 'gallery', component: GalleryComponent },
   { path: 'news', component: NewsComponent },
+  {path:'people',component:PeopleComponent },
 
   { path: '**', redirectTo: 'home' }
 ];

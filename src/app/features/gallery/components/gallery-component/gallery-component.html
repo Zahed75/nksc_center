@@ -1,306 +1,606 @@
-<div class="min-h-screen bg-gray-50 py-8">
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8">
   <div class="container mx-auto px-4">
-    <!-- Header Section -->
+    <!-- Hero Section -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4 bangla-font">গ্যালারি</h1>
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl mb-6 shadow-lg">
+        <i class="pi pi-images text-2xl text-white"></i>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bangla-font bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+        ইভেন্ট গ্যালারি
+      </h1>
       <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-        নাজমুল করিম স্টাডি সেন্টারের বিভিন্ন সেমিনার, ওয়ার্কশপ, কনফারেন্স ও সাংস্কৃতিক অনুষ্ঠানের মুহূর্তসমূহ
+        নাজমুল করিম স্টাডি সেন্টারের সেমিনার, ওয়ার্কশপ ও সাংস্কৃতিক অনুষ্ঠানের বিশেষ মুহূর্তসমূহ
       </p>
-      <p class="text-sm text-primary mt-2 bangla-font">
-        মোট {{getTotalImages()}}টি ছবি • {{galleryItems.length}}টি ইভেন্ট
-      </p>
-    </div>
-
-    <!-- Search and Filter Section -->
-    <div class="glass rounded-2xl p-6 mb-8">
-      <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <!-- Search Box -->
-        <div class="flex-1 w-full md:max-w-md">
-          <div class="relative">
-            <input 
-              type="text" 
-              placeholder="ইভেন্ট বা স্থান খুঁজুন..." 
-              [(ngModel)]="searchTerm"
-              (input)="applyFilters()"
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font"
-            >
-            <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-          </div>
+      <div class="flex flex-wrap justify-center gap-3 mt-6">
+        <div class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium bangla-font">
+          <i class="pi pi-calendar mr-2"></i>
+          {{ stats?.total_events || 0 }} ইভেন্ট
         </div>
-
-        <!-- Filter Options -->
-        <div class="flex flex-wrap gap-3">
-          <select 
-            [(ngModel)]="selectedCategory"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option *ngFor="let cat of categories" [value]="cat.value">{{cat.label}}</option>
-          </select>
-
-          <select 
-            [(ngModel)]="selectedYear"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bangla-font">
-            <option *ngFor="let year of years" [value]="year.value">{{year.label}}</option>
-          </select>
-
-          <button 
-            (click)="clearFilters()"
-            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors bangla-font">
-            <i class="pi pi-times mr-2"></i>
-            ক্লিয়ার
-          </button>
+        <div class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium bangla-font">
+          <i class="pi pi-image mr-2"></i>
+          {{ stats?.total_images || 0 }} ছবি
+        </div>
+        <div class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium bangla-font">
+          <i class="pi pi-eye mr-2"></i>
+          {{ stats?.total_views || 0 }} ভিউ
         </div>
       </div>
     </div>
 
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-images text-2xl text-primary mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getTotalImages()}}</div>
-        <div class="text-gray-600 bangla-font text-sm">মোট ছবি</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-calendar text-2xl text-green-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getEventsCountByCategory('seminar')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">সেমিনার</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-wrench text-2xl text-purple-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getEventsCountByCategory('workshop')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">ওয়ার্কশপ</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-users text-2xl text-orange-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getEventsCountByCategory('conference')}}</div>
-        <div class="text-gray-600 bangla-font text-sm">কনফারেন্স</div>
-      </div>
-    </div>
-
-    <!-- Featured Gallery Items -->
-    <div class="mb-8" *ngIf="getFeaturedItems().length > 0">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 bangla-font">বিশেষ ইভেন্টসমূহ</h2>
-        <span class="px-3 py-1 bg-primary text-white rounded-full text-sm bangla-font">প্রধান অ্যালবাম</span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let album of getFeaturedItems()" 
-             class="glass rounded-2xl overflow-hidden hover-lift transition-all duration-300 group border-2 border-primary/20">
-          <!-- Album Thumbnail -->
-          <div class="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden cursor-pointer"
-               (click)="openLightbox(album)">
-            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-4 text-white bg-gradient-to-t from-black/80 to-transparent">
-              <h3 class="text-lg font-bold bangla-font line-clamp-1">{{ album.title }}</h3>
-              <p class="text-sm opacity-90 bangla-font">{{ album.date }}</p>
-            </div>
-            <div class="absolute top-3 left-3">
-              <span [class]="'px-2 py-1 text-xs rounded-full text-white bg-black/60 bangla-font'">
-                {{ album.totalImages }} ছবি
-              </span>
-            </div>
-          </div>
-
-          <!-- Album Details -->
-          <div class="p-4">
-            <div class="flex items-center justify-between mb-3">
-              <span [class]="'px-2 py-1 text-xs rounded-full bangla-font ' + getCategoryColor(album.category)">
-                {{ getCategoryText(album.category) }}
-              </span>
-              <span class="text-xs text-gray-500">{{ album.year }}</span>
-            </div>
-            
-            <p class="text-gray-600 text-sm mb-3 line-clamp-2 bangla-font">
-              {{ album.description }}
-            </p>
-            
-            <div class="flex items-center justify-between text-xs text-gray-500">
-              <span class="bangla-font flex items-center">
-                <i class="pi pi-map-marker mr-1"></i>
-                {{ album.location }}
-              </span>
-              <span class="bangla-font flex items-center">
-                <i class="pi pi-user mr-1"></i>
-                {{ album.participants }}
-              </span>
-            </div>
-          </div>
+    <!-- Loading State -->
+    @if (isLoading) {
+      <div class="text-center py-16">
+        <div class="inline-block animate-pulse mb-6">
+          <div class="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl"></div>
         </div>
+        <p class="text-gray-600 bangla-font">গ্যালারি লোড হচ্ছে...</p>
       </div>
-    </div>
+    }
 
-    <!-- All Gallery Items -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      <div *ngFor="let album of filteredItems" 
-           class="glass rounded-2xl overflow-hidden hover-lift transition-all duration-300 group">
-        <!-- Album Thumbnail -->
-        <div class="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden cursor-pointer"
-             (click)="openLightbox(album)">
-          <!-- Image Grid Preview -->
-          <div class="grid grid-cols-2 gap-1 h-full" *ngIf="album.images.length >= 4">
-            <div class="bg-blue-100"></div>
-            <div class="bg-green-100"></div>
-            <div class="bg-purple-100"></div>
-            <div class="bg-orange-100"></div>
-          </div>
-          <div class="flex h-full" *ngIf="album.images.length < 4">
-            <div class="flex-1 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-              <i class="pi pi-image text-4xl text-primary/40"></i>
+    <!-- Error State -->
+    @if (error && !isLoading) {
+      <div class="text-center py-16">
+        <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <i class="pi pi-exclamation-triangle text-2xl text-red-600"></i>
+        </div>
+        <h3 class="text-xl font-bold text-red-600 mb-2 bangla-font">গ্যালারি লোড করতে সমস্যা</h3>
+        <p class="text-gray-600 bangla-font mb-6">{{ error }}</p>
+        <button
+          (click)="loadGalleryData()"
+          class="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all duration-300 shadow-lg hover:shadow-xl bangla-font font-semibold">
+          <i class="pi pi-refresh mr-2"></i>
+          আবার চেষ্টা করুন
+        </button>
+      </div>
+    }
+
+    @if (!isLoading && !error) {
+      <!-- Filter Controls -->
+      <div class="glass rounded-2xl p-6 mb-8 shadow-lg border border-white/50 backdrop-blur-sm">
+        <div class="flex flex-col lg:flex-row gap-6 items-center">
+          <!-- Search Box -->
+          <div class="flex-1 w-full">
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="ইভেন্ট, স্থান বা বিষয় অনুসন্ধান করুন..."
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()"
+                class="w-full pl-12 pr-4 py-3.5 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 bangla-font text-lg shadow-sm hover:shadow-md"
+              >
+              <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+              <button
+                (click)="applyFilters()"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-primary hover:text-primary-dark transition-colors">
+                <i class="pi pi-arrow-right text-lg"></i>
+              </button>
             </div>
           </div>
-          
-          <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-4 text-white bg-gradient-to-t from-black/80 to-transparent">
-            <h3 class="text-lg font-bold bangla-font line-clamp-1">{{ album.title }}</h3>
-            <p class="text-sm opacity-90 bangla-font">{{ album.date }}</p>
-          </div>
-          <div class="absolute top-3 left-3">
-            <span [class]="'px-2 py-1 text-xs rounded-full text-white bg-black/60 bangla-font'">
-              {{ album.totalImages }} ছবি
-            </span>
-          </div>
-          <div class="absolute top-3 right-3">
-            <span [class]="'px-2 py-1 text-xs rounded-full bangla-font ' + getCategoryColor(album.category)">
-              {{ getCategoryText(album.category) }}
-            </span>
+
+          <!-- Filter Options -->
+          <div class="flex flex-wrap gap-3">
+            <!-- Category Filter -->
+            <div class="relative group">
+              <select
+                [(ngModel)]="selectedCategory"
+                (change)="applyFilters()"
+                class="appearance-none pl-4 pr-10 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bangla-font shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer min-w-[180px]">
+                <option value="all">সব ক্যাটেগরি</option>
+                @for (category of categories; track category.id) {
+                  <option [value]="category.slug">{{ category.name_display }}</option>
+                }
+              </select>
+              <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <i class="pi pi-chevron-down text-gray-400"></i>
+              </div>
+            </div>
+
+            <!-- Year Filter -->
+            <div class="relative group">
+              <select
+                [(ngModel)]="selectedYear"
+                (change)="applyFilters()"
+                class="appearance-none pl-4 pr-10 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bangla-font shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer min-w-[140px]">
+                <option [value]="null">সব বছর</option>
+                @for (year of years; track year.value) {
+                  <option [value]="year.value">{{ year.label }}</option>
+                }
+              </select>
+              <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <i class="pi pi-calendar text-gray-400"></i>
+              </div>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="relative group">
+              <select
+                [(ngModel)]="sortBy"
+                (change)="sortEvents()"
+                class="appearance-none pl-4 pr-10 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bangla-font shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer min-w-[160px]">
+                <option value="latest">সর্বশেষ</option>
+                <option value="popular">জনপ্রিয়</option>
+                <option value="featured">প্রধান</option>
+              </select>
+              <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <i class="pi pi-sort-alt text-gray-400"></i>
+              </div>
+            </div>
+
+            <!-- Clear Filters Button -->
+            <button
+              (click)="clearFilters()"
+              class="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md bangla-font font-medium flex items-center gap-2">
+              <i class="pi pi-filter-slash"></i>
+              ক্লিয়ার
+            </button>
           </div>
         </div>
 
-        <!-- Album Details -->
-        <div class="p-4">
-          <p class="text-gray-600 text-sm mb-3 line-clamp-2 bangla-font">
-            {{ album.description }}
-          </p>
-          
-          <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
-            <span class="bangla-font flex items-center">
-              <i class="pi pi-map-marker mr-1"></i>
-              {{ album.location }}
-            </span>
-            <span class="bangla-font flex items-center">
-              <i class="pi pi-user mr-1"></i>
-              {{ album.participants }}
-            </span>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex space-x-2 pt-3 border-t border-gray-100">
-            <button 
-              (click)="openLightbox(album)"
-              class="flex-1 flex items-center justify-center space-x-2 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font text-sm">
-              <i class="pi pi-eye"></i>
-              <span>ছবি দেখুন</span>
+        <!-- View Mode Toggle -->
+        <div class="flex justify-end mt-4">
+          <div class="inline-flex bg-gray-100 rounded-lg p-1">
+            <button
+              (click)="viewMode = 'grid'"
+              [class]="'p-2 rounded-lg transition-all duration-300 ' + (viewMode === 'grid' ? 'bg-white shadow-md' : 'text-gray-500 hover:text-gray-700')">
+              <i class="pi pi-th-large"></i>
+            </button>
+            <button
+              (click)="viewMode = 'masonry'"
+              [class]="'p-2 rounded-lg transition-all duration-300 ' + (viewMode === 'masonry' ? 'bg-white shadow-md' : 'text-gray-500 hover:text-gray-700')">
+              <i class="pi pi-table"></i>
             </button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- No Results Message -->
-    <div *ngIf="filteredItems.length === 0" class="text-center py-12">
-      <i class="pi pi-images text-6xl text-gray-300 mb-4"></i>
-      <h3 class="text-xl font-bold text-gray-600 mb-2 bangla-font">কোনো অ্যালবাম পাওয়া যায়নি</h3>
-      <p class="text-gray-500 bangla-font">অনুগ্রহ করে আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করুন</p>
-      <button 
-        (click)="clearFilters()"
-        class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-        সব ফিল্টার ক্লিয়ার করুন
-      </button>
-    </div>
+      <!-- Featured Gallery Section -->
+      @if (getFeaturedEvents().length > 0) {
+        <div class="mb-12">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-2 h-8 bg-gradient-to-b from-primary to-primary-dark rounded-full"></div>
+            <h2 class="text-2xl font-bold text-gray-900 bangla-font">প্রধান ইভেন্টসমূহ</h2>
+            <span class="px-3 py-1.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-full text-sm bangla-font font-medium shadow-md">
+              বিশেষ নির্বাচন
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            @for (event of getFeaturedEvents(); track event.id) {
+              <div class="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100"
+                   (click)="openLightbox(event)">
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
+
+                <!-- Event Image -->
+                <div class="h-64 overflow-hidden">
+                  @if (event.cover_image) {
+                    <img
+                      [src]="event.cover_image"
+                      [alt]="event.title"
+                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      (error)="handleImageError($event)">
+                  } @else {
+                    <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                      <i class="pi pi-image text-4xl text-gray-300"></i>
+                    </div>
+                  }
+                </div>
+
+                <!-- Event Content -->
+                <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span [class]="'px-3 py-1.5 text-sm rounded-full font-medium shadow-md ' + getCategoryColor(event.category_detail)">
+                      <i [class]="'pi mr-2 ' + getCategoryIcon(event.category_detail)"></i>
+                      {{ event.category_detail.name_display }}
+                    </span>
+                    <span class="px-3 py-1.5 bg-white/90 text-gray-700 text-sm rounded-full font-medium shadow-md">
+                      {{ formatDate(event.event_date) }}
+                    </span>
+                  </div>
+
+                  <h3 class="text-xl font-bold text-white mb-2 bangla-font">{{ event.title }}</h3>
+
+                  <p class="text-white/90 text-sm mb-4 bangla-font line-clamp-2">
+                    {{ event.short_description }}
+                  </p>
+
+                  <div class="flex items-center gap-4 text-white/80 text-sm">
+                    <span class="flex items-center gap-1">
+                      <i class="pi pi-map-marker"></i>
+                      {{ event.location }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <i class="pi pi-users"></i>
+                      {{ event.participants }} জন
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <i class="pi pi-image"></i>
+                      {{ event.total_images }} ছবি
+                    </span>
+                  </div>
+                </div>
+
+                <!-- View Button -->
+                <div class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button class="px-4 py-2 bg-white text-primary rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bangla-font font-medium">
+                    <i class="pi pi-eye mr-2"></i>
+                    দেখুন
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- All Gallery Grid -->
+      <div class="mb-12">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 bangla-font">সকল ইভেন্ট</h2>
+            <p class="text-gray-600 bangla-font">{{ filteredEvents.length }}টি ইভেন্ট পাওয়া গেছে</p>
+          </div>
+          <div class="text-sm text-gray-500">
+            পৃষ্ঠা {{ currentPage }} এর {{ totalPages }}
+          </div>
+        </div>
+
+        @if (viewMode === 'grid') {
+          <!-- Grid View -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (event of getPaginatedEvents(); track event.id) {
+              <div class="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100"
+                   (click)="openLightbox(event)">
+                <!-- Image Grid Preview -->
+                <div class="grid grid-cols-2 gap-1 h-48 overflow-hidden">
+                  @for (img of generateImageGrid(event.total_images); track $index) {
+                    <div class="relative overflow-hidden bg-gray-100">
+                      <img
+                        [src]="img"
+                        [alt]="event.title + ' image ' + ($index + 1)"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        (error)="handleImageError($event)">
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                    </div>
+                  }
+                </div>
+
+                <!-- Event Info -->
+                <div class="p-5">
+                  <div class="flex items-center justify-between mb-3">
+                    <span [class]="'px-2 py-1 text-xs rounded-full font-medium ' + getCategoryColor(event.category_detail)">
+                      {{ getCategoryName(event.category) }}
+                    </span>
+                    <span class="text-xs text-gray-500">{{ event.year }}</span>
+                  </div>
+
+                  <h3 class="text-lg font-bold text-gray-900 mb-2 bangla-font line-clamp-1 group-hover:text-primary transition-colors">
+                    {{ event.title }}
+                  </h3>
+
+                  <p class="text-gray-600 text-sm mb-4 bangla-font line-clamp-2">
+                    {{ getShortDescription(event.short_description) }}
+                  </p>
+
+                  <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div class="flex items-center gap-3 text-xs text-gray-500">
+                      <span class="flex items-center gap-1">
+                        <i class="pi pi-calendar"></i>
+                        {{ formatDate(event.event_date) }}
+                      </span>
+                    </div>
+                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                      {{ event.total_images }} ছবি
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <!-- Masonry View -->
+          <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            @for (event of getPaginatedEvents(); track event.id) {
+              <div class="break-inside-avoid group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100"
+                   (click)="openLightbox(event)">
+                <!-- Event Image -->
+                <div class="h-56 overflow-hidden">
+                  @if (event.cover_image) {
+                    <img
+                      [src]="event.cover_image"
+                      [alt]="event.title"
+                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      (error)="handleImageError($event)">
+                  } @else {
+                    <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                      <i class="pi pi-image text-4xl text-gray-300"></i>
+                    </div>
+                  }
+                </div>
+
+                <!-- Event Info -->
+                <div class="p-5">
+                  <h3 class="text-lg font-bold text-gray-900 mb-3 bangla-font line-clamp-2 group-hover:text-primary transition-colors">
+                    {{ event.title }}
+                  </h3>
+
+                  <p class="text-gray-600 text-sm mb-4 bangla-font line-clamp-3">
+                    {{ getShortDescription(event.short_description) }}
+                  </p>
+
+                  <div class="flex items-center justify-between mb-3">
+                    <span [class]="'px-3 py-1.5 text-xs rounded-full font-medium ' + getCategoryColor(event.category_detail)">
+                      <i [class]="'pi mr-1 ' + getCategoryIcon(event.category_detail)"></i>
+                      {{ getCategoryName(event.category) }}
+                    </span>
+                    <span class="text-xs text-gray-500">{{ event.year }}</span>
+                  </div>
+
+                  <div class="flex items-center gap-4 text-xs text-gray-500 pt-3 border-t border-gray-100">
+                    <span class="flex items-center gap-1">
+                      <i class="pi pi-map-marker"></i>
+                      {{ event.location }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <i class="pi pi-image"></i>
+                      {{ event.total_images }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- No Results -->
+        @if (filteredEvents.length === 0) {
+          <div class="text-center py-16">
+            <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <i class="pi pi-search text-3xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-600 mb-2 bangla-font">কোনো ইভেন্ট পাওয়া যায়নি</h3>
+            <p class="text-gray-500 bangla-font mb-6">আপনার অনুসন্ধানের সাথে মিলে এমন কোনো ইভেন্ট নেই</p>
+            <button
+              (click)="clearFilters()"
+              class="px-6 py-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl hover:shadow-xl transition-all duration-300 bangla-font font-semibold shadow-lg">
+              সব ফিল্টার ক্লিয়ার করুন
+            </button>
+          </div>
+        }
+
+        <!-- Pagination -->
+        @if (totalPages > 1) {
+          <div class="flex justify-center mt-12">
+            <div class="inline-flex items-center gap-2 bg-white rounded-xl p-2 shadow-lg">
+              <button
+                (click)="changePage(currentPage - 1)"
+                [disabled]="currentPage === 1"
+                class="p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="pi pi-chevron-left"></i>
+              </button>
+
+              @for (page of [].constructor(totalPages); track $index) {
+                <button
+                  (click)="changePage($index + 1)"
+                  [class]="'w-10 h-10 rounded-lg transition-all duration-300 ' +
+                    (currentPage === $index + 1 ?
+                      'bg-gradient-to-r from-primary to-primary-dark text-white shadow-md' :
+                      'hover:bg-gray-100 text-gray-700')">
+                  {{ $index + 1 }}
+                </button>
+              }
+
+              <button
+                (click)="changePage(currentPage + 1)"
+                [disabled]="currentPage === totalPages"
+                class="p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="pi pi-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Stats Section -->
+      @if (stats) {
+        <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 mb-12 border border-primary/20">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center bangla-font">গ্যালারি পরিসংখ্যান</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="pi pi-calendar text-xl text-primary"></i>
+              </div>
+              <div class="text-3xl font-bold text-gray-900">{{ stats.total_events }}</div>
+              <div class="text-gray-600 bangla-font text-sm">মোট ইভেন্ট</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="pi pi-image text-xl text-green-600"></i>
+              </div>
+              <div class="text-3xl font-bold text-gray-900">{{ stats.total_images }}</div>
+              <div class="text-gray-600 bangla-font text-sm">মোট ছবি</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="pi pi-eye text-xl text-purple-600"></i>
+              </div>
+              <div class="text-3xl font-bold text-gray-900">{{ stats.total_views }}</div>
+              <div class="text-gray-600 bangla-font text-sm">মোট ভিউ</div>
+            </div>
+            <div class="bg-white rounded-xl p=6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="pi pi-chart-line text-xl text-orange-600"></i>
+              </div>
+              <div class="text-3xl font-bold text-gray-900">{{ stats.seminar_count }}</div>
+              <div class="text-gray-600 bangla-font text-sm">সেমিনার</div>
+            </div>
+          </div>
+        </div>
+      }
+    }
 
     <!-- Lightbox Modal -->
-    <div *ngIf="isLightboxOpen && selectedAlbum" 
-         class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
-         [class]="isLightboxFullscreen ? 'p-0' : 'p-4'">
-      
-      <div class="relative w-full h-full flex flex-col" [class]="isLightboxFullscreen ? 'max-w-full max-h-full' : 'max-w-6xl max-h-[90vh]'">
-        
-        <!-- Lightbox Header -->
-        <div class="flex items-center justify-between p-4 bg-black/50 text-white z-10">
-          <div class="flex-1">
-            <h3 class="text-xl font-bold bangla-font">{{ selectedAlbum.title }}</h3>
-            <p class="text-sm text-gray-300 bangla-font">
-              {{ selectedAlbum.date }} • {{ selectedAlbum.location }} • 
-              ছবি {{ currentImageIndex + 1 }}/{{ selectedAlbum.images.length }}
-            </p>
-          </div>
-          <div class="flex items-center space-x-2">
-            <button 
-              (click)="toggleFullscreen()"
-              class="p-2 hover:bg-white/20 rounded-lg transition-colors">
-              <i class="pi" [class.pi-window-minimize]="isLightboxFullscreen" [class.pi-window-maximize]="!isLightboxFullscreen"></i>
-            </button>
-            <button 
+    @if (isLightboxOpen && selectedEvent) {
+      <div class="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4">
+        <div class="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+
+          <!-- Lightbox Header -->
+          <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+            <div class="flex-1">
+              <h3 class="text-2xl font-bold text-gray-900 bangla-font">{{ selectedEvent.title }}</h3>
+              <div class="flex items-center gap-3 mt-2">
+                <span [class]="'px-3 py-1.5 text-sm rounded-full font-medium ' + getCategoryColor(selectedEvent.category_detail)">
+                  {{ selectedEvent.category_detail.name_display }}
+                </span>
+                <span class="text-sm text-gray-500">{{ formatDate(selectedEvent.event_date) }}</span>
+                <span class="text-sm text-gray-500">{{ selectedEvent.location }}</span>
+              </div>
+            </div>
+            <button
               (click)="closeLightbox()"
-              class="p-2 hover:bg-white/20 rounded-lg transition-colors">
-              <i class="pi pi-times text-xl"></i>
+              class="p-3 hover:bg-gray-100 rounded-xl transition-colors">
+              <i class="pi pi-times text-xl text-gray-600"></i>
             </button>
           </div>
-        </div>
 
-        <!-- Lightbox Content -->
-        <div class="flex-1 relative flex items-center justify-center bg-black">
-          <!-- Navigation Arrows -->
-          <button 
-            *ngIf="currentImageIndex > 0"
-            (click)="previousImage()"
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors z-10">
-            <i class="pi pi-chevron-left text-xl"></i>
-          </button>
-          
-          <button 
-            *ngIf="currentImageIndex < selectedAlbum.images.length - 1"
-            (click)="nextImage()"
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors z-10">
-            <i class="pi pi-chevron-right text-xl"></i>
-          </button>
+          <!-- Lightbox Content -->
+          <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <!-- Main Image -->
+            <div class="flex-1 bg-gray-900 relative flex items-center justify-center p-8">
+              <!-- Navigation Arrows -->
+              <button
+                *ngIf="currentImageIndex > 0"
+                (click)="previousImage()"
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors z-10 shadow-lg">
+                <i class="pi pi-chevron-left text-xl"></i>
+              </button>
 
-          <!-- Current Image -->
-          <div class="w-full h-full flex items-center justify-center p-4">
-            <img 
-              [src]="selectedAlbum.images[currentImageIndex]" 
-              [alt]="selectedAlbum.title"
-              class="max-w-full max-h-full object-contain"
-              (error)="handleImageError($event)">
-          </div>
-        </div>
+              <button
+                *ngIf="currentImageIndex < selectedEvent.total_images - 1"
+                (click)="nextImage()"
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors z-10 shadow-lg">
+                <i class="pi pi-chevron-right text-xl"></i>
+              </button>
 
-        <!-- Lightbox Footer -->
-        <div class="bg-black/50 text-white p-4 z-10">
-          <p class="text-sm bangla-font mb-3">{{ selectedAlbum.description }}</p>
-          <div class="flex items-center justify-between text-xs text-gray-300">
-            <span class="bangla-font">অংশগ্রহণকারী: {{ selectedAlbum.participants }} জন</span>
-            <span class="bangla-font">মোট ছবি: {{ selectedAlbum.totalImages }}</span>
-          </div>
-        </div>
+              <!-- Current Image -->
+              <div class="w-full h-full flex items-center justify-center">
+                @if (selectedEvent.cover_image) {
+                  <img
+                    [src]="generateImageGrid(selectedEvent.total_images)[currentImageIndex] || selectedEvent.cover_image"
+                    [alt]="selectedEvent.title"
+                    class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                    (error)="handleImageError($event)">
+                } @else {
+                  <div class="w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
+                    <i class="pi pi-image text-6xl text-gray-400"></i>
+                  </div>
+                }
+              </div>
 
-        <!-- Thumbnail Strip -->
-        <div class="bg-black/80 p-4 overflow-x-auto">
-          <div class="flex space-x-2">
-            <div *ngFor="let image of selectedAlbum.images; let i = index"
-                 (click)="currentImageIndex = i"
-                 class="shrink-0 w-16 h-16 border-2 rounded cursor-pointer transition-all"
-                 [class]="currentImageIndex === i ? 'border-primary border-2' : 'border-gray-600 border'">
-              <img 
-                [src]="image" 
-                [alt]="'Thumbnail ' + (i + 1)"
-                class="w-full h-full object-cover rounded">
+              <!-- Image Counter -->
+              <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-black/50 text-white rounded-full text-sm">
+                ছবি {{ currentImageIndex + 1 }} / {{ selectedEvent.total_images }}
+              </div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="w-full lg:w-96 p-6 overflow-y-auto">
+              <div class="space-y-6">
+                <!-- Description -->
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">ইভেন্ট বিবরণ</h4>
+                  <p class="text-gray-600 bangla-font">{{ selectedEvent.short_description }}</p>
+                </div>
+
+                <!-- Event Info -->
+                <div class="space-y-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <i class="pi pi-calendar text-primary"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 bangla-font">তারিখ</p>
+                      <p class="font-medium bangla-font">{{ formatDate(selectedEvent.event_date) }}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <i class="pi pi-map-marker text-green-600"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 bangla-font">স্থান</p>
+                      <p class="font-medium bangla-font">{{ selectedEvent.location }}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <i class="pi pi-users text-purple-600"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 bangla-font">অংশগ্রহণকারী</p>
+                      <p class="font-medium bangla-font">{{ selectedEvent.participants }} জন</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <i class="pi pi-image text-orange-600"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 bangla-font">মোট ছবি</p>
+                      <p class="font-medium bangla-font">{{ selectedEvent.total_images }}টি</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Thumbnails -->
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">ছবি সমূহ</h4>
+                  <div class="grid grid-cols-4 gap-2">
+                    @for (img of generateImageGrid(selectedEvent.total_images); track $index) {
+                      <div
+                        (click)="currentImageIndex = $index"
+                        [class]="'cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-300 ' +
+                          (currentImageIndex === $index ? 'border-primary shadow-lg' : 'border-gray-200 hover:border-primary')">
+                        <img
+                          [src]="img"
+                          [alt]="'Thumbnail ' + ($index + 1)"
+                          class="w-full h-20 object-cover"
+                          (error)="handleImageError($event)">
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    }
 
-    <!-- Call to Action -->
-    <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mt-8">
-      <i class="pi pi-camera text-4xl text-primary mb-4"></i>
-      <h3 class="text-2xl font-bold text-gray-900 mb-2 bangla-font">আপনার ইভেন্টের ছবি শেয়ার করুন</h3>
-      <p class="text-gray-600 mb-6 bangla-font">আমাদের গ্যালারিতে আপনার ইভেন্টের ছবি যোগ করতে চান? আমাদের সাথে যোগাযোগ করুন</p>
-      
-      <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors bangla-font">
-        ছবি আপলোড করুন
-      </button>
+    <!-- CTA Section -->
+    <div class="text-center mt-16">
+      <div class="inline-block p-1 bg-gradient-to-r from-primary to-primary-dark rounded-2xl shadow-xl">
+        <div class="bg-white rounded-xl p-8 md:p-12">
+          <i class="pi pi-camera text-4xl text-primary mb-6"></i>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4 bangla-font">আপনার ইভেন্টের ছবি যুক্ত করুন</h3>
+          <p class="text-gray-600 mb-8 max-w-lg mx-auto bangla-font">
+            আমাদের গ্যালারিতে আপনার ইভেন্টের ছবি যোগ করতে চান? আমাদের সাথে যোগাযোগ করুন এবং আপনার বিশেষ মুহূর্তগুলি শেয়ার করুন
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button class="px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl hover:shadow-xl transition-all duration-300 shadow-lg bangla-font font-semibold">
+              <i class="pi pi-upload mr-2"></i>
+              ছবি আপলোড করুন
+            </button>
+            <button class="px-8 py-3 bg-white border-2 border-primary text-primary rounded-xl hover:bg-primary hover:text-white transition-all duration-300 shadow-lg bangla-font font-semibold">
+              <i class="pi pi-envelope mr-2"></i>
+              যোগাযোগ করুন
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
