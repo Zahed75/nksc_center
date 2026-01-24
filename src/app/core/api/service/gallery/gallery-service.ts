@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../enviornments/enviornment'; // Add this import
 
 export interface GalleryCategory {
   id: number;
@@ -80,13 +81,13 @@ export interface FilterParams {
   providedIn: 'root',
 })
 export class GalleryService {
-  private baseUrl = 'https://api.nkscdu.com';
+  private apiUrl = environment.apiUrl; // Use environment configuration
 
   constructor(private http: HttpClient) {}
 
   // Get all gallery events
   getAllGallery(): Observable<GalleryResponse> {
-    return this.http.get<GalleryResponse>(`${this.baseUrl}/api/gallery/all/`);
+    return this.http.get<GalleryResponse>(`${this.apiUrl}/api/gallery/all/`);
   }
 
   // Filter gallery events
@@ -102,24 +103,24 @@ export class GalleryService {
     });
 
     return this.http.get<GalleryResponse>(
-      `${this.baseUrl}/api/gallery/all/`,
+      `${this.apiUrl}/api/gallery/all/`,
       { params: httpParams }
     );
   }
 
   // Get featured gallery events
   getFeaturedGallery(): Observable<GalleryResponse> {
-    return this.http.get<GalleryResponse>(`${this.baseUrl}/api/gallery/featured/`);
+    return this.http.get<GalleryResponse>(`${this.apiUrl}/api/gallery/featured/`);
   }
 
   // Get latest gallery events
   getLatestGallery(): Observable<GalleryResponse> {
-    return this.http.get<GalleryResponse>(`${this.baseUrl}/api/gallery/latest/`);
+    return this.http.get<GalleryResponse>(`${this.apiUrl}/api/gallery/latest/`);
   }
 
   // Get gallery statistics
   getGalleryStats(): Observable<StatsResponse> {
-    return this.http.get<StatsResponse>(`${this.baseUrl}/api/gallery/stats/`);
+    return this.http.get<StatsResponse>(`${this.apiUrl}/api/gallery/stats/`);
   }
 
   // Search gallery events
@@ -137,29 +138,34 @@ export class GalleryService {
     });
 
     return this.http.get<GalleryResponse>(
-      `${this.baseUrl}/api/gallery/search/`,
+      `${this.apiUrl}/api/gallery/search/`,
       { params: httpParams }
     );
   }
 
   // Get all categories
   getGalleryCategories(): Observable<CategoryResponse> {
-    return this.http.get<CategoryResponse>(`${this.baseUrl}/api/gallery/categories/`);
+    return this.http.get<CategoryResponse>(`${this.apiUrl}/api/gallery/categories/`);
   }
 
   // Get gallery by category slug
   getGalleryByCategory(slug: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/api/gallery/category/${slug}/`);
+    return this.http.get<any>(`${this.apiUrl}/api/gallery/category/${slug}/`);
   }
 
   // Get available years
   getGalleryYears(): Observable<YearsResponse> {
-    return this.http.get<YearsResponse>(`${this.baseUrl}/api/gallery/years/`);
+    return this.http.get<YearsResponse>(`${this.apiUrl}/api/gallery/years/`);
   }
 
   // Get event images (you might need to implement this endpoint in your backend)
   getEventImages(eventId: number): Observable<any> {
     // This endpoint would need to be implemented in your backend
-    return this.http.get<any>(`${this.baseUrl}/api/gallery/event/${eventId}/images/`);
+    return this.http.get<any>(`${this.apiUrl}/api/gallery/event/${eventId}/images/`);
+  }
+
+  // Get event by slug for detailed view
+  getEventBySlug(slug: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/gallery/event/${slug}/`);
   }
 }

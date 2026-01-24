@@ -1,115 +1,158 @@
-// features/about/pages/about-page/about-component.ts
-import { Component } from '@angular/core';
+// features/about/components/about-component/about-component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import {
+  AboutService,
+  AboutSection,
+  TimelineEvent,
+  Director,
+  Facility,
+  Statistic,
+  ContactInfo
+} from '../../services/about-service';
 
 @Component({
   selector: 'app-about-component',
-  templateUrl: './about-component.html'
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './about-component.html',
+  styleUrls: ['./about-component.css'],
+  providers: [AboutService]
 })
-export class AboutComponent {
-  aboutSections = [
-    {
-      title: 'প্রতিষ্ঠার ইতিহাস',
-      icon: 'pi pi-history',
-      content: 'বাংলাদেশ সমাজবিজ্ঞান গঠনের পথিকৃৎ ও ঢাকা বিশ্ববিদ্যালয় সমাজবিজ্ঞান বিভাগের তাত্ত্বিক চিন্তাধারার মাননীয়, দেশের শীর্ষ শিক্ষাবিদ হিসাবে একুশে পদক ও স্বাধীনতা পদক প্রাপ্ত অধ্যাপক ড. এ. কে. নাজমুল করিমের নামে একটি গবেষণা কেন্দ্র হিসেবে সমাজবিজ্ঞান বিভাগের একাডেমিক কমিটি ১৯৯৯ সনের ৩০ শে আগস্ট একটি সাব কমিটির রিপোর্ট অনুযায়ী গবেষণা কেন্দ্রটির নামকরণ করা হয় নাজমুল করিম স্টাডি সেন্টার।'
-    },
-    {
-      title: 'প্রাতিষ্ঠানিক উন্নয়ন',
-      icon: 'pi pi-building',
-      content: '২০০০ সনের ৮ই মে বিভাগের একাডেমিক কমিটি সিনিয়র শিক্ষক অধ্যাপক সৈয়দ আহমদ খানকে সেন্টারের কনভেনর ও কো-অর্ডিনেটর হিসাবে সুপারিশ করা হয়। এই সুপারিশের পরিপ্রেক্ষিতে ২০০০ সনের ১০ই মে তৎকালীন উপাচার্য অধ্যাপক ড. এ. কে. আজাদ চৌধুরী কলাভবনের নিচতলায় সমাজবিজ্ঞান বিভাগের নাজমুল করিম স্টাডি সেন্টার যাত্রা শুরু করে।'
-    },
-    {
-      title: 'আনুষ্ঠানিক স্বীকৃতি',
-      icon: 'pi pi-verified',
-      content: '২১শে মে ২০০০ সনে সেন্টারের কনভেনর ও কো-অর্ডিনেটর অধ্যাপক সৈয়দ আহমদ খান নাজমুল করিম স্টাডি সেন্টারের পূর্ণাঙ্গ গঠনতন্ত্রসহ উপাচার্য বরাবর সেন্টারটি প্রতিষ্ঠার জন্য আনুষ্ঠানিকভাবে আবেদন করেন। ঐ দিনই মাননীয় উপাচার্য সেন্টারটির জন্য বিশ্ববিদ্যালয়ের একাডেমিক কাউন্সিল বিবেচনার নির্দেশ দেন।'
-    }
-  ];
+export class AboutComponent implements OnInit, OnDestroy {
+  // Data from API
+  aboutSections: AboutSection[] = [];
+  timelineEvents: TimelineEvent[] = [];
+  currentDirectors: Director[] = [];
+  previousDirectors: Director[] = [];
+  facilities: Facility[] = [];
+  statistics: Statistic[] = [];
+  contactInfo: ContactInfo[] = [];
 
-  timelineEvents = [
-    {
-      year: '১৯৯৯',
-      title: 'ধারণা ও প্রস্তাবনা',
-      description: 'সমাজবিজ্ঞান বিভাগের একাডেমিক কমিটি গবেষণা কেন্দ্র প্রতিষ্ঠার প্রস্তাব অনুমোদন করে'
-    },
-    {
-      year: '২০০০',
-      title: 'প্রতিষ্ঠা ও যাত্রা',
-      description: '১০ই মে কলাভবনে নাজমুল করিম স্টাডি সেন্টার আনুষ্ঠানিকভাবে যাত্রা শুরু করে'
-    },
-    {
-      year: '২০০০',
-      title: 'আনুষ্ঠানিক স্বীকৃতি',
-      description: '২৯শে মে একাডেমিক কাউন্সিল সেন্টারটি প্রতিষ্ঠা অনুমোদন করে'
-    },
-    {
-      year: '২০০০',
-      title: 'প্রথম পরিচালক',
-      description: '১০ই জুন অধ্যাপক সৈয়দ আহমদ খান প্রথম পরিচালক হিসেবে দায়িত্ব গ্রহণ করেন'
-    },
-    {
-      year: '২০১৩',
-      title: 'নতুন পরিচালক',
-      description: 'অধ্যাপক ড. নিহাল করিম সেন্টারের পরিচালক হিসেবে যোগদান করেন'
-    },
-    {
-      year: '২০২০',
-      title: 'বর্তমান পরিচালক',
-      description: 'অধ্যাপক ড. আ. ক. ম. জামাল উদ্দীন পরিচালক পদে যোগদান করেন'
-    }
-  ];
+  // Loading and error states
+  isLoading = false;
+  error: string | null = null;
 
-  currentDirectors = [
-    {
-      name: 'অধ্যাপক ড. তাইয়েবুর রহমান',
-      position: 'পরিচালক',
-      period: '২০২৫ - বর্তমান',
-      image: '/assets/images/dr.png',
-      description: 'ডেভেলপমেন্ট স্টাডিজ বিভাগের প্রফেসর ও সামাজিক বিজ্ঞান অনুষদের ডিন (ভারপ্রাপ্ত)'
-    }
-  ];
+  // Filtered data for specific sections
+  missionSection: AboutSection | null = null;
+  visionSection: AboutSection | null = null;
+  historySection: AboutSection | null = null;
 
-  previousDirectors = [
-    {
-      name: 'অধ্যাপক ড. আ. ক. ম. জামাল উদ্দীন',
-      position: 'সাবেক পরিচালক',
-      period: '২০২০ - ২০২৫'
-    },
-    {
-      name: 'অধ্যাপক ড. নিহাল করিম',
-      position: 'সাবেক পরিচালক', 
-      period: '২০১৩ - ২০২০'
-    },
-    {
-      name: 'অধ্যাপক কামাল আহসান চৌধুরী',
-      position: 'সাবেক পরিচালক',
-      period: '২০০৯ - ২০১৩'
-    },
-    {
-      name: 'অধ্যাপক সৈয়দ আহমদ খান',
-      position: 'প্রতিষ্ঠাতা পরিচালক',
-      period: '২০০০ - ২০০৯'
-    }
-  ];
+  // Active tab for directors
+  activeDirectorTab: 'current' | 'previous' = 'current';
 
-  facilities = [
-    {
-      title: 'অবস্থান',
-      icon: 'pi pi-map-marker',
-      description: 'ঢাকা বিশ্ববিদ্যালয়ের কলাভবন এলাকার পশ্চিমভাগ লেকচার থিয়েটার ভবনের নিচতলায় অবস্থিত'
-    },
-    {
-      title: 'পরিচালকের অফিস',
-      icon: 'pi pi-briefcase', 
-      description: 'কক্ষ নং-১ (পরিচালকের অফিস)'
-    },
-    {
-      title: 'সেন্টার অফিস',
-      icon: 'pi pi-building',
-      description: 'কক্ষ নং-২ (সেন্টারের মূল অফিস)'
-    },
-    {
-      title: 'গবেষণা সম্পদ',
-      icon: 'pi pi-book',
-      description: 'নাজমুল করিম সম্পর্কিত গবেষণাপত্র, প্রকাশনা ও ডিজিটাল সংগ্রহ'
+  private subscriptions: Subscription = new Subscription();
+
+  constructor(
+    private aboutService: AboutService,
+    private sanitizer: DomSanitizer
+  ) {}
+
+  ngOnInit() {
+    this.loadAllAboutData();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  // Load all about data
+  loadAllAboutData(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    const sub = this.aboutService.getAllAboutData().subscribe({
+      next: (response) => {
+        if (response.success) {
+          const data = response.data;
+
+          // Assign data
+          this.aboutSections = data.sections.sort((a, b) => a.display_order - b.display_order);
+          this.timelineEvents = this.sortTimelineEvents(data.timeline_events);
+          this.currentDirectors = data.directors.current.sort((a, b) => a.display_order - b.display_order);
+          this.previousDirectors = this.sortDirectors(data.directors.previous);
+          this.facilities = data.facilities.sort((a, b) => a.display_order - b.display_order);
+          this.statistics = data.statistics.sort((a, b) => a.display_order - b.display_order);
+          this.contactInfo = data.contact_info.sort((a, b) => a.display_order - b.display_order);
+
+          // Extract specific sections
+          this.missionSection = data.sections.find(s => s.section_type === 'mission') || null;
+          this.visionSection = data.sections.find(s => s.section_type === 'vision') || null;
+          this.historySection = data.sections.find(s => s.section_type === 'history') || null;
+
+          this.isLoading = false;
+        } else {
+          this.error = 'ডেটা লোড করতে সমস্যা হয়েছে';
+          this.isLoading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading about data:', error);
+        this.error = 'ডেটা লোড করতে সমস্যা হয়েছে';
+        this.isLoading = false;
+      }
+    });
+
+    this.subscriptions.add(sub);
+  }
+
+  // Sort timeline events by display order (ascending)
+  private sortTimelineEvents(events: TimelineEvent[]): TimelineEvent[] {
+    return [...events].sort((a, b) => a.display_order - b.display_order);
+  }
+
+  // Sort previous directors by display order (ascending)
+  private sortDirectors(directors: Director[]): Director[] {
+    return [...directors].sort((a, b) => a.display_order - b.display_order);
+  }
+
+  // Sanitize HTML content
+  sanitizeHtml(content: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(content);
+  }
+
+  // Get current director image or fallback
+  getCurrentDirectorImage(): string {
+    if (this.currentDirectors.length > 0 && this.currentDirectors[0].image) {
+      return this.currentDirectors[0].image;
     }
-  ];
+    return '/assets/images/dr.png'; // Fallback image
+  }
+
+  // Handle image error
+  handleImageError(event: any): void {
+    const imgElement = event.target;
+    imgElement.style.display = 'none';
+
+    const fallbackDiv = imgElement.nextElementSibling;
+    if (fallbackDiv) {
+      fallbackDiv.style.display = 'flex';
+    }
+  }
+
+  // Send email
+  sendEmail(email: string): void {
+    if (email) {
+      window.location.href = `mailto:${email}`;
+    }
+  }
+
+  // Call phone
+  callPhone(phone: string): void {
+    if (phone) {
+      window.location.href = `tel:${phone}`;
+    }
+  }
+
+  // Switch director tab
+  switchDirectorTab(tab: 'current' | 'previous'): void {
+    this.activeDirectorTab = tab;
+  }
+
+  // Refresh data
+  refreshData(): void {
+    this.loadAllAboutData();
+  }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../enviornments/enviornment';
 
 export interface Department {
   id: number;
@@ -55,7 +56,7 @@ export interface FilterParams {
   providedIn: 'root',
 })
 export class PeopleService {
-  private baseUrl = 'https://api.nkscdu.com';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -72,31 +73,31 @@ export class PeopleService {
       });
     }
 
-    return this.http.get<StaffResponse>(`${this.baseUrl}/api/staff/`, { params: httpParams });
+    return this.http.get<StaffResponse>(`${this.apiUrl}/api/staff/`, { params: httpParams });
   }
 
   // Get staff by department
   getStaffByDepartment(departmentSlug: string): Observable<StaffResponse> {
-    return this.http.get<StaffResponse>(`${this.baseUrl}/api/staff/?department=${departmentSlug}`);
+    return this.http.get<StaffResponse>(`${this.apiUrl}/api/staff/?department=${departmentSlug}`);
   }
 
   // Get staff by designation
   getStaffByDesignation(designation: string): Observable<StaffResponse> {
-    return this.http.get<StaffResponse>(`${this.baseUrl}/api/staff/?designation=${designation}`);
+    return this.http.get<StaffResponse>(`${this.apiUrl}/api/staff/?designation=${designation}`);
   }
 
   // Search staff
   searchStaff(query: string): Observable<StaffResponse> {
-    return this.http.get<StaffResponse>(`${this.baseUrl}/api/staff/?search=${query}`);
+    return this.http.get<StaffResponse>(`${this.apiUrl}/api/staff/?search=${query}`);
   }
 
   // Get active staff only
   getActiveStaff(): Observable<StaffResponse> {
-    return this.http.get<StaffResponse>(`${this.baseUrl}/api/staff/?is_active=true`);
+    return this.http.get<StaffResponse>(`${this.apiUrl}/api/staff/?is_active=true`);
   }
 
-  // Get staff statistics (you might need to implement this endpoint)
+  // Get staff statistics
   getStaffStats(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/api/staff/stats/`);
+    return this.http.get<any>(`${this.apiUrl}/api/staff/stats/`);
   }
 }

@@ -1,0 +1,165 @@
+/* features/home/pages/home-page/home-component.css */
+
+/* Hero Section Animation */
+.hero-gradient {
+  background: linear-gradient(135deg,
+    rgba(79, 70, 229, 0.1) 0%,
+    rgba(124, 58, 237, 0.05) 50%,
+    rgba(236, 72, 153, 0.02) 100%);
+}
+
+/* Feature Card Hover Effect */
+.feature-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: rgba(79, 70, 229, 0.3);
+  background: white;
+}
+
+/* Stat Counter Animation */
+.stat-item {
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(124, 58, 237, 0.03));
+}
+
+.stat-item:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.05));
+}
+
+/* Director Card Glass Effect */
+.director-glass {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+/* Timeline Event Badges */
+.event-badge {
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+}
+
+.event-badge.upcoming {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.event-badge.completed {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+/* Gradient Text Animation */
+.animated-gradient {
+  background: linear-gradient(90deg,
+    #4f46e5,
+    #7c3aed,
+    #db2777,
+    #7c3aed,
+    #4f46e5);
+  background-size: 300% 100%;
+  animation: gradientFlow 8s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Hover Scale Animation */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Loading Animation */
+.loading-shimmer {
+  background: linear-gradient(90deg,
+    rgba(226, 232, 240, 0.5) 25%,
+    rgba(226, 232, 240, 0.8) 50%,
+    rgba(226, 232, 240, 0.5) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Smooth Transitions */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button Gradient Animation */
+.btn-gradient {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent);
+  transition: left 0.7s;
+}
+
+.btn-gradient:hover::before {
+  left: 100%;
+}
+
+/* Card Border Animation */
+.border-animate {
+  position: relative;
+  overflow: hidden;
+}
+
+.border-animate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    #4f46e5,
+    transparent);
+  transition: left 0.6s;
+}
+
+.border-animate:hover::before {
+  left: 100%;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .responsive-text {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+}

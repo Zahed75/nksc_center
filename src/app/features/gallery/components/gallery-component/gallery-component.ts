@@ -1,8 +1,14 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { GalleryService, GalleryEvent, GalleryCategory, YearOption, StatsResponse } from '../../../../core/api/service/gallery/gallery-service';
+import {
+  GalleryService,
+  GalleryEvent,
+  GalleryCategory,
+  YearOption,
+  StatsResponse
+} from '../../../../core/api/service//gallery/gallery-service';
 
 @Component({
   selector: 'app-gallery-component',
@@ -41,14 +47,28 @@ export class GalleryComponent implements OnInit, OnDestroy {
   currentPage = 1;
   itemsPerPage = 12;
   totalPages = 1;
+  totalItems = 0;
+
+  // Event images cache
+  private eventImagesCache: Map<number, string[]> = new Map();
+
+  // SSR compatibility
+  private isBrowser: boolean = false;
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private galleryService: GalleryService) {}
+  constructor(
+    private galleryService: GalleryService,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
     this.loadGalleryData();
-    this.checkScreenSize();
+    if (this.isBrowser) {
+      this.checkScreenSize();
+    }
   }
 
   ngOnDestroy() {
@@ -57,11 +77,13 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize')
   onResize() {
-    this.checkScreenSize();
+    if (this.isBrowser) {
+      this.checkScreenSize();
+    }
   }
 
   private checkScreenSize() {
-    if (window.innerWidth < 768) {
+    if (this.isBrowser && window.innerWidth < 768) {
       this.viewMode = 'grid';
     }
   }
@@ -113,16 +135,17 @@ export class GalleryComponent implements OnInit, OnDestroy {
         if (response.success) {
           this.galleryEvents = response.data;
           this.filteredEvents = [...this.galleryEvents];
+          this.totalItems = response.count;
           this.calculatePagination();
           this.isLoading = false;
         } else {
-          this.error = 'গ্যালারি লোড করতে সমস্যা হয়েছে';
+          this.error = 'Failed to load gallery';
           this.isLoading = false;
         }
       },
       error: (error) => {
         console.error('Error loading gallery:', error);
-        this.error = 'গ্যালারি লোড করতে সমস্যা হয়েছে';
+        this.error = 'Failed to load gallery';
         this.isLoading = false;
       }
     });
@@ -160,23 +183,25 @@ export class GalleryComponent implements OnInit, OnDestroy {
       params.featured = true;
     }
 
-    // Add limit for pagination
+    // Add pagination parameters
+    params.page = this.currentPage;
     params.limit = this.itemsPerPage;
 
     const sub = this.galleryService.filterGallery(params).subscribe({
       next: (response) => {
         if (response.success) {
           this.filteredEvents = response.data;
+          this.totalItems = response.count;
           this.calculatePagination();
           this.isLoading = false;
         } else {
-          this.error = 'ফিল্টার প্রয়োগ করতে সমস্যা হয়েছে';
+          this.error = 'Failed to apply filters';
           this.isLoading = false;
         }
       },
       error: (error) => {
         console.error('Error filtering gallery:', error);
-        this.error = 'ফিল্টার প্রয়োগ করতে সমস্যা হয়েছে';
+        this.error = 'Failed to apply filters';
         this.isLoading = false;
       }
     });
@@ -190,9 +215,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.selectedCategory = 'all';
     this.selectedYear = null;
     this.sortBy = 'latest';
-    this.filteredEvents = [...this.galleryEvents];
     this.currentPage = 1;
-    this.calculatePagination();
+    this.loadGalleryData();
   }
 
   // Sort events
@@ -216,7 +240,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   // Calculate pagination
   calculatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredEvents.length / this.itemsPerPage);
+    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   // Get paginated events
@@ -230,13 +254,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.applyFilters();
+      if (this.isBrowser) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   }
 
   // Get featured events
   getFeaturedEvents(): GalleryEvent[] {
-    return this.galleryEvents.filter(event => event.is_featured);
+    return this.galleryEvents.filter(event => event.is_featured).slice(0, 4);
   }
 
   // Get category color
@@ -262,6 +289,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   // Handle image error
   handleImageError(event: any): void {
+    if (!this.isBrowser) return;
+
     const imgElement = event.target;
     imgElement.style.display = 'none';
 
@@ -270,7 +299,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     fallbackDiv.innerHTML = `
       <div class="text-center text-gray-400">
         <i class="pi pi-image text-3xl mb-2"></i>
-        <p class="text-sm bangla-font">ছবি লোড হয়নি</p>
+        <p class="text-sm">Image failed to load</p>
       </div>
     `;
 
@@ -282,7 +311,34 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.selectedEvent = event;
     this.currentImageIndex = imageIndex;
     this.isLightboxOpen = true;
-    document.body.style.overflow = 'hidden';
+
+    if (this.isBrowser) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Load event images when opening lightbox
+    if (event.id && !this.eventImagesCache.has(event.id)) {
+      this.loadEventImages(event.id);
+    }
+  }
+
+  // Load event images
+  private loadEventImages(eventId: number): void {
+    this.galleryService.getEventImages(eventId).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.eventImagesCache.set(eventId, response.data);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading event images:', error);
+      }
+    });
+  }
+
+  // Get event images
+  getEventImages(eventId: number): string[] {
+    return this.eventImagesCache.get(eventId) || [];
   }
 
   // Close lightbox
@@ -290,7 +346,10 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.isLightboxOpen = false;
     this.selectedEvent = null;
     this.currentImageIndex = 0;
-    document.body.style.overflow = 'auto';
+
+    if (this.isBrowser) {
+      document.body.style.overflow = 'auto';
+    }
   }
 
   // Navigate to next image
@@ -309,28 +368,33 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   // Format date
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('bn-BD', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return dateString;
+    }
   }
 
   // Get short description
   getShortDescription(description: string): string {
+    if (!description) return '';
     return description.length > 100 ? description.substring(0, 100) + '...' : description;
   }
 
   // Get total events count
   getTotalEvents(): number {
-    return this.galleryEvents.length;
+    return this.stats?.total_events || this.galleryEvents.length;
   }
 
   // Get category name
   getCategoryName(categoryId: number): string {
     const category = this.categories.find(cat => cat.id === categoryId);
-    return category ? category.name_display : 'অন্যান্য';
+    return category ? category.name_display : 'Other';
   }
 
   // Get events by category
@@ -341,17 +405,57 @@ export class GalleryComponent implements OnInit, OnDestroy {
     ).length;
   }
 
-  // Generate image grid
-  generateImageGrid(totalImages: number): string[] {
-    // This is a placeholder for actual images
-    // In a real implementation, you would fetch actual image URLs
-    const placeholderImages = [
-      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
-    ];
+  // Get events by year
+  getEventsByYear(year: number): number {
+    return this.galleryEvents.filter(event => event.year === year).length;
+  }
 
-    return Array(Math.min(totalImages, 4)).fill('').map((_, i) => placeholderImages[i % 4]);
+  // View event details
+  viewEventDetails(slug: string): void {
+    this.galleryService.getEventBySlug(slug).subscribe({
+      next: (response) => {
+        console.log('Event details:', response);
+      },
+      error: (error) => {
+        console.error('Error loading event details:', error);
+      }
+    });
+  }
+
+  // Load more events
+  loadMoreEvents(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.applyFilters();
+    }
+  }
+
+  // Refresh gallery data
+  refreshGallery(): void {
+    this.loadGalleryData();
+  }
+
+  // Handle search
+  onSearch(): void {
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  // Get category statistics
+  getCategoryStats(): Record<string, number> {
+    const stats: Record<string, number> = {};
+    this.categories.forEach(category => {
+      stats[category.slug] = this.getEventsByCategory(category.slug);
+    });
+    return stats;
+  }
+
+  // Get year statistics
+  getYearStats(): Record<number, number> {
+    const stats: Record<number, number> = {};
+    this.years.forEach(year => {
+      stats[year.value] = this.getEventsByYear(year.value);
+    });
+    return stats;
   }
 }
