@@ -84,13 +84,13 @@ export class AboutComponent implements OnInit, OnDestroy {
 
           this.isLoading = false;
         } else {
-          this.error = 'ডেটা লোড করতে সমস্যা হয়েছে';
+          this.error = 'Failed to load data. Please try again.';
           this.isLoading = false;
         }
       },
       error: (error) => {
         console.error('Error loading about data:', error);
-        this.error = 'ডেটা লোড করতে সমস্যা হয়েছে';
+        this.error = 'Failed to load data. Please check your connection and try again.';
         this.isLoading = false;
       }
     });
@@ -118,7 +118,7 @@ export class AboutComponent implements OnInit, OnDestroy {
     if (this.currentDirectors.length > 0 && this.currentDirectors[0].image) {
       return this.currentDirectors[0].image;
     }
-    return '/assets/images/dr.png'; // Fallback image
+    return '/assets/images/director-placeholder.jpg'; // Fallback image
   }
 
   // Handle image error
@@ -135,7 +135,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   // Send email
   sendEmail(email: string): void {
     if (email) {
-      window.location.href = `mailto:${email}`;
+      window.location.href = `mailto:${email}?subject=Inquiry%20about%20Nazmul%20Karim%20Study%20Center`;
     }
   }
 
@@ -154,5 +154,13 @@ export class AboutComponent implements OnInit, OnDestroy {
   // Refresh data
   refreshData(): void {
     this.loadAllAboutData();
+  }
+
+  // Scroll to section
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

@@ -1,51 +1,72 @@
 <!-- features/about/components/about-component/about-component.html -->
 <div class="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50/50">
   <!-- Hero Section -->
-  <section class="relative pt-32 pb-24 overflow-hidden">
+  <section class="relative pt-28 pb-20 overflow-hidden">
     <!-- Background Pattern -->
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5"></div>
-    <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-full -translate-y-48 translate-x-48 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-primary/10 to-purple-500/10 rounded-full translate-y-48 -translate-x-48 blur-3xl"></div>
+    <div class="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-accent/5"></div>
+    <div class="absolute top-0 right-0 w-64 h-64 bg-linear-to-br from-primary/10 to-accent/10 rounded-full -translate-y-32 translate-x-32 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-primary/10 to-accent/10 rounded-full translate-y-32 -translate-x-32 blur-3xl"></div>
 
-    <div class="container relative mx-auto px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="glass-effect rounded-3xl p-8 md:p-12 border-animate overflow-hidden">
+    <div class="container relative mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50 overflow-hidden">
           <!-- Animated Background Elements -->
-          <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/10 to-purple-500/10 rounded-full -translate-y-32 translate-x-32 blur-3xl"></div>
+          <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-primary/10 to-accent/10 rounded-full -translate-y-24 translate-x-24 blur-3xl"></div>
 
           <div class="relative">
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-full border border-primary/20 mb-8">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20 mb-8">
               <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-              <span class="text-sm font-medium text-primary">প্রতিষ্ঠা ২০০০</span>
+              <span class="text-sm font-semibold text-primary tracking-wide uppercase">Established 2000</span>
             </div>
 
             <!-- Main Heading -->
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight bangla-font">
-              <span class="block">নাজমুল করিম</span>
-              <span class="gradient-text block mt-2">স্টাডি সেন্টার</span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              <span class="block text-gray-900">Nazmul Karim</span>
+              <span class="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent block mt-2">
+                Study Center
+              </span>
             </h1>
 
             <!-- Description -->
-            <p class="text-xl text-gray-700 mb-10 max-w-3xl leading-relaxed bangla-font">
-              বাংলাদেশ সমাজবিজ্ঞানের পথিকৃৎ <span class="font-semibold text-primary">অধ্যাপক ড. এ. কে. নাজমুল করিমের</span>
-              স্মৃতি, দর্শন ও অবদান সংরক্ষণ ও প্রচারের জন্য নিবেদিত একটি গবেষণা প্রতিষ্ঠান
+            <p class="text-lg md:text-xl text-gray-700 mb-10 max-w-3xl leading-relaxed">
+              An academic research institute dedicated to preserving and promoting the legacy, philosophy,
+              and contributions of <span class="font-semibold text-primary">Professor Dr. A. K. Nazmul Karim</span>,
+              a pioneer in Bangladeshi sociology.
             </p>
 
             <!-- Stats Bar -->
             <div class="flex flex-wrap gap-4 mb-8">
-              <div class="flex items-center gap-2 px-4 py-3 bg-white/80 rounded-xl border border-gray-200/50">
-                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span class="text-sm font-medium text-gray-700 bangla-font">ঢাকা বিশ্ববিদ্যালয়</span>
+              <div class="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                <span class="text-sm font-medium text-gray-700">University of Dhaka</span>
               </div>
-              <div class="flex items-center gap-2 px-4 py-3 bg-white/80 rounded-xl border border-gray-200/50">
+              <div class="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <i class="pi pi-users text-primary text-sm"></i>
-                <span class="text-sm font-medium text-gray-700 bangla-font">গবেষণা কেন্দ্র</span>
+                <span class="text-sm font-medium text-gray-700">Research Center</span>
               </div>
-              <div class="flex items-center gap-2 px-4 py-3 bg-white/80 rounded-xl border border-gray-200/50">
+              <div class="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <i class="pi pi-book text-primary text-sm"></i>
-                <span class="text-sm font-medium text-gray-700 bangla-font">আকাডেমিক প্রতিষ্ঠান</span>
+                <span class="text-sm font-medium text-gray-700">Academic Institution</span>
               </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="flex flex-wrap gap-4 mt-8">
+              <a
+                href="#contact"
+                class="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors duration-300 font-medium hover:shadow-lg inline-flex items-center gap-2"
+              >
+                <i class="pi pi-send"></i>
+                Contact Us
+              </a>
+              <a
+                href="#directors"
+                class="px-6 py-3 bg-white text-primary border border-primary rounded-xl hover:bg-primary/5 transition-colors duration-300 font-medium inline-flex items-center gap-2"
+              >
+                <i class="pi pi-users"></i>
+                Meet Our Team
+              </a>
             </div>
           </div>
         </div>
@@ -55,16 +76,12 @@
 
   <!-- Loading State -->
   @if (isLoading) {
-    <div class="py-20">
-      <div class="container mx-auto px-4">
+    <div class="py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            @for (i of [1,2,3]; track i) {
-              <div class="loading-shimmer rounded-2xl h-64"></div>
-            }
-          </div>
-          <div class="text-center mt-8">
-            <p class="text-gray-600 bangla-font">তথ্য লোড হচ্ছে...</p>
+          <div class="text-center">
+            <div class="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-6"></div>
+            <p class="text-gray-600">Loading information...</p>
           </div>
         </div>
       </div>
@@ -73,20 +90,20 @@
 
   <!-- Error State -->
   @if (error && !isLoading) {
-    <div class="py-20">
-      <div class="container mx-auto px-4">
+    <div class="py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto">
-          <div class="glass-effect rounded-3xl p-8 border border-red-200">
-            <div class="w-20 h-20 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div class="bg-white rounded-2xl p-8 border border-red-200 shadow-lg">
+            <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <i class="pi pi-exclamation-triangle text-3xl text-red-600"></i>
             </div>
-            <h3 class="text-2xl font-bold text-red-600 mb-4 bangla-font text-center">ডেটা লোড করতে সমস্যা</h3>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Data Loading Error</h3>
             <p class="text-gray-600 mb-8 text-center">{{ error }}</p>
             <button
               (click)="refreshData()"
-              class="w-full md:w-auto mx-auto flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-purple-600 text-white rounded-xl hover:shadow-xl transition-all duration-300 bangla-font font-semibold hover:scale-[1.02]">
+              class="w-full md:w-auto mx-auto flex items-center justify-center gap-3 px-8 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-[1.02]">
               <i class="pi pi-refresh text-lg"></i>
-              আবার চেষ্টা করুন
+              Try Again
             </button>
           </div>
         </div>
@@ -96,32 +113,30 @@
 
   @if (!isLoading && !error) {
     <!-- About Cards -->
-    <section class="py-20">
-      <div class="container mx-auto px-4">
+    <section class="py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bangla-font">
-              আমাদের সম্পর্কে
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              About the Center
             </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-              নাজমুল করিম স্টাডি সেন্টারের ইতিহাস, উদ্দেশ্য ও লক্ষ্য
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+              Our mission, vision, and academic journey
             </p>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             @for (section of aboutSections; track section.id) {
-              <div class="group glass-effect rounded-2xl p-8 hover-lift border-animate">
-                <div class="flex items-start gap-6">
-                  <div class="w-16 h-16 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <div class="group bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/20">
+                <div class="flex flex-col items-center text-center">
+                  <div class="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <i [class]="section.icon + ' text-2xl text-primary'"></i>
                   </div>
-                  <div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3 bangla-font">{{ section.title }}</h3>
-                    @if (section.subtitle) {
-                      <p class="text-primary text-lg font-medium mb-4">{{ section.subtitle }}</p>
-                    }
-                    <div class="text-gray-600 leading-relaxed bangla-font" [innerHTML]="sanitizeHtml(section.content)"></div>
-                  </div>
+                  <h3 class="text-xl font-bold text-gray-900 mb-3">{{ section.title }}</h3>
+                  @if (section.subtitle) {
+                    <p class="text-primary text-lg font-medium mb-4">{{ section.subtitle }}</p>
+                  }
+                  <div class="text-gray-600 leading-relaxed text-center" [innerHTML]="sanitizeHtml(section.content)"></div>
                 </div>
               </div>
             }
@@ -132,19 +147,19 @@
 
     <!-- Statistics -->
     @if (statistics.length > 0) {
-      <section class="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div class="container mx-auto px-4">
+      <section class="py-16 bg-gradient-to-b from-white to-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
           <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
               @for (stat of statistics; track stat.id) {
-                <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
-                  <div class="w-16 h-16 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div class="bg-white rounded-2xl p-8 text-center hover:shadow-lg transition-shadow duration-300">
+                  <div class="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <i [class]="stat.icon + ' text-2xl text-primary'"></i>
                   </div>
-                  <div class="text-4xl font-bold text-gray-900 mb-2 stat-counter">
+                  <div class="text-3xl font-bold text-gray-900 mb-2">
                     {{ stat.prefix }}{{ stat.value }}{{ stat.suffix }}
                   </div>
-                  <p class="text-gray-600 bangla-font text-sm">{{ stat.label }}</p>
+                  <p class="text-gray-600 text-sm font-medium">{{ stat.label }}</p>
                 </div>
               }
             </div>
@@ -155,44 +170,46 @@
 
     <!-- Timeline -->
     @if (timelineEvents.length > 0) {
-      <section class="py-20">
-        <div class="container mx-auto px-4">
+      <section class="py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
           <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bangla-font">
-                সময়রেখা
+            <div class="text-center mb-12">
+              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Our Journey
               </h2>
-              <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-                নাজমুল করিম স্টাডি সেন্টারের যাত্রা ও উন্নয়নের গুরুত্বপূর্ণ মাইলফলক
+              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Key milestones in the development of Nazmul Karim Study Center
               </p>
             </div>
 
             <div class="relative">
               <!-- Timeline Line -->
-              <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-1 md:w-2 bg-gradient-to-b from-primary via-purple-500 to-pink-500 h-full rounded-full"></div>
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gradient-to-b from-primary via-accent to-emerald-500 h-full"></div>
 
               <!-- Timeline Events -->
               <div class="space-y-12">
-                @for (event of timelineEvents; track event.id) {
-                  <div class="relative flex flex-col md:flex-row items-center">
+                @for (event of timelineEvents; track event.id; let index = $index) {
+                  <div class="relative flex items-center">
                     <!-- Year -->
-                    <div class="w-full md:w-2/5 mb-6 md:mb-0">
-                      <div class="flex items-center gap-4">
-                        <div class="timeline-dot rounded-full"></div>
-                        <span class="text-2xl font-bold text-primary bangla-font">{{ event.year }}</span>
+                    <div class="w-1/2 pr-8 text-right">
+                      <div class="flex items-center justify-end gap-4">
+                        <span class="text-xl font-bold text-primary">{{ event.year }}</span>
+                        <div class="w-4 h-4 bg-white border-4 border-primary rounded-full"></div>
                       </div>
                     </div>
 
                     <!-- Content -->
-                    <div class="w-full md:w-3/5">
-                      <div class="glass-effect rounded-2xl p-6 hover-lift ml-0 md:ml-8">
-                        <div class="flex items-center gap-4 mb-4">
-                          <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-xl flex items-center justify-center">
+                    <div class="w-1/2 pl-8">
+                      <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-start gap-4">
+                          <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
                             <i [class]="event.icon + ' text-primary text-lg'"></i>
                           </div>
-                          <h4 class="text-xl font-bold text-gray-900 bangla-font">{{ event.title }}</h4>
+                          <div>
+                            <h4 class="text-lg font-bold text-gray-900 mb-2">{{ event.title }}</h4>
+                            <p class="text-gray-600 text-sm">{{ event.description }}</p>
+                          </div>
                         </div>
-                        <p class="text-gray-600 bangla-font">{{ event.description }}</p>
                       </div>
                     </div>
                   </div>
@@ -205,56 +222,56 @@
     }
 
     <!-- Directors Section -->
-    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div class="container mx-auto px-4">
+    <section id="directors" class="py-16 bg-gradient-to-b from-gray-50 to-white">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bangla-font">
-              পরিচালনা পর্ষদ
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Leadership
             </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-              নাজমুল করিম স্টাডি সেন্টারের গতিশীল নেতৃত্ব
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+              Meet our dedicated team of directors
             </p>
           </div>
 
           <!-- Director Tabs -->
           <div class="flex justify-center mb-12">
-            <div class="inline-flex bg-gray-100 rounded-2xl p-1">
+            <div class="inline-flex bg-gray-100 rounded-xl p-1">
               <button
                 (click)="switchDirectorTab('current')"
-                [class]="'px-8 py-3 rounded-xl transition-all duration-300 font-medium ' +
+                [class]="'px-8 py-3 rounded-lg transition-all duration-300 font-medium ' +
                   (activeDirectorTab === 'current' ?
                     'bg-white text-primary shadow-lg' :
                     'text-gray-600 hover:text-gray-900')">
-                বর্তমান পরিচালক
+                Current Director
               </button>
               <button
                 (click)="switchDirectorTab('previous')"
-                [class]="'px-8 py-3 rounded-xl transition-all duration-300 font-medium ' +
+                [class]="'px-8 py-3 rounded-lg transition-all duration-300 font-medium ' +
                   (activeDirectorTab === 'previous' ?
                     'bg-white text-primary shadow-lg' :
                     'text-gray-600 hover:text-gray-900')">
-                সাবেক পরিচালকবৃন্দ
+                Former Directors
               </button>
             </div>
           </div>
 
           <!-- Current Director -->
           @if (activeDirectorTab === 'current' && currentDirectors.length > 0) {
-            <div class="glass-effect rounded-3xl overflow-hidden">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl">
               <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
                 <!-- Image Section -->
-                <div class="relative h-80 lg:h-auto">
-                  <div class="absolute inset-0 bg-gradient-to-br from-primary to-purple-600"></div>
+                <div class="relative h-64 lg:h-auto bg-linear-to-br from-primary to-accent">
+                  <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
                   <div class="relative h-full flex items-center justify-center p-8">
-                    <div class="w-48 h-48 rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl">
+                    <div class="w-48 h-48 rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl">
                       <img
                         [src]="getCurrentDirectorImage()"
                         [alt]="currentDirectors[0].name"
                         class="w-full h-full object-cover"
                         (error)="handleImageError($event)"
                       >
-                      <div class="w-full h-full bg-gradient-to-br from-primary/20 to-purple-600/20 flex items-center justify-center text-white text-5xl" style="display: none;">
+                      <div class="w-full h-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center text-white text-5xl" style="display: none;">
                         <i class="pi pi-user"></i>
                       </div>
                     </div>
@@ -265,18 +282,18 @@
                 <div class="lg:col-span-2 p-8 lg:p-12">
                   <div class="space-y-6">
                     <div>
-                      <h3 class="text-3xl font-bold text-gray-900 mb-2 bangla-font">{{ currentDirectors[0].name }}</h3>
+                      <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ currentDirectors[0].name }}</h3>
                       <div class="flex flex-wrap gap-3 mb-4">
                         <span class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
                           {{ currentDirectors[0].position }}
                         </span>
-                        <span class="px-4 py-2 bg-purple-500/10 text-purple-600 rounded-full text-sm font-medium">
+                        <span class="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">
                           {{ currentDirectors[0].period }}
                         </span>
                       </div>
 
                       @if (currentDirectors[0].bio) {
-                        <div class="text-gray-600 leading-relaxed mb-6 bangla-font" [innerHTML]="sanitizeHtml(currentDirectors[0].bio)"></div>
+                        <div class="text-gray-600 leading-relaxed mb-6" [innerHTML]="sanitizeHtml(currentDirectors[0].bio)"></div>
                       }
 
                       @if (currentDirectors[0].qualifications) {
@@ -292,9 +309,9 @@
                       @if (currentDirectors[0].email) {
                         <button
                           (click)="sendEmail(currentDirectors[0].email)"
-                          class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary to-purple-600 text-white rounded-xl hover:shadow-xl transition-all duration-300 font-medium hover:scale-[1.02]">
+                          class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium hover:scale-[1.02]">
                           <i class="pi pi-envelope"></i>
-                          <span>ইমেইল করুন</span>
+                          <span>Send Email</span>
                         </button>
                       }
                       @if (currentDirectors[0].phone) {
@@ -302,7 +319,7 @@
                           (click)="callPhone(currentDirectors[0].phone)"
                           class="flex items-center gap-3 px-6 py-3 bg-white border border-primary text-primary rounded-xl hover:bg-primary/5 transition-all duration-300 font-medium hover:scale-[1.02]">
                           <i class="pi pi-phone"></i>
-                          <span>কল করুন</span>
+                          <span>Call Now</span>
                         </button>
                       }
                     </div>
@@ -316,11 +333,11 @@
           @if (activeDirectorTab === 'previous' && previousDirectors.length > 0) {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               @for (director of previousDirectors; track director.id) {
-                <div class="group glass-effect rounded-2xl p-6 text-center hover-lift border-animate">
-                  <div class="w-20 h-20 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div class="group bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/20">
+                  <div class="w-16 h-16 bg-linear-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <i class="pi pi-user text-2xl text-primary"></i>
                   </div>
-                  <h4 class="font-bold text-gray-900 text-lg mb-2 bangla-font">{{ director.name }}</h4>
+                  <h4 class="font-bold text-gray-900 text-lg mb-2">{{ director.name }}</h4>
                   <p class="text-primary text-sm font-medium mb-3">{{ director.position }}</p>
                   <span class="text-gray-500 text-sm">{{ director.period }}</span>
                 </div>
@@ -333,29 +350,29 @@
 
     <!-- Facilities -->
     @if (facilities.length > 0) {
-      <section class="py-20">
-        <div class="container mx-auto px-4">
+      <section class="py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
           <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bangla-font">
-                সুযোগ-সুবিধা
+            <div class="text-center mb-12">
+              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Our Facilities
               </h2>
-              <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-                গবেষক ও শিক্ষার্থীদের জন্য প্রয়োজনীয় সকল সুবিধা
+              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                State-of-the-art resources for researchers and students
               </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               @for (facility of facilities; track facility.id) {
-                <div class="group glass-effect rounded-2xl p-6 hover-lift border-animate">
-                  <div class="w-14 h-14 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div class="group bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/20">
+                  <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <i [class]="facility.icon + ' text-xl text-primary'"></i>
                   </div>
-                  <h3 class="text-xl font-bold text-gray-900 mb-3 bangla-font">{{ facility.title }}</h3>
+                  <h3 class="text-xl font-bold text-gray-900 mb-3">{{ facility.title }}</h3>
                   <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ facility.description }}</p>
 
                   @if (facility.location || facility.room_number) {
-                    <div class="pt-4 border-t border-gray-200/50">
+                    <div class="pt-4 border-t border-gray-200">
                       @if (facility.location) {
                         <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
                           <i class="pi pi-map-marker"></i>
@@ -365,7 +382,7 @@
                       @if (facility.room_number) {
                         <div class="flex items-center gap-2 text-sm text-gray-500">
                           <i class="pi pi-home"></i>
-                          <span>{{ facility.room_number }}</span>
+                          <span>Room {{ facility.room_number }}</span>
                         </div>
                       }
                     </div>
@@ -379,35 +396,62 @@
     }
 
     <!-- Contact Information -->
-    @if (contactInfo.length > 0) {
-      <section class="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div class="container mx-auto px-4">
-          <div class="max-w-6xl mx-auto">
-            <div class="glass-effect rounded-3xl p-8 md:p-12">
-              <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bangla-font">
-                  যোগাযোগ
-                </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto bangla-font">
-                  আমাদের সাথে যোগাযোগের মাধ্যমসমূহ
+    <section id="contact" class="py-16 bg-gradient-to-b from-white to-gray-50">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+          <div class="bg-white rounded-2xl p-8 md:p-12 shadow-xl">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Contact Information
+              </h2>
+              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Get in touch with us through various channels
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              @for (contact of contactInfo; track contact.id) {
+                <div class="bg-gray-50 rounded-2xl p-6 text-center hover:bg-white hover:shadow-lg transition-all duration-300">
+                  <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i [class]="contact.icon + ' text-xl text-primary'"></i>
+                  </div>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ contact.label }}</h3>
+                  <p class="text-gray-600">{{ contact.value }}</p>
+                </div>
+              }
+            </div>
+
+            <!-- Additional Contact Form -->
+            <div class="mt-12 pt-12 border-t border-gray-200">
+              <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Send us a Message</h3>
+                <p class="text-gray-600 max-w-lg mx-auto">
+                  Have questions? Feel free to reach out to us directly.
                 </p>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                @for (contact of contactInfo; track contact.id) {
-                  <div class="text-center p-6 rounded-2xl bg-white/50 hover:bg-white transition-all duration-300 hover:scale-[1.02]">
-                    <div class="w-14 h-14 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <i [class]="contact.icon + ' text-xl text-primary'"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">{{ contact.label }}</h3>
-                    <p class="text-gray-600">{{ contact.value }}</p>
-                  </div>
-                }
+              <div class="max-w-md mx-auto">
+                <div class="flex flex-wrap gap-4 justify-center">
+                  <button
+                    (click)="sendEmail('info@nazmulkareemstudycenter.edu.bd')"
+                    class="px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors duration-300 font-medium inline-flex items-center gap-2"
+                  >
+                    <i class="pi pi-envelope"></i>
+                    Email Inquiry
+                  </button>
+                  <button
+                    onclick="window.location.href='tel:+880XXXXXXXXXX'"
+                    class="px-8 py-3 bg-white text-primary border border-primary rounded-xl hover:bg-primary/5 transition-colors duration-300 font-medium inline-flex items-center gap-2"
+                  >
+                    <i class="pi pi-phone"></i>
+                    Call Office
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    }
+      </div>
+    </section>
   }
 </div>
