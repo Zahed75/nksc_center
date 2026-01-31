@@ -303,4 +303,16 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
     return pages;
   }
+
+  // Add these methods to your GalleryComponent class:
+
+// Add these methods after existing methods in your component
+  getDisplayStart(): number {
+    return (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  getDisplayEnd(): number {
+    const end = this.currentPage * this.itemsPerPage;
+    return Math.min(end, this.totalItems);
+  }
 }
