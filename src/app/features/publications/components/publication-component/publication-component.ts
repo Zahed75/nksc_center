@@ -1,4 +1,5 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+// publication-component.ts
+import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -40,6 +41,9 @@ export class PublicationComponent implements OnInit, OnDestroy {
   pdfSrc: SafeResourceUrl = '';
   isBrowser: boolean;
   isFullscreen = false;
+
+  // PDF Viewer reference
+  @ViewChild('pdfIframe') pdfIframe!: ElementRef;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -171,7 +175,7 @@ export class PublicationComponent implements OnInit, OnDestroy {
     this.filteredPublications = [...this.publications];
   }
 
-  // PDF Preview Methods
+  // PDF Preview Methods with Security
   openPdfViewer(publication: Journal) {
     if (!this.isBrowser) {
       window.open(publication.pdf_file, '_blank');
@@ -183,10 +187,6 @@ export class PublicationComponent implements OnInit, OnDestroy {
     this.currentPdfPage = 1;
     this.zoomLevel = 1.0;
     this.isFullscreen = false;
-
-    // Sanitize the PDF URL for iframe
-    const pdfUrl = publication.pdf_file;
-    this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl + '#toolbar=0&navpanes=0');
 
     // Prevent body scroll when PDF viewer is open
     document.body.style.overflow = 'hidden';
@@ -200,6 +200,80 @@ export class PublicationComponent implements OnInit, OnDestroy {
 
     // Restore body scroll
     document.body.style.overflow = '';
+  }
+
+  // Get secure PDF URL with restrictions
+  getSecurePdfUrl(pdfUrl: string): SafeResourceUrl {
+    // Add parameters to restrict printing and downloading
+    const secureUrl = pdfUrl +
+      '#toolbar=0' +           // Hide toolbar
+      '&navpanes=0' +          // Hide navigation panes
+      '&scrollbar=0' +         // Hide scrollbars
+      '&view=FitH' +           // Fit to width
+      '&disablePrint=true' +   // Disable print (Chrome)
+      '&disableDownload=true'; // Disable download (Chrome)
+
+    return this.sanitizer.bypassSecurityTrustResourceUrl(secureUrl);
+  }
+
+  // Security event handlers
+  onRightClick(event: MouseEvent): boolean {
+    event.preventDefault();
+    return false;
+  }
+
+  onSelectStart(event: Event): boolean {
+    event.preventDefault();
+    return false;
+  }
+
+  onDragStart(event: DragEvent): boolean {
+    event.preventDefault();
+    return false;
+  }
+
+  onKeyDown(event: KeyboardEvent): boolean {
+    // Disable print screen, save shortcuts
+    if ((event.ctrlKey || event.metaKey) &&
+      (event.key === 'p' || event.key === 's' || event.key === 'c')) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  onIframeLoad(event: Event) {
+    // Additional security measures after iframe loads
+    if (this.pdfIframe && this.pdfIframe.nativeElement) {
+      try {
+        // Try to inject additional security CSS
+        const iframeDoc = this.pdfIframe.nativeElement.contentDocument;
+        if (iframeDoc) {
+          const style = iframeDoc.createElement('style');
+          style.textContent = `
+            body {
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              pointer-events: none;
+            }
+            * {
+              -webkit-touch-callout: none;
+              -webkit-user-select: none;
+              -khtml-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+            }
+          `;
+          iframeDoc.head.appendChild(style);
+        }
+      } catch (error) {
+        // Cross-origin restriction - can't access iframe content
+        console.log('Security restrictions applied to PDF viewer');
+      }
+    }
   }
 
   // Fullscreen functionality
@@ -286,9 +360,10 @@ export class PublicationComponent implements OnInit, OnDestroy {
 
   // Get journal badge based on volume
   getJournalBadge(volume: string): string {
-    if (volume === '14') return 'bg-red-100 text-red-800 border border-red-200';
-    if (volume === '13') return 'bg-indigo-100 text-indigo-800 border border-indigo-200';
-    return 'bg-gray-100 text-gray-800 border border-gray-200';
+    if (volume === '14') return 'bg-red-500 text-white';
+    if (volume === '13') return 'bg-indigo-500 text-white';
+    if (volume === '12') return 'bg-emerald-500 text-white';
+    return 'bg-blue-500 text-white';
   }
 
   // Get journal badge text

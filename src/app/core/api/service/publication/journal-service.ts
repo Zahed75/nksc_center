@@ -1,6 +1,8 @@
+// core/api/service/publication/journal-service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../../../../enviornments/enviornment';
 
 export interface Journal {
   id: number;
@@ -67,15 +69,17 @@ export interface FilterResponse {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://api.nkscdu.com'; // Your production URL
+  private baseUrl = environment.apiUrl; // Use environment variable
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('ApiService initialized with baseUrl:', this.baseUrl);
+  }
 
   // Get all journals
   getAllJournals(): Observable<{message: string, code: number, data: Journal[]}> {
-    return this.http.get<{message: string, code: number, data: Journal[]}>(
-      `${this.baseUrl}/api/journals/get-all-journals`
-    );
+    const url = `${this.baseUrl}/api/journals/get-all-journals`;
+    console.log('Fetching journals from:', url);
+    return this.http.get<{message: string, code: number, data: Journal[]}>(url);
   }
 
   // Filter journals with parameters
@@ -90,17 +94,16 @@ export class ApiService {
       }
     });
 
-    return this.http.get<FilterResponse>(
-      `${this.baseUrl}/api/journals/filter/`,
-      { params: httpParams }
-    );
+    const url = `${this.baseUrl}/api/journals/filter/`;
+    console.log('Filtering journals from:', url, 'with params:', params);
+
+    return this.http.get<FilterResponse>(url, { params: httpParams });
   }
 
   // Search journals by keyword
   searchJournals(query: string): Observable<FilterResponse> {
-    return this.http.get<FilterResponse>(
-      `${this.baseUrl}/api/journals/filter/`,
-      { params: { search: query } }
-    );
+    const url = `${this.baseUrl}/api/journals/filter/`;
+    console.log('Searching journals from:', url, 'with query:', query);
+    return this.http.get<FilterResponse>(url, { params: { search: query } });
   }
 }

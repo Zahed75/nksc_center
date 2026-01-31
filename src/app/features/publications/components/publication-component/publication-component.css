@@ -36,3 +36,46 @@ pdf-viewer {
 ::ng-deep .textLayer {
   border-radius: 8px;
 }
+
+
+
+/* publication-component.css */
+/* Security overlay styles */
+.pdf-security-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.02) 10px,
+    rgba(255, 255, 255, 0.02) 20px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Watermark text */
+.watermark {
+  color: rgba(0, 0, 0, 0.1);
+  font-size: 48px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Disable text selection */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
