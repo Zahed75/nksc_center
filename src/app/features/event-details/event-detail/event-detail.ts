@@ -1,4 +1,4 @@
-// event-detail.component.ts
+// event-detail.component.ts - FIXED VERSION
 import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-event-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, SafeUrlPipe],
+  imports: [CommonModule, RouterModule],
   templateUrl: './event-detail.html',
   styleUrls: ['./event-detail.css']
 })
@@ -26,6 +26,9 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   error: string | null = null;
   currentImageIndex = 0;
   showImageModal = false;
+
+  // Safe URLs for videos
+  safeVideoUrls: SafeResourceUrl[] = [];
 
   // Platform detection
   private isBrowser: boolean;
@@ -72,12 +75,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     const eventSub = this.galleryService.getEventBySlug(slug).pipe(
       catchError(error => {
         console.error('❌ Error loading event:', error);
-        console.error('🔧 Error details:', {
-          status: error.status,
-          statusText: error.statusText,
-          url: error.url,
-          message: error.message
-        });
         this.handleError(`Failed to load event. Status: ${error.status} - ${error.statusText}`);
         return of({ success: false, data: null });
       })
@@ -118,10 +115,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     const imagesSub = this.galleryService.getEventImages(slug).pipe(
       catchError(error => {
         console.error('❌ Error loading images:', error);
-        console.error('🔧 Images error details:', {
-          status: error.status,
-          url: error.url
-        });
         return of({ success: false, data: [] });
       })
     ).subscribe({
@@ -134,9 +127,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         if (imgResponse.success) {
           this.images = imgResponse.data || [];
           console.log(`🖼️ Loaded ${this.images.length} images`);
-          if (this.images.length > 0) {
-            console.log('📸 First image URL:', this.images[0].image_url);
-          }
         } else {
           console.warn('⚠️ Images API returned success: false');
         }
@@ -154,10 +144,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     const videosSub = this.galleryService.getEventVideos(slug).pipe(
       catchError(error => {
         console.error('❌ Error loading videos:', error);
-        console.error('🔧 Videos error details:', {
-          status: error.status,
-          url: error.url
-        });
         return of({ success: false, data: [] });
       })
     ).subscribe({
@@ -170,13 +156,9 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         if (vidResponse.success && vidResponse.data) {
           this.videos = this.processVideos(vidResponse.data);
           console.log(`🎬 Loaded ${this.videos.length} videos`);
-          if (this.videos.length > 0) {
-            console.log('📹 First video:', {
-              title: this.videos[0].title,
-              url: this.videos[0].video_url,
-              embed: this.videos[0].embed_url
-            });
-          }
+
+          // Create safe URLs for all videos
+          this.createSafeVideoUrls();
         } else {
           console.warn('⚠️ Videos API returned success: false or no data');
         }
@@ -192,6 +174,46 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(imagesSub);
     this.subscriptions.add(videosSub);
+  }
+
+  /**
+   * Create safe URLs for all videos
+   */
+  private createSafeVideoUrls() {
+    console.log('🛡️ Creating safe URLs for videos...');
+
+    this.safeVideoUrls = this.videos.map((video, index) => {
+      // Try embed_url first, then video_url as fallback
+      const sourceUrl = video.embed_url || video.video_url;
+
+      if (!sourceUrl) {
+        console.warn(`⚠️ Video ${index} has no URL:`, video.title);
+        return this.sanitizer.bypassSecurityTrustResourceUrl('');
+      }
+
+      // Extract video ID
+      const videoId = this.extractYouTubeVideoId(sourceUrl);
+
+      if (videoId) {
+        // Use YouTube embed URL with proper parameters
+        let embedUrl: string;
+
+        if (this.isBrowser) {
+          embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=0&enablejsapi=1&origin=${window.location.origin}`;
+        } else {
+          embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=0&enablejsapi=1`;
+        }
+
+        console.log(`✅ Created embed URL for "${video.title}":`, embedUrl);
+        return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+      }
+
+      // If we can't extract video ID, use the original URL
+      console.warn(`⚠️ Could not extract video ID for "${video.title}", using original URL:`, sourceUrl);
+      return this.sanitizer.bypassSecurityTrustResourceUrl(sourceUrl);
+    });
+
+    console.log('✅ Created safe URLs for all videos:', this.safeVideoUrls.length);
   }
 
   /**
@@ -219,11 +241,16 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         console.log(`   ➕ Set platform to: ${processedVideo.platform}`);
       }
 
-      // Generate embed URL from video URL
+      // Generate embed URL from video URL if needed
       if (processedVideo.video_url && !processedVideo.embed_url) {
         console.log(`   🔄 Converting video URL to embed URL: ${processedVideo.video_url}`);
-        processedVideo.embed_url = this.convertToEmbedUrl(processedVideo.video_url);
-        console.log(`   ✅ New embed URL: ${processedVideo.embed_url}`);
+        const videoId = this.extractYouTubeVideoId(processedVideo.video_url);
+        if (videoId) {
+          processedVideo.embed_url = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+          console.log(`   ✅ New embed URL: ${processedVideo.embed_url}`);
+        } else {
+          console.log(`   ⚠️ Could not convert video URL`);
+        }
       }
 
       // If no embed_url was generated, use the video_url
@@ -237,155 +264,76 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Convert YouTube URL to embed URL
-   * Handles:
-   * - https://www.youtube.com/watch?v=xhhz0Vr_N3w&list=...
-   * - https://youtu.be/xhhz0Vr_N3w
-   * - https://www.youtube.com/embed/xhhz0Vr_N3w
-   */
-  private convertToEmbedUrl(url: string): string {
-    if (!url) {
-      console.warn('⚠️ No URL provided for conversion');
-      return '';
-    }
-
-    console.log('🔄 Converting YouTube URL:', url);
-
-    // If it's already an embed URL, clean it up
-    if (url.includes('youtube.com/embed/')) {
-      console.log('✅ URL is already an embed URL, cleaning...');
-      return this.cleanEmbedUrl(url);
-    }
-
-    // Extract video ID from various YouTube URL formats
-    const videoId = this.extractYouTubeVideoId(url);
-
-    if (videoId) {
-      console.log('✅ Extracted video ID:', videoId);
-      const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
-      console.log('✅ Generated embed URL:', embedUrl);
-      return embedUrl;
-    }
-
-    console.log('❌ Could not extract video ID from URL:', url);
-    return url; // Return original if we can't convert
-  }
-
-  /**
    * Extract YouTube video ID from various URL formats
    */
   private extractYouTubeVideoId(url: string): string {
-    if (!url) {
-      console.warn('⚠️ No URL provided for video ID extraction');
-      return '';
-    }
+    if (!url) return '';
 
     console.log('🔍 Extracting video ID from:', url);
+
     let videoId = '';
 
-    // Format 1: https://www.youtube.com/watch?v=xhhz0Vr_N3w&list=...
-    if (url.includes('youtube.com/watch?v=')) {
-      console.log('📋 Detected format: youtube.com/watch?v=');
-      try {
-        const urlObj = new URL(url);
-        videoId = urlObj.searchParams.get('v') || '';
-        console.log('✅ Extracted from search params:', videoId);
-      } catch (error) {
-        console.error('❌ Error parsing URL:', error);
-      }
-    }
-    // Format 2: https://youtu.be/xhhz0Vr_N3w
-    else if (url.includes('youtu.be/')) {
-      console.log('📋 Detected format: youtu.be/');
-      const pathParts = url.split('youtu.be/')[1]?.split('/');
-      videoId = pathParts ? pathParts[0]?.split('?')[0] : '';
-      console.log('✅ Extracted from path:', videoId);
-    }
-    // Format 3: https://www.youtube.com/embed/xhhz0Vr_N3w
-    else if (url.includes('youtube.com/embed/')) {
-      console.log('📋 Detected format: youtube.com/embed/');
-      const pathParts = url.split('embed/')[1]?.split('/');
-      videoId = pathParts ? pathParts[0]?.split('?')[0] : '';
-      console.log('✅ Extracted from embed path:', videoId);
-    }
-    // Format 4: https://www.youtube.com/v/xhhz0Vr_N3w
-    else if (url.includes('youtube.com/v/')) {
-      console.log('📋 Detected format: youtube.com/v/');
-      const pathParts = url.split('v/')[1]?.split('/');
-      videoId = pathParts ? pathParts[0]?.split('?')[0] : '';
-      console.log('✅ Extracted from v path:', videoId);
-    }
-    else {
-      console.log('❌ Unrecognized YouTube URL format');
+    // Remove any tracking parameters
+    const cleanUrl = url.split('&')[0];
+
+    // Format 1: https://www.youtube.com/watch?v=VIDEO_ID
+    const watchMatch = cleanUrl.match(/youtube\.com\/watch\?v=([^&?/#]+)/i);
+    if (watchMatch) {
+      videoId = watchMatch[1];
+      console.log('✅ Extracted from watch URL:', videoId);
+      return videoId;
     }
 
-    // Clean up video ID (remove any & characters that might have been included)
-    if (videoId.includes('&')) {
-      const original = videoId;
-      videoId = videoId.split('&')[0];
-      console.log(`🧹 Cleaned video ID: "${original}" -> "${videoId}"`);
+    // Format 2: https://youtu.be/VIDEO_ID
+    const shortMatch = cleanUrl.match(/youtu\.be\/([^&?/#]+)/i);
+    if (shortMatch) {
+      videoId = shortMatch[1];
+      console.log('✅ Extracted from short URL:', videoId);
+      return videoId;
     }
 
-    console.log('🎯 Final video ID:', videoId);
-    return videoId;
-  }
+    // Format 3: https://www.youtube.com/embed/VIDEO_ID
+    const embedMatch = cleanUrl.match(/youtube\.com\/embed\/([^&?/#]+)/i);
+    if (embedMatch) {
+      videoId = embedMatch[1];
+      console.log('✅ Extracted from embed URL:', videoId);
+      return videoId;
+    }
 
-  /**
-   * Clean embed URL - remove unnecessary parameters
-   */
-  private cleanEmbedUrl(url: string): string {
-    console.log('🧹 Cleaning embed URL:', url);
-    // Remove everything after ? to add our own parameters
-    const baseUrl = url.split('?')[0];
-    const cleanUrl = `${baseUrl}?rel=0&modestbranding=1&playsinline=1`;
-    console.log('✅ Cleaned URL:', cleanUrl);
-    return cleanUrl;
+    // Format 4: https://www.youtube.com/v/VIDEO_ID
+    const vMatch = cleanUrl.match(/youtube\.com\/v\/([^&?/#]+)/i);
+    if (vMatch) {
+      videoId = vMatch[1];
+      console.log('✅ Extracted from v URL:', videoId);
+      return videoId;
+    }
+
+    console.log('❌ Could not extract video ID from URL');
+    return '';
   }
 
   /**
    * Check if video has a valid YouTube embed URL
    */
   hasValidYouTubeEmbed(video: GalleryVideo): boolean {
-    if (!video) {
-      console.log('❌ No video provided');
-      return false;
-    }
+    if (!video) return false;
 
-    if (!video.embed_url) {
-      console.log(`❌ Video "${video.title}" has no embed URL`);
-      return false;
-    }
+    // Check if we have a valid video ID
+    const sourceUrl = video.embed_url || video.video_url;
+    const videoId = this.extractYouTubeVideoId(sourceUrl || '');
 
-    const embedUrl = video.embed_url.toLowerCase();
-    console.log(`🔍 Checking embed URL for "${video.title}":`, embedUrl);
-
-    // Check if it's a YouTube embed URL
-    const isYouTubeEmbed = embedUrl.includes('youtube.com/embed/') ||
-      embedUrl.includes('youtu.be/embed/');
-
-    if (isYouTubeEmbed) {
-      console.log(`✅ Valid YouTube embed URL for "${video.title}"`);
-      return true;
-    }
-
-    console.log(`❌ Invalid YouTube embed URL for "${video.title}"`);
-    return false;
+    return !!videoId;
   }
 
   /**
-   * Get YouTube video ID from embed URL (for debugging)
+   * Get safe URL for a specific video index
    */
-  getYouTubeVideoId(video: GalleryVideo): string {
-    if (!video || !video.embed_url) return '';
-    return this.extractYouTubeVideoId(video.embed_url);
-  }
-
-  /**
-   * Get safe URL for iframe
-   */
-  getSafeUrl(url: string): SafeResourceUrl {
-    console.log('🛡️ Getting safe URL for:', url);
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  getSafeVideoUrl(index: number): SafeResourceUrl {
+    if (index >= 0 && index < this.safeVideoUrls.length) {
+      return this.safeVideoUrls[index];
+    }
+    console.warn(`⚠️ Requested invalid video index: ${index}`);
+    return this.sanitizer.bypassSecurityTrustResourceUrl('');
   }
 
   /**
@@ -432,14 +380,12 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   private disableBodyScroll() {
     if (this.isBrowser && typeof document !== 'undefined') {
       document.body.style.overflow = 'hidden';
-      console.log('🚫 Disabled body scroll');
     }
   }
 
   private restoreBodyScroll() {
     if (this.isBrowser && typeof document !== 'undefined') {
       document.body.style.overflow = '';
-      console.log('🔄 Restored body scroll');
     }
   }
 
@@ -447,7 +393,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
    * Navigation
    */
   goBackToGallery() {
-    console.log('↩️ Going back to gallery');
     this.router.navigate(['/gallery']);
   }
 
@@ -492,19 +437,12 @@ export class EventDetailComponent implements OnInit, OnDestroy {
    * Check loading complete
    */
   private checkLoadingComplete(imagesLoaded: boolean, videosLoaded: boolean) {
-    console.log('⏳ Loading status:', {
-      imagesLoaded,
-      videosLoaded,
-      isLoading: this.isLoading
-    });
-
     if (imagesLoaded && videosLoaded) {
-      console.log('✅ All media loaded, setting isLoading to false');
       setTimeout(() => {
         this.isLoading = false;
         console.log('🎉 Component fully loaded!');
-        console.log('📊 Final stats:', {
-          event: this.event?.title || 'No event',
+        console.log('📊 Final state:', {
+          event: this.event?.title,
           images: this.images.length,
           videos: this.videos.length
         });
@@ -525,59 +463,44 @@ export class EventDetailComponent implements OnInit, OnDestroy {
    * Debug function to log video details
    */
   logVideoDetails() {
-    console.log('🔍 Video Details Log:');
+    console.log('🔍 ========== VIDEO DETAILS LOG ==========');
     console.log('📊 Total videos:', this.videos.length);
-
-    if (this.videos.length === 0) {
-      console.log('ℹ️ No videos available');
-      return;
-    }
+    console.log('📊 Safe URLs created:', this.safeVideoUrls.length);
 
     this.videos.forEach((video, index) => {
-      console.log(`\n🎬 Video ${index + 1}:`);
+      console.log(`\n🎬 VIDEO ${index + 1}/${this.videos.length}:`);
       console.log('   Title:', video.title);
       console.log('   Video URL:', video.video_url);
       console.log('   Embed URL:', video.embed_url);
       console.log('   Platform:', video.platform);
       console.log('   Has Valid Embed:', this.hasValidYouTubeEmbed(video));
-      console.log('   Video ID:', this.getYouTubeVideoId(video));
+      console.log('   Extracted Video ID:', this.extractYouTubeVideoId(video.embed_url || video.video_url || ''));
+      console.log('   Safe URL Object:', this.getSafeVideoUrl(index));
 
-      // Test the embed URL
-      if (video.embed_url) {
-        console.log('   Embed URL Test:', {
-          isYouTube: video.embed_url.includes('youtube'),
-          isEmbed: video.embed_url.includes('/embed/'),
-          canPlay: this.hasValidYouTubeEmbed(video)
-        });
+      // Get the actual URL from the safe object
+      const safeUrl = this.getSafeVideoUrl(index);
+      if (safeUrl && typeof safeUrl === 'object' && 'changingThisBreaksApplicationSecurity' in safeUrl) {
+        console.log('   Safe URL String:', safeUrl.changingThisBreaksApplicationSecurity);
       }
     });
+
+    console.log('\n🔍 ========== END VIDEO LOG ==========');
   }
 
   /**
-   * Test API endpoints manually
+   * Handle iframe errors
    */
-  testAllEndpoints(slug: string) {
-    console.log('🧪 Testing all API endpoints for slug:', slug);
+  handleIframeError(event: Event, index: number) {
+    console.error('❌ Iframe error for video at index:', index);
+    console.error('Event:', event);
 
-    const endpoints = [
-      `event/${slug}/`,
-      `event/${slug}/images/`,
-      `event/${slug}/videos/`
-    ];
-
-    endpoints.forEach(endpoint => {
-      console.log(`\n🔗 Testing: ${endpoint}`);
-      fetch(`${this.galleryService['apiUrl']}/api/gallery/${endpoint}`)
-        .then(response => {
-          console.log(`✅ ${endpoint}: Status ${response.status}`);
-          return response.json();
-        })
-        .then(data => {
-          console.log(`📦 ${endpoint} Data:`, data);
-        })
-        .catch(error => {
-          console.error(`❌ ${endpoint} Error:`, error);
-        });
-    });
+    const video = this.videos[index];
+    if (video) {
+      console.error('Video details:', {
+        title: video.title,
+        video_url: video.video_url,
+        embed_url: video.embed_url
+      });
+    }
   }
 }

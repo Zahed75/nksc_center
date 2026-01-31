@@ -8,18 +8,25 @@ import { NewsComponent } from './features/news/components/news-component/news-co
 import { PeopleComponent } from './features/people/components/people/people';
 import { EventDetailComponent } from './features/event-details/event-detail/event-detail';
 
+
 export const routes: Routes = [
+  // Empty path redirect FIRST
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+
+  // Specific routes
   { path: 'home', component: HomePageComponent },
   { path: 'about', component: AboutComponent },
   { path: 'publications', component: PublicationComponent },
   { path: 'elibrary', component: ElibraryComponent },
-
-  // SIMPLE AND CLEAR ROUTES
   { path: 'gallery', component: GalleryComponent },
   { path: 'gallery/:slug', component: EventDetailComponent },
-
   { path: 'news', component: NewsComponent },
   { path: 'people', component: PeopleComponent },
+
+
+  // Wildcard route LAST
   { path: '**', redirectTo: 'home' }
 ];
+
+
+

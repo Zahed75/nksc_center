@@ -3,8 +3,8 @@
   <div *ngIf="!isLoading" class="bg-yellow-50 p-4 mb-4 rounded-lg">
     <h3 class="font-bold text-yellow-800">Debug Info:</h3>
     <p>Event: {{ event?.title || 'No event loaded' }}</p>
-    <p>Images: {{ images?.length || 0 }} found</p>
-    <p>Videos: {{ videos?.length || 0 }} found</p>
+    <p>Images: {{ images.length || 0 }} found</p>
+    <p>Videos: {{ videos.length || 0 }} found</p>
     <p>Loading: {{ isLoading }}</p>
     <p>Error: {{ error || 'None' }}</p>
   </div>
@@ -222,7 +222,7 @@
             </div>
           }
 
-          <!-- Videos Tab (Your existing video content) -->
+          <!-- Videos Tab -->
           @if (activeTab === 'videos') {
             <div class="mt-8">
               @if (videos.length === 0) {
@@ -236,7 +236,7 @@
                   <p class="text-gray-500">Check back later for videos from this event</p>
                 </div>
               } @else {
-                <!-- Debug button (remove in production) -->
+                <!-- Debug button -->
                 <div class="mb-4 text-right">
                   <button
                     (click)="logVideoDetails()"
@@ -254,13 +254,15 @@
                         @if (hasValidYouTubeEmbed(video)) {
                           <!-- YouTube Embed -->
                           <iframe
-                            [src]="video.embed_url | safeUrl"
+                            [src]="getSafeVideoUrl(i)"
                             class="absolute top-0 left-0 w-full h-full"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen
                             [title]="video.title || 'YouTube Video'"
-                            loading="lazy">
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            (error)="handleIframeError($event, i)">
                           </iframe>
                         } @else if (video.video_url) {
                           <!-- Direct link to video (fallback) -->
