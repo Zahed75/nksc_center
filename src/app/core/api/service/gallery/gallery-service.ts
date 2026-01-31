@@ -1,34 +1,60 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../enviornments/enviornment'; // Add this import
+import {environment} from '../../../../../enviornments/enviornment';
 
 export interface GalleryCategory {
   id: number;
   name: string;
   slug: string;
   description: string;
-  icon: string;
-  color: string;
   name_display: string;
-  event_count: number;
+  total_events: number;
+  display_order: number;
+}
+
+export interface GalleryImage {
+  id: number;
+  image_url: string;
+  caption: string;
+  display_order: number;
+  is_cover: boolean;
+  created_at: string;
+}
+
+export interface GalleryVideo {
+  id: number;
+  title: string;
+  description: string;
+  video_url: string;
+  embed_url: string;
+  thumbnail_url: string;
+  platform: string;
+  display_order: number;
+  created_at: string;
 }
 
 export interface GalleryEvent {
   id: number;
   title: string;
   slug: string;
+  description: string;
   short_description: string;
   event_date: string;
   location: string;
-  participants: number;
   year: number;
   category: number;
   category_detail: GalleryCategory;
+  status: string;
   is_featured: boolean;
   total_images: number;
+  total_videos: number;
   cover_image: string;
   views_count: number;
+  created_at: string;
+  updated_at: string;
+  images: GalleryImage[];
+  videos: GalleryVideo[];
 }
 
 export interface GalleryResponse {
@@ -44,13 +70,12 @@ export interface CategoryResponse {
 }
 
 export interface YearOption {
-  value: number;
-  label: string;
+  year: number;
+  count: number;
 }
 
 export interface YearsResponse {
   success: boolean;
-  count: number;
   data: YearOption[];
 }
 
@@ -59,21 +84,19 @@ export interface StatsResponse {
   stats: {
     total_events: number;
     total_images: number;
+    total_videos: number;
     total_views: number;
-    seminar_count: number;
-    workshop_count: number;
-    conference_count: number;
-    cultural_count: number;
-    other_count: number;
-    last_updated: string;
+    featured_events: number;
+    by_category: { [key: string]: number };
   };
 }
 
 export interface FilterParams {
-  category?: string;
+  category?: number;
   year?: number;
   featured?: boolean;
   search?: string;
+  page?: number;
   limit?: number;
 }
 
@@ -81,91 +104,92 @@ export interface FilterParams {
   providedIn: 'root',
 })
 export class GalleryService {
-  private apiUrl = environment.apiUrl; // Use environment configuration
+  private apiUrl = environment.apiUrl;
+  private baseUrl = `${this.apiUrl}/api/gallery/`;
 
-  constructor(private http: HttpClient) {}
-
-  // Get all gallery events
-  getAllGallery(): Observable<GalleryResponse> {
-    return this.http.get<GalleryResponse>(`${this.apiUrl}/api/gallery/all/`);
+  constructor(private http: HttpClient) {
+    console.log('GalleryService initialized with base URL:', this.baseUrl);
   }
 
-  // Filter gallery events
-  filterGallery(params: FilterParams): Observable<GalleryResponse> {
+  // Get all gallery events - CORRECTED to match Django
+  getAllGallery(params?: FilterParams): Observable<GalleryResponse> {
     let httpParams = new HttpParams();
-
-    // Add all parameters to the request
-    Object.keys(params).forEach(key => {
-      const value = params[key as keyof FilterParams];
-      if (value !== undefined && value !== null) {
-        httpParams = httpParams.set(key, value.toString());
-      }
-    });
-
-    return this.http.get<GalleryResponse>(
-      `${this.apiUrl}/api/gallery/all/`,
-      { params: httpParams }
-    );
-  }
-
-  // Get featured gallery events
-  getFeaturedGallery(): Observable<GalleryResponse> {
-    return this.http.get<GalleryResponse>(`${this.apiUrl}/api/gallery/featured/`);
-  }
-
-  // Get latest gallery events
-  getLatestGallery(): Observable<GalleryResponse> {
-    return this.http.get<GalleryResponse>(`${this.apiUrl}/api/gallery/latest/`);
-  }
-
-  // Get gallery statistics
-  getGalleryStats(): Observable<StatsResponse> {
-    return this.http.get<StatsResponse>(`${this.apiUrl}/api/gallery/stats/`);
-  }
-
-  // Search gallery events
-  searchGallery(query: string, filters: any = {}): Observable<GalleryResponse> {
-    let httpParams = new HttpParams();
-
-    if (query) {
-      httpParams = httpParams.set('search', query);
+    if (params) {
+      Object.keys(params).forEach(key => {
+        const value = params[key as keyof FilterParams];
+        if (value !== undefined && value !== null) {
+          httpParams = httpParams.set(key, value.toString());
+        }
+      });
     }
 
-    Object.keys(filters).forEach(key => {
-      if (filters[key]) {
-        httpParams = httpParams.set(key, filters[key].toString());
-      }
-    });
+    const url = `${this.baseUrl}all/`;
+    console.log('Fetching gallery events from:', url);
+    return this.http.get<GalleryResponse>(url, { params: httpParams });
+  }
 
-    return this.http.get<GalleryResponse>(
-      `${this.apiUrl}/api/gallery/search/`,
-      { params: httpParams }
-    );
+  // Get gallery event by slug - CORRECTED to match Django
+  getEventBySlug(slug: string): Observable<{ success: boolean; data: GalleryEvent }> {
+    const url = `${this.baseUrl}event/${slug}/`;
+    console.log('Fetching event by slug from:', url);
+    return this.http.get<{ success: boolean; data: GalleryEvent }>(url);
+  }
+
+  // Get event images - CORRECTED to match Django
+  getEventImages(slug: string): Observable<{ success: boolean; data: GalleryImage[] }> {
+    const url = `${this.baseUrl}event/${slug}/images/`;
+    console.log('Fetching event images from:', url);
+    return this.http.get<{ success: boolean; data: GalleryImage[] }>(url);
+  }
+
+  // Get event videos - CORRECTED to match Django
+  getEventVideos(slug: string): Observable<{ success: boolean; data: GalleryVideo[] }> {
+    const url = `${this.baseUrl}event/${slug}/videos/`;
+    console.log('Fetching event videos from:', url);
+    return this.http.get<{ success: boolean; data: GalleryVideo[] }>(url);
   }
 
   // Get all categories
   getGalleryCategories(): Observable<CategoryResponse> {
-    return this.http.get<CategoryResponse>(`${this.apiUrl}/api/gallery/categories/`);
-  }
-
-  // Get gallery by category slug
-  getGalleryByCategory(slug: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/gallery/category/${slug}/`);
+    const url = `${this.baseUrl}categories/`;
+    console.log('Fetching categories from:', url);
+    return this.http.get<CategoryResponse>(url);
   }
 
   // Get available years
   getGalleryYears(): Observable<YearsResponse> {
-    return this.http.get<YearsResponse>(`${this.apiUrl}/api/gallery/years/`);
+    const url = `${this.baseUrl}years/`;
+    console.log('Fetching years from:', url);
+    return this.http.get<YearsResponse>(url);
   }
 
-  // Get event images (you might need to implement this endpoint in your backend)
-  getEventImages(eventId: number): Observable<any> {
-    // This endpoint would need to be implemented in your backend
-    return this.http.get<any>(`${this.apiUrl}/api/gallery/event/${eventId}/images/`);
+  // Get gallery statistics
+  getGalleryStats(): Observable<StatsResponse> {
+    const url = `${this.baseUrl}stats/`;
+    console.log('Fetching stats from:', url);
+    return this.http.get<StatsResponse>(url);
   }
 
-  // Get event by slug for detailed view
-  getEventBySlug(slug: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/gallery/event/${slug}/`);
+  // Search gallery events
+  searchGallery(query: string): Observable<GalleryResponse> {
+    const url = `${this.baseUrl}search/`;
+    console.log('Searching gallery from:', url, 'query:', query);
+    return this.http.get<GalleryResponse>(url, {
+      params: { search: query }
+    });
+  }
+
+  // Get photo galleries (events with images)
+  getPhotoGalleries(): Observable<GalleryResponse> {
+    const url = `${this.baseUrl}photos/`;
+    console.log('Fetching photo galleries from:', url);
+    return this.http.get<GalleryResponse>(url);
+  }
+
+  // Get video galleries (events with videos)
+  getVideoGalleries(): Observable<GalleryResponse> {
+    const url = `${this.baseUrl}videos/`;
+    console.log('Fetching video galleries from:', url);
+    return this.http.get<GalleryResponse>(url);
   }
 }

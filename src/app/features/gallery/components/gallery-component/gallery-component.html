@@ -1,28 +1,148 @@
-<div class="min-h-screen bg-linear-to-b from-gray-50 to-white py-8">
-  <div class="container mx-auto px-4">
-    <!-- Hero Section -->
-    <div class="text-center mb-12">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl mb-6 shadow-lg">
-        <i class="pi pi-images text-2xl text-white"></i>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-800 text-white">
+    <div class="absolute inset-0 bg-black/10"></div>
+    <div class="relative container mx-auto px-4 py-16 md:py-24">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-2xl backdrop-blur-sm mb-6">
+          <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
+          Multimedia Gallery
+        </h1>
+        <p class="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed">
+          Explore our collection of photos and videos from memorable events
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+            <div class="text-2xl font-bold">{{ stats?.total_events || 0 }}</div>
+            <div class="text-sm opacity-90">Events</div>
+          </div>
+          <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+            <div class="text-2xl font-bold">{{ stats?.total_images || 0 }}</div>
+            <div class="text-sm opacity-90">Photos</div>
+          </div>
+          <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+            <div class="text-2xl font-bold">{{ stats?.total_videos || 0 }}</div>
+            <div class="text-sm opacity-90">Videos</div>
+          </div>
+        </div>
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bangla-font bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text">
-        Event Gallery
-      </h1>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-        Special moments from Nazmul Karim Study Center's seminars, workshops, and cultural programs
-      </p>
-      <div class="flex flex-wrap justify-center gap-3 mt-6">
-        <div class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
-          <i class="pi pi-calendar mr-2"></i>
-          {{ stats?.total_events || 0 }} Events
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <!-- Filters Bar -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <!-- Search -->
+        <div class="flex-1 max-w-lg">
+          <div class="relative">
+            <input
+              type="text"
+              [value]="searchQuery"
+              (input)="onSearchInput($event)"
+              placeholder="Search events..."
+              class="w-full pl-12 pr-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all duration-200">
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          </div>
         </div>
-        <div class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-          <i class="pi pi-image mr-2"></i>
-          {{ stats?.total_images || 0 }} Images
+
+        <!-- View Toggle & Filters -->
+        <div class="flex items-center gap-4">
+          <!-- View Toggle -->
+          <div class="hidden md:flex bg-gray-100 rounded-xl p-1">
+            <button
+              (click)="viewMode = 'grid'"
+              [class]="viewMode === 'grid' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-600'"
+              class="p-2 rounded-lg transition-all duration-200">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              </svg>
+            </button>
+            <button
+              (click)="viewMode = 'list'"
+              [class]="viewMode === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-600'"
+              class="p-2 rounded-lg transition-all duration-200">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+            <button
+              (click)="viewMode = 'masonry'"
+              [class]="viewMode === 'masonry' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-600'"
+              class="p-2 rounded-lg transition-all duration-200">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Mobile Filter Toggle -->
+          <button
+            (click)="toggleFilters()"
+            class="md:hidden flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
+            </svg>
+            Filters
+          </button>
+
+          <!-- Clear Filters -->
+          <button
+            (click)="clearFilters()"
+            [class.opacity-50]="selectedCategory === 'all' && selectedYear === 'all' && !searchQuery"
+            [disabled]="selectedCategory === 'all' && selectedYear === 'all' && !searchQuery"
+            class="hidden md:block px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors">
+            Clear all
+          </button>
         </div>
-        <div class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
-          <i class="pi pi-eye mr-2"></i>
-          {{ stats?.total_views || 0 }} Views
+      </div>
+
+      <!-- Filter Dropdowns -->
+      <div [class.hidden]="!showFilters && isMobile" class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Category Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+          <select
+            [(ngModel)]="selectedCategory"
+            (ngModelChange)="applyFilters()"
+            class="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+            <option value="all">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name_display }} ({{ category.total_events }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Year Filter -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Year</label>
+          <select
+            [(ngModel)]="selectedYear"
+            (ngModelChange)="applyFilters()"
+            class="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+            <option value="all">All Years</option>
+            <option *ngFor="let year of years" [value]="year.year">
+              {{ year.year }} ({{ year.count }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="flex items-end">
+          <button
+            (click)="clearFilters()"
+            class="w-full px-4 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium">
+            Clear Filters
+          </button>
         </div>
       </div>
     </div>
@@ -30,538 +150,294 @@
     <!-- Loading State -->
     @if (isLoading) {
       <div class="text-center py-16">
-        <div class="inline-block animate-pulse mb-6">
-          <div class="w-16 h-16 bg-linear-to-br from-gray-200 to-gray-300 rounded-2xl"></div>
+        <div class="inline-block animate-spin mb-6">
+          <div class="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full"></div>
         </div>
-        <p class="text-gray-600">Loading gallery...</p>
+        <p class="text-gray-600 text-lg">Loading gallery...</p>
       </div>
     }
 
-    <!-- Error State -->
-    @if (error && !isLoading) {
-      <div class="text-center py-16">
-        <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <i class="pi pi-exclamation-triangle text-2xl text-red-600"></i>
+    <!-- Content -->
+    @if (!isLoading) {
+      <!-- Results Count -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">
+            Gallery Events
+            @if (searchQuery || selectedCategory !== 'all' || selectedYear !== 'all') {
+              <span class="text-lg font-normal text-gray-600"> ({{ filteredEvents.length }} results)</span>
+            }
+          </h2>
         </div>
-        <h3 class="text-xl font-bold text-red-600 mb-2">Failed to load gallery</h3>
-        <p class="text-gray-600 mb-6">{{ error }}</p>
-        <button
-          (click)="loadGalleryData()"
-          class="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all duration-300 shadow-lg hover:shadow-xl font-semibold">
-          <i class="pi pi-refresh mr-2"></i>
-          Try Again
-        </button>
-      </div>
-    }
-
-    @if (!isLoading && !error) {
-      <!-- Filter Controls -->
-      <div class="glass rounded-2xl p-6 mb-8 shadow-lg border border-white/50 backdrop-blur-sm">
-        <div class="flex flex-col lg:flex-row gap-6 items-center">
-          <!-- Search Box -->
-          <div class="flex-1 w-full">
-            <div class="relative">
-              <input
-                type="text"
-                placeholder="Search events, location, or topic..."
-                [(ngModel)]="searchTerm"
-                (input)="onSearch()"
-                class="w-full pl-12 pr-4 py-3.5 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 text-lg shadow-sm hover:shadow-md"
-              >
-              <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
-              <button
-                (click)="applyFilters()"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-primary hover:text-primary-dark transition-colors">
-                <i class="pi pi-arrow-right text-lg"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Filter Options -->
-          <div class="flex flex-wrap gap-3">
-            <!-- Category Filter -->
-            <div class="relative group">
-              <select
-                [(ngModel)]="selectedCategory"
-                (change)="applyFilters()"
-                class="appearance-none pl-4 pr-10 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer min-w-[180px]">
-                <option value="all">All Categories</option>
-                @for (category of categories; track category.id) {
-                  <option [value]="category.slug">{{ category.name_display }}</option>
-                }
-              </select>
-              <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <i class="pi pi-chevron-down text-gray-400"></i>
-              </div>
-            </div>
-
-            <!-- Year Filter -->
-            <div class="relative group">
-              <select
-                [(ngModel)]="selectedYear"
-                (change)="applyFilters()"
-                class="appearance-none pl-4 pr-10 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer min-w-[140px]">
-                <option [value]="null">All Years</option>
-                @for (year of years; track year.value) {
-                  <option [value]="year.value">{{ year.label }}</option>
-                }
-              </select>
-              <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <i class="pi pi-calendar text-gray-400"></i>
-              </div>
-            </div>
-
-            <!-- Sort Options -->
-            <div class="relative group">
-              <select
-                [(ngModel)]="sortBy"
-                (change)="sortEvents()"
-                class="appearance-none pl-4 pr-10 py-3 bg-white/80 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer min-w-[160px]">
-                <option value="latest">Latest</option>
-                <option value="popular">Popular</option>
-                <option value="featured">Featured</option>
-              </select>
-              <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <i class="pi pi-sort-alt text-gray-400"></i>
-              </div>
-            </div>
-
-            <!-- Clear Filters Button -->
-            <button
-              (click)="clearFilters()"
-              class="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md font-medium flex items-center gap-2">
-              <i class="pi pi-filter-slash"></i>
-              Clear
-            </button>
-          </div>
-        </div>
-
-        <!-- View Mode Toggle -->
-        <div class="flex justify-end mt-4">
-          <div class="inline-flex bg-gray-100 rounded-lg p-1">
-            <button
-              (click)="viewMode = 'grid'"
-              [class]="'p-2 rounded-lg transition-all duration-300 ' + (viewMode === 'grid' ? 'bg-white shadow-md' : 'text-gray-500 hover:text-gray-700')">
-              <i class="pi pi-th-large"></i>
-            </button>
-            <button
-              (click)="viewMode = 'masonry'"
-              [class]="'p-2 rounded-lg transition-all duration-300 ' + (viewMode === 'masonry' ? 'bg-white shadow-md' : 'text-gray-500 hover:text-gray-700')">
-              <i class="pi pi-table"></i>
-            </button>
-          </div>
+        <div class="text-gray-600">
+          Page {{ currentPage }} of {{ totalPages }}
         </div>
       </div>
 
-      <!-- Featured Gallery Section -->
-      @if (getFeaturedEvents().length > 0) {
-        <div class="mb-12">
-          <div class="flex items-center gap-3 mb-8">
-            <div class="w-2 h-8 bg-gradient-to-b from-primary to-primary-dark rounded-full"></div>
-            <h2 class="text-2xl font-bold text-gray-900">Featured Events</h2>
-            <span class="px-3 py-1.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-full text-sm font-medium shadow-md">
-              Special Selection
-            </span>
+      <!-- No Results -->
+      @if (filteredEvents.length === 0) {
+        <div class="text-center py-16 bg-white rounded-2xl shadow-sm">
+          <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
           </div>
+          <h3 class="text-xl font-bold text-gray-600 mb-2">No events found</h3>
+          <p class="text-gray-500 mb-6">Try adjusting your search or filters</p>
+          <button
+            (click)="clearFilters()"
+            class="px-6 py-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors">
+            Clear Filters
+          </button>
+        </div>
+      }
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            @for (event of getFeaturedEvents(); track event.id) {
-              <div class="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100"
-                   (click)="openLightbox(event)">
-                <!-- Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
-
-                <!-- Event Image -->
-                <div class="h-64 overflow-hidden">
+      <!-- Gallery Grid -->
+      @if (filteredEvents.length > 0) {
+        <div [ngClass]="{
+          'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6': viewMode === 'grid',
+          'space-y-4': viewMode === 'list',
+          'columns-1 md:columns-2 lg:columns-3 gap-6': viewMode === 'masonry'
+        }">
+          @for (event of paginatedEvents; track event.id) {
+            <!-- Grid View -->
+            @if (viewMode === 'grid') {
+              <div
+                (click)="navigateToEvent(event.slug)"
+                class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer">
+                <!-- Image Container -->
+                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                   @if (event.cover_image) {
                     <img
                       [src]="event.cover_image"
                       [alt]="event.title"
-                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      (error)="handleImageError($event)">
-                  } @else {
-                    <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                      <i class="pi pi-image text-4xl text-gray-300"></i>
-                    </div>
+                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                   }
+                  <!-- Overlay -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                  <!-- Media Badges -->
+                  <div class="absolute top-4 right-4 flex gap-2">
+                    @if (event.total_images > 0) {
+                      <span class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium">
+                        📸 {{ event.total_images }}
+                      </span>
+                    }
+                    @if (event.total_videos > 0) {
+                      <span class="px-3 py-1 bg-red-500 text-white rounded-full text-sm font-medium">
+                        🎬 {{ event.total_videos }}
+                      </span>
+                    }
+                  </div>
+
+                  <!-- Category -->
+                  <div class="absolute bottom-4 left-4">
+                    <span [class]="getCategoryColor(event.category) + ' text-white px-3 py-1 rounded-full text-sm font-medium'">
+                      {{ getCategoryName(event.category) }}
+                    </span>
+                  </div>
                 </div>
 
-                <!-- Event Content -->
-                <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  <div class="flex items-center gap-2 mb-3">
-                    <span [class]="'px-3 py-1.5 text-sm rounded-full font-medium shadow-md ' + getCategoryColor(event.category_detail)">
-                      <i [class]="'pi mr-2 ' + getCategoryIcon(event.category_detail)"></i>
-                      {{ event.category_detail.name_display }}
+                <!-- Content -->
+                <div class="p-6">
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-gray-500">
+                      {{ formatDate(event.event_date) }}
                     </span>
-                    <span class="px-3 py-1.5 bg-white/90 text-gray-700 text-sm rounded-full font-medium shadow-md">
+                    <span class="text-sm text-gray-500 flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                      </svg>
+                      {{ event.views_count }}
+                    </span>
+                  </div>
+
+                  <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
+                    {{ event.title }}
+                  </h3>
+
+                  <p class="text-gray-600 mb-4 line-clamp-2">
+                    {{ truncateText(event.short_description, 120) }}
+                  </p>
+
+                  <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <span class="text-sm text-gray-500 flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                      </svg>
+                      {{ event.location }}
+                    </span>
+                    <span class="text-primary-600 font-medium group-hover:translate-x-2 transition-transform duration-300">
+                      View Details →
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- List View -->
+            @if (viewMode === 'list') {
+              <div
+                (click)="navigateToEvent(event.slug)"
+                class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer">
+                <div class="flex flex-col md:flex-row md:items-center gap-6">
+                  <!-- Thumbnail -->
+                  <div class="relative w-full md:w-48 h-48 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 flex-shrink-0">
+                    @if (event.cover_image) {
+                      <img
+                        [src]="event.cover_image"
+                        [alt]="event.title"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    }
+                    <div class="absolute top-3 right-3">
+                      <span [class]="getCategoryColor(event.category) + ' text-white px-3 py-1 rounded-full text-sm font-medium'">
+                        {{ getCategoryName(event.category) }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Content -->
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-sm text-gray-500">
+                        {{ formatDate(event.event_date) }}
+                      </span>
+                      <div class="flex items-center gap-3">
+                        @if (event.total_images > 0) {
+                          <span class="text-sm text-gray-600 flex items-center gap-1">
+                            📸 {{ event.total_images }}
+                          </span>
+                        }
+                        @if (event.total_videos > 0) {
+                          <span class="text-sm text-red-600 flex items-center gap-1">
+                            🎬 {{ event.total_videos }}
+                          </span>
+                        }
+                        <span class="text-sm text-gray-500 flex items-center gap-1">
+                          👁 {{ event.views_count }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
+                      {{ event.title }}
+                    </h3>
+
+                    <p class="text-gray-600 mb-4">
+                      {{ truncateText(event.short_description, 200) }}
+                    </p>
+
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-500 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ event.location }}
+                      </span>
+                      <span class="text-primary-600 font-medium group-hover:translate-x-2 transition-transform duration-300">
+                        View Details →
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- Masonry View -->
+            @if (viewMode === 'masonry') {
+              <div
+                (click)="navigateToEvent(event.slug)"
+                class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer break-inside-avoid mb-6">
+                <!-- Image -->
+                <div class="relative h-80 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                  @if (event.cover_image) {
+                    <img
+                      [src]="event.cover_image"
+                      [alt]="event.title"
+                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                  }
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+
+                <!-- Content -->
+                <div class="p-6">
+                  <div class="flex items-center justify-between mb-4">
+                    <span [class]="getCategoryColor(event.category) + ' text-white px-3 py-1 rounded-full text-sm font-medium'">
+                      {{ getCategoryName(event.category) }}
+                    </span>
+                    <span class="text-sm text-gray-500">
                       {{ formatDate(event.event_date) }}
                     </span>
                   </div>
 
-                  <h3 class="text-xl font-bold text-white mb-2">{{ event.title }}</h3>
-
-                  <p class="text-white/90 text-sm mb-4 line-clamp-2">
-                    {{ event.short_description }}
-                  </p>
-
-                  <div class="flex items-center gap-4 text-white/80 text-sm">
-                    <span class="flex items-center gap-1">
-                      <i class="pi pi-map-marker"></i>
-                      {{ event.location }}
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <i class="pi pi-users"></i>
-                      {{ event.participants }} Participants
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <i class="pi pi-image"></i>
-                      {{ event.total_images }} Images
-                    </span>
-                  </div>
-                </div>
-
-                <!-- View Button -->
-                <div class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button class="px-4 py-2 bg-white text-primary rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 font-medium">
-                    <i class="pi pi-eye mr-2"></i>
-                    View
-                  </button>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      }
-
-      <!-- All Gallery Grid -->
-      <div class="mb-12">
-        <div class="flex items-center justify-between mb-8">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900">All Events</h2>
-            <p class="text-gray-600">{{ filteredEvents.length }} events found</p>
-          </div>
-          <div class="text-sm text-gray-500">
-            Page {{ currentPage }} of {{ totalPages }}
-          </div>
-        </div>
-
-        @if (viewMode === 'grid') {
-          <!-- Grid View -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @for (event of getPaginatedEvents(); track event.id) {
-              <div class="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100"
-                   (click)="openLightbox(event)">
-                <!-- Single Cover Image -->
-                <div class="h-48 overflow-hidden bg-gray-100">
-                  @if (event.cover_image) {
-                    <img
-                      [src]="event.cover_image"
-                      [alt]="event.title"
-                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      (error)="handleImageError($event)">
-                  } @else {
-                    <div class="w-full h-full flex items-center justify-center">
-                      <i class="pi pi-image text-3xl text-gray-300"></i>
-                    </div>
-                  }
-                </div>
-
-                <!-- Event Info -->
-                <div class="p-5">
-                  <div class="flex items-center justify-between mb-3">
-                    <span [class]="'px-2 py-1 text-xs rounded-full font-medium ' + getCategoryColor(event.category_detail)">
-                      {{ getCategoryName(event.category) }}
-                    </span>
-                    <span class="text-xs text-gray-500">{{ event.year }}</span>
-                  </div>
-
-                  <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+                  <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
                     {{ event.title }}
                   </h3>
 
-                  <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                    {{ getShortDescription(event.short_description) }}
+                  <p class="text-gray-600 mb-4 line-clamp-3">
+                    {{ truncateText(event.short_description, 150) }}
                   </p>
 
                   <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div class="flex items-center gap-3 text-xs text-gray-500">
-                      <span class="flex items-center gap-1">
-                        <i class="pi pi-calendar"></i>
-                        {{ formatDate(event.event_date) }}
-                      </span>
+                    <div class="flex items-center gap-3">
+                      @if (event.total_images > 0) {
+                        <span class="text-sm text-gray-600 flex items-center gap-1">
+                          📸 {{ event.total_images }}
+                        </span>
+                      }
+                      @if (event.total_videos > 0) {
+                        <span class="text-sm text-red-600 flex items-center gap-1">
+                          🎬 {{ event.total_videos }}
+                        </span>
+                      }
                     </div>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                      {{ event.total_images }} images
+                    <span class="text-primary-600 font-medium text-sm group-hover:translate-x-2 transition-transform duration-300">
+                      Explore →
                     </span>
                   </div>
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <!-- Masonry View -->
-          <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            @for (event of getPaginatedEvents(); track event.id) {
-              <div class="break-inside-avoid group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100"
-                   (click)="openLightbox(event)">
-                <!-- Event Image -->
-                <div class="h-56 overflow-hidden bg-gray-100">
-                  @if (event.cover_image) {
-                    <img
-                      [src]="event.cover_image"
-                      [alt]="event.title"
-                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      (error)="handleImageError($event)">
-                  } @else {
-                    <div class="w-full h-full flex items-center justify-center">
-                      <i class="pi pi-image text-4xl text-gray-300"></i>
-                    </div>
-                  }
-                </div>
-
-                <!-- Event Info -->
-                <div class="p-5">
-                  <h3 class="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                    {{ event.title }}
-                  </h3>
-
-                  <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {{ getShortDescription(event.short_description) }}
-                  </p>
-
-                  <div class="flex items-center justify-between mb-3">
-                    <span [class]="'px-3 py-1.5 text-xs rounded-full font-medium ' + getCategoryColor(event.category_detail)">
-                      <i [class]="'pi mr-1 ' + getCategoryIcon(event.category_detail)"></i>
-                      {{ getCategoryName(event.category) }}
-                    </span>
-                    <span class="text-xs text-gray-500">{{ event.year }}</span>
-                  </div>
-
-                  <div class="flex items-center gap-4 text-xs text-gray-500 pt-3 border-t border-gray-100">
-                    <span class="flex items-center gap-1">
-                      <i class="pi pi-map-marker"></i>
-                      {{ event.location }}
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <i class="pi pi-image"></i>
-                      {{ event.total_images }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            }
-          </div>
-        }
-
-        <!-- No Results -->
-        @if (filteredEvents.length === 0) {
-          <div class="text-center py-16">
-            <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <i class="pi pi-search text-3xl text-gray-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-gray-600 mb-2">No events found</h3>
-            <p class="text-gray-500 mb-6">No events match your search criteria</p>
-            <button
-              (click)="clearFilters()"
-              class="px-6 py-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl hover:shadow-xl transition-all duration-300 font-semibold shadow-lg">
-              Clear all filters
-            </button>
-          </div>
-        }
+          }
+        </div>
 
         <!-- Pagination -->
         @if (totalPages > 1) {
-          <div class="flex justify-center mt-12">
-            <div class="inline-flex items-center gap-2 bg-white rounded-xl p-2 shadow-lg">
-              <button
-                (click)="changePage(currentPage - 1)"
-                [disabled]="currentPage === 1"
-                class="p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                <i class="pi pi-chevron-left"></i>
-              </button>
-
-              @for (page of [].constructor(totalPages); track $index) {
-                <button
-                  (click)="changePage($index + 1)"
-                  [class]="'w-10 h-10 rounded-lg transition-all duration-300 ' +
-                    (currentPage === $index + 1 ?
-                      'bg-gradient-to-r from-primary to-primary-dark text-white shadow-md' :
-                      'hover:bg-gray-100 text-gray-700')">
-                  {{ $index + 1 }}
-                </button>
-              }
-
-              <button
-                (click)="changePage(currentPage + 1)"
-                [disabled]="currentPage === totalPages"
-                class="p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                <i class="pi pi-chevron-right"></i>
-              </button>
-            </div>
-          </div>
-        }
-      </div>
-
-      <!-- Stats Section -->
-      @if (stats) {
-        <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 mb-12 border border-primary/20">
-          <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Gallery Statistics</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
-              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="pi pi-calendar text-xl text-primary"></i>
-              </div>
-              <div class="text-3xl font-bold text-gray-900">{{ stats.total_events }}</div>
-              <div class="text-gray-600 text-sm">Total Events</div>
-            </div>
-            <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
-              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="pi pi-image text-xl text-green-600"></i>
-              </div>
-              <div class="text-3xl font-bold text-gray-900">{{ stats.total_images }}</div>
-              <div class="text-gray-600 text-sm">Total Images</div>
-            </div>
-            <div class="bg-white rounded-xl p=6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
-              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="pi pi-eye text-xl text-purple-600"></i>
-              </div>
-              <div class="text-3xl font-bold text-gray-900">{{ stats.total_views }}</div>
-              <div class="text-gray-600 text-sm">Total Views</div>
-            </div>
-            <div class="bg-white rounded-xl p=6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
-              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="pi pi-chart-line text-xl text-orange-600"></i>
-              </div>
-              <div class="text-3xl font-bold text-gray-900">{{ stats.seminar_count }}</div>
-              <div class="text-gray-600 text-sm">Seminars</div>
-            </div>
-          </div>
-        </div>
-      }
-    }
-
-    <!-- Lightbox Modal -->
-    @if (isLightboxOpen && selectedEvent) {
-      <div class="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4">
-        <div class="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
-
-          <!-- Lightbox Header -->
-          <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
-            <div class="flex-1">
-              <h3 class="text-2xl font-bold text-gray-900">{{ selectedEvent.title }}</h3>
-              <div class="flex items-center gap-3 mt-2">
-                <span [class]="'px-3 py-1.5 text-sm rounded-full font-medium ' + getCategoryColor(selectedEvent.category_detail)">
-                  {{ selectedEvent.category_detail.name_display }}
-                </span>
-                <span class="text-sm text-gray-500">{{ formatDate(selectedEvent.event_date) }}</span>
-                <span class="text-sm text-gray-500">{{ selectedEvent.location }}</span>
-              </div>
-            </div>
+          <div class="flex items-center justify-center gap-2 mt-12">
             <button
-              (click)="closeLightbox()"
-              class="p-3 hover:bg-gray-100 rounded-xl transition-colors">
-              <i class="pi pi-times text-xl text-gray-600"></i>
+              (click)="previousPage()"
+              [disabled]="currentPage === 1"
+              [class.opacity-50]="currentPage === 1"
+              class="p-3 rounded-xl hover:bg-gray-100 transition-colors disabled:cursor-not-allowed">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+
+            @for (page of getPageNumbers(); track page) {
+              <button
+                (click)="goToPage(page)"
+                [class]="page === currentPage
+                  ? 'bg-primary-600 text-white'
+                  : 'text-gray-600 hover:bg-gray-100'"
+                class="w-10 h-10 rounded-xl font-medium transition-colors">
+                {{ page }}
+              </button>
+            }
+
+            <button
+              (click)="nextPage()"
+              [disabled]="currentPage === totalPages"
+              [class.opacity-50]="currentPage === totalPages"
+              class="p-3 rounded-xl hover:bg-gray-100 transition-colors disabled:cursor-not-allowed">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
             </button>
           </div>
-
-          <!-- Lightbox Content -->
-          <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            <!-- Main Image -->
-            <div class="flex-1 bg-gray-900 relative flex items-center justify-center p-8">
-              <!-- Navigation Arrows -->
-              @if (currentImageIndex > 0) {
-                <button
-                  (click)="previousImage()"
-                  class="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors z-10 shadow-lg">
-                  <i class="pi pi-chevron-left text-xl"></i>
-                </button>
-              }
-
-              @if (currentImageIndex < selectedEvent.total_images - 1) {
-                <button
-                  (click)="nextImage()"
-                  class="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/20 hover:bg-white/30 text-white rounded-full transition-colors z-10 shadow-lg">
-                  <i class="pi pi-chevron-right text-xl"></i>
-                </button>
-              }
-
-              <!-- Current Image -->
-              <div class="w-full h-full flex items-center justify-center">
-                @if (selectedEvent.cover_image) {
-                  <img
-                    [src]="selectedEvent.cover_image"
-                    [alt]="selectedEvent.title"
-                    class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-                    (error)="handleImageError($event)">
-                } @else {
-                  <div class="w-full h-full flex items-center justify-center bg-gray-800 rounded-lg">
-                    <i class="pi pi-image text-6xl text-gray-400"></i>
-                  </div>
-                }
-              </div>
-
-              <!-- Image Counter -->
-              <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-black/50 text-white rounded-full text-sm">
-                Image {{ currentImageIndex + 1 }} / {{ selectedEvent.total_images }}
-              </div>
-            </div>
-
-            <!-- Event Details -->
-            <div class="w-full lg:w-96 p-6 overflow-y-auto">
-              <div class="space-y-6">
-                <!-- Description -->
-                <div>
-                  <h4 class="text-lg font-semibold text-gray-900 mb-3">Event Description</h4>
-                  <p class="text-gray-600">{{ selectedEvent.short_description }}</p>
-                </div>
-
-                <!-- Event Info -->
-                <div class="space-y-4">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <i class="pi pi-calendar text-primary"></i>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-500">Date</p>
-                      <p class="font-medium">{{ formatDate(selectedEvent.event_date) }}</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <i class="pi pi-map-marker text-green-600"></i>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-500">Location</p>
-                      <p class="font-medium">{{ selectedEvent.location }}</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <i class="pi pi-users text-purple-600"></i>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-500">Participants</p>
-                      <p class="font-medium">{{ selectedEvent.participants }} participants</p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <i class="pi pi-image text-orange-600"></i>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-500">Total Images</p>
-                      <p class="font-medium">{{ selectedEvent.total_images }} images</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        }
+      }
     }
   </div>
 </div>
