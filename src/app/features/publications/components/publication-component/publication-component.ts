@@ -1,5 +1,5 @@
 // publication-component.ts
-import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -32,18 +32,10 @@ export class PublicationComponent implements OnInit, OnDestroy {
   // Available years for filter dropdown
   availableYears: number[] = [];
 
-  // PDF Preview State
+  // PDF State
   selectedPdf: Journal | null = null;
-  isPdfViewerOpen = false;
-  currentPdfPage = 1;
-  totalPdfPages = 1;
-  zoomLevel = 1.0;
-  pdfSrc: SafeResourceUrl = '';
+  isPdfModalOpen = false;
   isBrowser: boolean;
-  isFullscreen = false;
-
-  // PDF Viewer reference
-  @ViewChild('pdfIframe') pdfIframe!: ElementRef;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -175,166 +167,46 @@ export class PublicationComponent implements OnInit, OnDestroy {
     this.filteredPublications = [...this.publications];
   }
 
-  // PDF Preview Methods with Security
-  openPdfViewer(publication: Journal) {
-    if (!this.isBrowser) {
-      window.open(publication.pdf_file, '_blank');
-      return;
-    }
-
+  // PDF View Methods - Simple and direct
+  viewPdf(publication: Journal) {
     this.selectedPdf = publication;
-    this.isPdfViewerOpen = true;
-    this.currentPdfPage = 1;
-    this.zoomLevel = 1.0;
-    this.isFullscreen = false;
-
-    // Prevent body scroll when PDF viewer is open
-    document.body.style.overflow = 'hidden';
+    this.isPdfModalOpen = true;
   }
 
-  closePdfViewer() {
-    this.isPdfViewerOpen = false;
+  closePdfModal() {
+    this.isPdfModalOpen = false;
     this.selectedPdf = null;
-    this.pdfSrc = '';
-    this.isFullscreen = false;
-
-    // Restore body scroll
-    document.body.style.overflow = '';
   }
 
-  // Get secure PDF URL with restrictions
-  getSecurePdfUrl(pdfUrl: string): SafeResourceUrl {
-    // Add parameters to restrict printing and downloading
-    const secureUrl = pdfUrl +
-      '#toolbar=0' +           // Hide toolbar
-      '&navpanes=0' +          // Hide navigation panes
-      '&scrollbar=0' +         // Hide scrollbars
-      '&view=FitH' +           // Fit to width
-      '&disablePrint=true' +   // Disable print (Chrome)
-      '&disableDownload=true'; // Disable download (Chrome)
+  // Open PDF in new tab (no iframe issues)
+  openPdfInNewTab(publication: Journal) {
+    if (this.isBrowser) {
+      // Close modal first
+      this.closePdfModal();
 
-    return this.sanitizer.bypassSecurityTrustResourceUrl(secureUrl);
-  }
-
-  // Security event handlers
-  onRightClick(event: MouseEvent): boolean {
-    event.preventDefault();
-    return false;
-  }
-
-  onSelectStart(event: Event): boolean {
-    event.preventDefault();
-    return false;
-  }
-
-  onDragStart(event: DragEvent): boolean {
-    event.preventDefault();
-    return false;
-  }
-
-  onKeyDown(event: KeyboardEvent): boolean {
-    // Disable print screen, save shortcuts
-    if ((event.ctrlKey || event.metaKey) &&
-      (event.key === 'p' || event.key === 's' || event.key === 'c')) {
-      event.preventDefault();
-      return false;
-    }
-    return true;
-  }
-
-  onIframeLoad(event: Event) {
-    // Additional security measures after iframe loads
-    if (this.pdfIframe && this.pdfIframe.nativeElement) {
-      try {
-        // Try to inject additional security CSS
-        const iframeDoc = this.pdfIframe.nativeElement.contentDocument;
-        if (iframeDoc) {
-          const style = iframeDoc.createElement('style');
-          style.textContent = `
-            body {
-              -webkit-user-select: none;
-              -moz-user-select: none;
-              -ms-user-select: none;
-              user-select: none;
-              pointer-events: none;
-            }
-            * {
-              -webkit-touch-callout: none;
-              -webkit-user-select: none;
-              -khtml-user-select: none;
-              -moz-user-select: none;
-              -ms-user-select: none;
-              user-select: none;
-            }
-          `;
-          iframeDoc.head.appendChild(style);
-        }
-      } catch (error) {
-        // Cross-origin restriction - can't access iframe content
-        console.log('Security restrictions applied to PDF viewer');
-      }
+      // Open PDF in new tab
+      window.open(publication.pdf_file, '_blank', 'noopener,noreferrer');
     }
   }
 
-  // Fullscreen functionality
-  openFullscreen() {
-    const elem = document.documentElement;
-    if (!this.isFullscreen) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if ((elem as any).webkitRequestFullscreen) {
-        (elem as any).webkitRequestFullscreen();
-      } else if ((elem as any).msRequestFullscreen) {
-        (elem as any).msRequestFullscreen();
-      }
-      this.isFullscreen = true;
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        (document as any).webkitExitFullscreen();
-      } else if ((document as any).msExitFullscreen) {
-        (document as any).msExitFullscreen();
-      }
-      this.isFullscreen = false;
-    }
-  }
-
-  nextPage() {
-    if (this.currentPdfPage < this.totalPdfPages) {
-      this.currentPdfPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPdfPage > 1) {
-      this.currentPdfPage--;
-    }
-  }
-
-  zoomIn() {
-    if (this.zoomLevel < 2.0) {
-      this.zoomLevel += 0.1;
-    }
-  }
-
-  zoomOut() {
-    if (this.zoomLevel > 0.5) {
-      this.zoomLevel -= 0.1;
-    }
-  }
-
-  resetZoom() {
-    this.zoomLevel = 1.0;
-  }
-
+  // Download PDF
   downloadPdf(publication: Journal) {
     if (!this.isBrowser) return;
 
     const link = document.createElement('a');
     link.href = publication.pdf_file;
-    link.download = publication.title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.pdf';
+    link.download = this.generateFilename(publication);
     link.click();
+  }
+
+  // Generate a clean filename for download
+  private generateFilename(publication: Journal): string {
+    const title = publication.title
+      .replace(/[^a-zA-Z0-9\s]/g, '') // Remove special characters
+      .replace(/\s+/g, '_') // Replace spaces with underscores
+      .toLowerCase();
+
+    return `${title}_volume_${publication.volume}_${publication.year}.pdf`;
   }
 
   // Helper methods for template
@@ -360,10 +232,11 @@ export class PublicationComponent implements OnInit, OnDestroy {
 
   // Get journal badge based on volume
   getJournalBadge(volume: string): string {
-    if (volume === '14') return 'bg-red-500 text-white';
-    if (volume === '13') return 'bg-indigo-500 text-white';
-    if (volume === '12') return 'bg-emerald-500 text-white';
-    return 'bg-blue-500 text-white';
+    if (volume === '14') return 'bg-gradient-to-r from-red-500 to-pink-500 text-white';
+    if (volume === '13') return 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white';
+    if (volume === '12') return 'bg-gradient-to-r from-emerald-500 to-green-500 text-white';
+    if (volume === '11') return 'bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+    return 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white';
   }
 
   // Get journal badge text
@@ -385,17 +258,37 @@ export class PublicationComponent implements OnInit, OnDestroy {
 
   // Format file size
   formatFileSize(mb: string): string {
-    return `${mb} MB`;
+    const size = parseFloat(mb);
+    if (size < 1) {
+      return `${(size * 1024).toFixed(0)} KB`;
+    }
+    return `${size.toFixed(1)} MB`;
   }
 
   // Get editor name (extract from editor string)
   getEditorName(editor: string): string {
     // Remove "Professor Dr." prefix for cleaner display
-    return editor.replace('Professor Dr. ', '');
+    return editor.replace('Professor Dr. ', 'Dr. ');
   }
 
   // Get short description
   getShortDescription(description: string): string {
-    return description.length > 150 ? description.substring(0, 150) + '...' : description;
+    if (!description) return 'No description available';
+    return description.length > 120 ? description.substring(0, 120) + '...' : description;
+  }
+
+  // Get truncated title
+  getShortTitle(title: string): string {
+    return title.length > 60 ? title.substring(0, 60) + '...' : title;
+  }
+
+  // Get publication year range
+  getYearRange(): string {
+    if (this.availableYears.length === 0) return '';
+    if (this.availableYears.length === 1) return this.availableYears[0].toString();
+
+    const oldest = this.availableYears[this.availableYears.length - 1];
+    const newest = this.availableYears[0];
+    return `${oldest} - ${newest}`;
   }
 }
