@@ -1,13 +1,13 @@
 // shared/components/layout/header/header-component/header-component.ts
 import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './header-component.html',
   styleUrl: './header-component.css'
 })

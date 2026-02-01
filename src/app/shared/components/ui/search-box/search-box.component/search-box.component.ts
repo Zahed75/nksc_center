@@ -1,12 +1,12 @@
 // shared/components/ui/search-box/search-box.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-box',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './search-box.component.html',
   styleUrls: ['./search-box.component.css']
 })

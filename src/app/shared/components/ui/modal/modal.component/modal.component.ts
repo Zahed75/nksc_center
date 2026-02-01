@@ -1,11 +1,11 @@
 // shared/components/ui/modal/modal.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })

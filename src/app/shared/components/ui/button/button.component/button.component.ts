@@ -1,6 +1,6 @@
 // shared/components/ui/button/button.component.ts
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 export type ButtonVariant = 'primary' | 'secondary' | 'glass' | 'glass-light' | 'outline';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -8,7 +8,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.css']
 })

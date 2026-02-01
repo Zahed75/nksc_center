@@ -1,11 +1,11 @@
 // shared/components/ui/pagination/pagination.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css']
 })

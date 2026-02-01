@@ -1,6 +1,9 @@
+// news.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../../../../enviornments/enviornment';
+
 
 export interface NewsCategory {
   id: number;
@@ -64,18 +67,24 @@ export interface FilterParams {
   providedIn: 'root',
 })
 export class NewsService {
-  private baseUrl = 'https://api.nkscdu.com';
+  private baseUrl = environment.apiUrl; // Use environment variable
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('NewsService initialized with baseUrl:', this.baseUrl);
+  }
 
   // Get all categories
   getAllCategories(): Observable<CategoryResponse> {
-    return this.http.get<CategoryResponse>(`${this.baseUrl}/api/news/categories/`);
+    const url = `${this.baseUrl}/api/news/categories/`;
+    console.log('Fetching categories from:', url);
+    return this.http.get<CategoryResponse>(url);
   }
 
   // Get all news
   getAllNews(): Observable<NewsResponse> {
-    return this.http.get<NewsResponse>(`${this.baseUrl}/api/news/admin/all/`);
+    const url = `${this.baseUrl}/api/news/admin/all/`;
+    console.log('Fetching all news from:', url);
+    return this.http.get<NewsResponse>(url);
   }
 
   // Filter news
@@ -90,24 +99,30 @@ export class NewsService {
       }
     });
 
-    return this.http.get<NewsResponse>(
-      `${this.baseUrl}/api/news/all/`,
-      { params: httpParams }
-    );
+    const url = `${this.baseUrl}/api/news/all/`;
+    console.log('Filtering news from:', url, 'with params:', params);
+
+    return this.http.get<NewsResponse>(url, { params: httpParams });
   }
 
   // Get urgent news
   getUrgentNews(): Observable<NewsResponse> {
-    return this.http.get<NewsResponse>(`${this.baseUrl}/api/news/urgent/`);
+    const url = `${this.baseUrl}/api/news/urgent/`;
+    console.log('Fetching urgent news from:', url);
+    return this.http.get<NewsResponse>(url);
   }
 
   // Get research news
   getResearchNews(): Observable<NewsResponse> {
-    return this.http.get<NewsResponse>(`${this.baseUrl}/api/news/research/`);
+    const url = `${this.baseUrl}/api/news/research/`;
+    console.log('Fetching research news from:', url);
+    return this.http.get<NewsResponse>(url);
   }
 
   // Get news by ID
   getNewsById(id: number): Observable<NewsResponse> {
-    return this.http.get<NewsResponse>(`${this.baseUrl}/api/news/${id}/`);
+    const url = `${this.baseUrl}/api/news/${id}/`;
+    console.log('Fetching news by ID from:', url);
+    return this.http.get<NewsResponse>(url);
   }
 }

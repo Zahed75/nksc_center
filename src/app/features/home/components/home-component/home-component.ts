@@ -1,13 +1,13 @@
 // features/home/pages/home-page/home-page.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Subscription } from 'rxjs';
 import { HomeService, CurrentChairman } from '../../services/home-service';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './home-component.html',
   styleUrls: ['./home-component.css'],
   providers: [HomeService]

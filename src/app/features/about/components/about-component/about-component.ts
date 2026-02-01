@@ -1,6 +1,6 @@
 // features/about/components/about-component/about-component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import {
@@ -16,7 +16,7 @@ import {
 @Component({
   selector: 'app-about-component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './about-component.html',
   styleUrls: ['./about-component.css'],
   providers: [AboutService]

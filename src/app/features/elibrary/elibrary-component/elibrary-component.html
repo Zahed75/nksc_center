@@ -17,338 +17,335 @@
         <!-- Search Box -->
         <div class="flex-1 w-full md:max-w-md">
           <div class="relative">
-            <input 
-              type="text" 
-              placeholder="Search books, authors, or topics..." 
+            <input
+              type="text"
+              placeholder="Search books, authors, or topics..."
               [(ngModel)]="searchTerm"
               (input)="applyFilters()"
               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-            >
-            <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-          </div>
-        </div>
-
-        <!-- Filter Options -->
-        <div class="flex flex-wrap gap-3">
-          <select 
-            [(ngModel)]="selectedCategory"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-            <option value="">All Categories</option>
-            <option *ngFor="let cat of categories" [value]="cat.value">{{cat.label}}</option>
-          </select>
-
-          <select 
-            [(ngModel)]="selectedType"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-            <option value="">All Types</option>
-            <option *ngFor="let type of types" [value]="type.value">{{type.label}}</option>
-          </select>
-
-          <select 
-            [(ngModel)]="selectedYear"
-            (change)="applyFilters()"
-            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-            <option value="">All Years</option>
-            <option *ngFor="let year of years" [value]="year">{{year}}</option>
-          </select>
-
-          <button 
-            (click)="clearFilters()"
-            class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
-            <i class="pi pi-times mr-2"></i>
-            Clear
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-book text-2xl text-primary mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getCountByType('book')}}</div>
-        <div class="text-gray-600 text-sm">Books</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-file text-2xl text-red-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getCountByType('journal')}}</div>
-        <div class="text-gray-600 text-sm">Journals</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-graduation-cap text-2xl text-purple-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getCountByType('thesis')}}</div>
-        <div class="text-gray-600 text-sm">Theses</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-chart-line text-2xl text-green-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getCountByType('research-paper')}}</div>
-        <div class="text-gray-600 text-sm">Research Papers</div>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <i class="pi pi-download text-2xl text-blue-600 mb-2"></i>
-        <div class="text-2xl font-bold text-gray-900">{{getTotalDownloads() | number}}</div>
-        <div class="text-gray-600 text-sm">Total Downloads</div>
-      </div>
-    </div>
-
-    <!-- Featured Section -->
-    <div class="mb-8" *ngIf="getFeaturedItems().length > 0">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-900">Featured Collection</h2>
-        <span class="px-3 py-1 bg-primary text-white rounded-full text-sm">Featured Resources</span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let item of getFeaturedItems()" class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group border-2 border-primary/20">
-          <div class="flex items-start justify-between mb-3">
-            <span [class]="'px-3 py-1 text-sm rounded-full ' + getTypeColor(item.type)">
-              {{ getTypeText(item.type) }}
-            </span>
-            <span class="text-sm text-primary font-semibold">Featured</span>
-          </div>
-          
-          <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ item.title }}</h3>
-          
-          <p class="text-sm text-gray-600 mb-2 flex items-center">
-            <i class="pi pi-user mr-2 text-primary"></i>
-            {{ item.author }}
-          </p>
-          
-          <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-            {{ item.description }}
-          </p>
-          
-          <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-            <div class="flex items-center space-x-4">
-              <button 
-                (click)="previewItem(item)"
-                class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors">
-                <i class="pi pi-eye"></i>
-                <span class="text-sm">Preview</span>
-              </button>
-              <button 
-                (click)="downloadItem(item)"
-                class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors">
-                <i class="pi pi-download"></i>
-                <span class="text-sm">Download</span>
-              </button>
-            </div>
-            <div class="text-right">
-              <span class="text-xs text-gray-500 block">{{ item.fileSize }}</span>
-              <span class="text-xs text-gray-400">{{ item.pages }} pages</span>
+              >
+              <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
           </div>
+
+          <!-- Filter Options -->
+          <div class="flex flex-wrap gap-3">
+            <select
+              [(ngModel)]="selectedCategory"
+              (change)="applyFilters()"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="">All Categories</option>
+              @for (cat of categories; track cat) {
+                <option [value]="cat.value">{{cat.label}}</option>
+              }
+            </select>
+
+            <select
+              [(ngModel)]="selectedType"
+              (change)="applyFilters()"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="">All Types</option>
+              @for (type of types; track type) {
+                <option [value]="type.value">{{type.label}}</option>
+              }
+            </select>
+
+            <select
+              [(ngModel)]="selectedYear"
+              (change)="applyFilters()"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="">All Years</option>
+              @for (year of years; track year) {
+                <option [value]="year">{{year}}</option>
+              }
+            </select>
+
+            <button
+              (click)="clearFilters()"
+              class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+              <i class="pi pi-times mr-2"></i>
+              Clear
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- All Resources Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      <div *ngFor="let item of filteredItems" class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group">
-        <!-- Thumbnail Placeholder -->
-        <div class="relative mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-300">
-          <div class="aspect-[4/3] flex items-center justify-center">
-            <div class="text-center p-4">
-              <i class="pi pi-book text-4xl text-primary mb-2"></i>
-              <span class="text-sm font-medium text-gray-600">{{ getTypeText(item.type) }}</span>
-              <div *ngIf="item.migratedFrom" class="mt-2">
-                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Migrated from {{item.migratedFrom}}</span>
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-book text-2xl text-primary mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getCountByType('book')}}</div>
+          <div class="text-gray-600 text-sm">Books</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-file text-2xl text-red-600 mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getCountByType('journal')}}</div>
+          <div class="text-gray-600 text-sm">Journals</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-graduation-cap text-2xl text-purple-600 mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getCountByType('thesis')}}</div>
+          <div class="text-gray-600 text-sm">Theses</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-chart-line text-2xl text-green-600 mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getCountByType('research-paper')}}</div>
+          <div class="text-gray-600 text-sm">Research Papers</div>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+          <i class="pi pi-download text-2xl text-blue-600 mb-2"></i>
+          <div class="text-2xl font-bold text-gray-900">{{getTotalDownloads() | number}}</div>
+          <div class="text-gray-600 text-sm">Total Downloads</div>
+        </div>
+      </div>
+
+      <!-- Featured Section -->
+      @if (getFeaturedItems().length > 0) {
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Featured Collection</h2>
+            <span class="px-3 py-1 bg-primary text-white rounded-full text-sm">Featured Resources</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (item of getFeaturedItems(); track item) {
+              <div class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group border-2 border-primary/20">
+                <div class="flex items-start justify-between mb-3">
+                  <span [class]="'px-3 py-1 text-sm rounded-full ' + getTypeColor(item.type)">
+                    {{ getTypeText(item.type) }}
+                  </span>
+                  <span class="text-sm text-primary font-semibold">Featured</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ item.title }}</h3>
+                <p class="text-sm text-gray-600 mb-2 flex items-center">
+                  <i class="pi pi-user mr-2 text-primary"></i>
+                  {{ item.author }}
+                </p>
+                <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {{ item.description }}
+                </p>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div class="flex items-center space-x-4">
+                    <button
+                      (click)="previewItem(item)"
+                      class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors">
+                      <i class="pi pi-eye"></i>
+                      <span class="text-sm">Preview</span>
+                    </button>
+                    <button
+                      (click)="downloadItem(item)"
+                      class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors">
+                      <i class="pi pi-download"></i>
+                      <span class="text-sm">Download</span>
+                    </button>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs text-gray-500 block">{{ item.fileSize }}</span>
+                    <span class="text-xs text-gray-400">{{ item.pages }} pages</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          
-          <!-- Quick Actions Overlay -->
-          <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
-            <button 
-              (click)="previewItem(item)"
-              class="bg-white text-primary p-2 rounded-full hover:bg-primary hover:text-white transition-all duration-200 transform hover:scale-110">
-              <i class="pi pi-eye text-base"></i>
-            </button>
-            <button 
-              (click)="downloadItem(item)"
-              class="bg-white text-green-600 p-2 rounded-full hover:bg-green-600 hover:text-white transition-all duration-200 transform hover:scale-110">
-              <i class="pi pi-download text-base"></i>
-            </button>
+            }
           </div>
         </div>
+      }
 
-        <!-- Resource Details -->
-        <div class="flex items-start justify-between mb-3">
-          <span [class]="'px-3 py-1 text-sm rounded-full ' + getCategoryColor(item.category)">
-            {{ getCategoryText(item.category) }}
-          </span>
-          <span class="text-sm text-gray-500">{{ item.year }}</span>
-        </div>
-        
-        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ item.title }}</h3>
-        
-        <p class="text-sm text-gray-600 mb-2 flex items-center">
-          <i class="pi pi-user mr-2 text-primary"></i>
-          {{ item.author }}
-        </p>
-        
-        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-          {{ item.description }}
-        </p>
-        
-        <!-- Metadata -->
-        <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
-          <span>{{ item.pages }} pages</span>
-          <span>{{ item.fileSize }}</span>
-          <span>{{ item.language }}</span>
-        </div>
-
-        <!-- Rating and Downloads -->
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center space-x-1">
-            <i class="pi pi-star-fill text-yellow-400 text-sm"></i>
-            <span class="text-sm text-gray-700">{{ item.rating }}</span>
-          </div>
-          <div class="flex items-center space-x-1 text-gray-600">
-            <i class="pi pi-download text-sm"></i>
-            <span class="text-sm">{{ item.downloads }}</span>
-          </div>
-        </div>
-        
-        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-          <div class="flex items-center space-x-4">
-            <button 
-              (click)="previewItem(item)"
-              class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors">
-              <i class="pi pi-eye"></i>
-              <span class="text-sm">Preview</span>
-            </button>
-            <button 
-              (click)="downloadItem(item)"
-              class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors">
-              <i class="pi pi-download"></i>
-              <span class="text-sm">Download</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- No Results Message -->
-    <div *ngIf="filteredItems.length === 0" class="text-center py-12">
-      <i class="pi pi-search text-6xl text-gray-300 mb-4"></i>
-      <h3 class="text-xl font-bold text-gray-600 mb-2">No Resources Found</h3>
-      <p class="text-gray-500">Please change your search or filter criteria</p>
-      <button 
-        (click)="clearFilters()"
-        class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
-        Clear All Filters
-      </button>
-    </div>
-
-    <!-- PDF Viewer Modal -->
-    <div *ngIf="isPdfViewerOpen && selectedPdf && isBrowser" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-          <div class="flex-1">
-            <h3 class="text-xl font-bold text-gray-900">{{ selectedPdf.title }}</h3>
-            <p class="text-sm text-gray-600">{{ selectedPdf.author }} • {{ selectedPdf.year }} • {{ selectedPdf.pages }} pages</p>
-          </div>
-          <button 
-            (click)="closePdfViewer()"
-            class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <i class="pi pi-times text-xl text-gray-600"></i>
-          </button>
-        </div>
-
-        <!-- PDF Controls -->
-        <div class="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200">
-          <div class="flex items-center space-x-3">
-            <button 
-              (click)="previousPage()"
-              [class]="'p-2 rounded-lg ' + (currentPdfPage === 1 ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
-              [disabled]="currentPdfPage === 1">
-              <i class="pi pi-chevron-left"></i>
-            </button>
-            
-            <span class="text-sm text-gray-700">
-              Page {{ currentPdfPage }} / {{ totalPdfPages }}
-            </span>
-            
-            <button 
-              (click)="nextPage()"
-              [class]="'p-2 rounded-lg ' + (currentPdfPage === totalPdfPages ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
-              [disabled]="currentPdfPage === totalPdfPages">
-              <i class="pi pi-chevron-right"></i>
-            </button>
-          </div>
-
-          <div class="flex items-center space-x-3">
-            <button 
-              (click)="zoomOut()"
-              class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
-              <i class="pi pi-search-minus"></i>
-            </button>
-            
-            <span class="text-sm text-gray-700">{{ (zoomLevel * 100).toFixed(0) }}%</span>
-            
-            <button 
-              (click)="zoomIn()"
-              class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
-              <i class="pi pi-search-plus"></i>
-            </button>
-            
-            <button 
-              (click)="resetZoom()"
-              class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors text-sm">
-              Reset Zoom
-            </button>
-          </div>
-
-          <div class="flex items-center space-x-3">
-            <button 
-              (click)="downloadItem(selectedPdf)"
-              class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
-              <i class="pi pi-download"></i>
-              <span>Download</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Native Browser PDF Viewer -->
-        <div class="flex-1">
-          <iframe 
-            [src]="pdfSrc" 
-            class="w-full h-full"
-            frameborder="0"
-            title="PDF Viewer">
-            <div class="flex items-center justify-center h-full p-8">
-              <div class="text-center">
-                <i class="pi pi-exclamation-triangle text-4xl text-yellow-500 mb-4"></i>
-                <p class="text-gray-600 mb-4">Your browser cannot display PDF</p>
-                <button 
-                  (click)="downloadItem(selectedPdf)"
-                  class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
-                  Download PDF
+      <!-- All Resources Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        @for (item of filteredItems; track item) {
+          <div class="glass rounded-2xl p-6 hover-lift transition-all duration-300 group">
+            <!-- Thumbnail Placeholder -->
+            <div class="relative mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-300">
+              <div class="aspect-[4/3] flex items-center justify-center">
+                <div class="text-center p-4">
+                  <i class="pi pi-book text-4xl text-primary mb-2"></i>
+                  <span class="text-sm font-medium text-gray-600">{{ getTypeText(item.type) }}</span>
+                  @if (item.migratedFrom) {
+                    <div class="mt-2">
+                      <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Migrated from {{item.migratedFrom}}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+              <!-- Quick Actions Overlay -->
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
+                <button
+                  (click)="previewItem(item)"
+                  class="bg-white text-primary p-2 rounded-full hover:bg-primary hover:text-white transition-all duration-200 transform hover:scale-110">
+                  <i class="pi pi-eye text-base"></i>
+                </button>
+                <button
+                  (click)="downloadItem(item)"
+                  class="bg-white text-green-600 p-2 rounded-full hover:bg-green-600 hover:text-white transition-all duration-200 transform hover:scale-110">
+                  <i class="pi pi-download text-base"></i>
                 </button>
               </div>
             </div>
-          </iframe>
+            <!-- Resource Details -->
+            <div class="flex items-start justify-between mb-3">
+              <span [class]="'px-3 py-1 text-sm rounded-full ' + getCategoryColor(item.category)">
+                {{ getCategoryText(item.category) }}
+              </span>
+              <span class="text-sm text-gray-500">{{ item.year }}</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ item.title }}</h3>
+            <p class="text-sm text-gray-600 mb-2 flex items-center">
+              <i class="pi pi-user mr-2 text-primary"></i>
+              {{ item.author }}
+            </p>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+              {{ item.description }}
+            </p>
+            <!-- Metadata -->
+            <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
+              <span>{{ item.pages }} pages</span>
+              <span>{{ item.fileSize }}</span>
+              <span>{{ item.language }}</span>
+            </div>
+            <!-- Rating and Downloads -->
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-1">
+                <i class="pi pi-star-fill text-yellow-400 text-sm"></i>
+                <span class="text-sm text-gray-700">{{ item.rating }}</span>
+              </div>
+              <div class="flex items-center space-x-1 text-gray-600">
+                <i class="pi pi-download text-sm"></i>
+                <span class="text-sm">{{ item.downloads }}</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+              <div class="flex items-center space-x-4">
+                <button
+                  (click)="previewItem(item)"
+                  class="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors">
+                  <i class="pi pi-eye"></i>
+                  <span class="text-sm">Preview</span>
+                </button>
+                <button
+                  (click)="downloadItem(item)"
+                  class="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors">
+                  <i class="pi pi-download"></i>
+                  <span class="text-sm">Download</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- No Results Message -->
+      @if (filteredItems.length === 0) {
+        <div class="text-center py-12">
+          <i class="pi pi-search text-6xl text-gray-300 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-600 mb-2">No Resources Found</h3>
+          <p class="text-gray-500">Please change your search or filter criteria</p>
+          <button
+            (click)="clearFilters()"
+            class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+            Clear All Filters
+          </button>
+        </div>
+      }
+
+      <!-- PDF Viewer Modal -->
+      @if (isPdfViewerOpen && selectedPdf && isBrowser) {
+        <div class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div class="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+              <div class="flex-1">
+                <h3 class="text-xl font-bold text-gray-900">{{ selectedPdf.title }}</h3>
+                <p class="text-sm text-gray-600">{{ selectedPdf.author }} • {{ selectedPdf.year }} • {{ selectedPdf.pages }} pages</p>
+              </div>
+              <button
+                (click)="closePdfViewer()"
+                class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="pi pi-times text-xl text-gray-600"></i>
+              </button>
+            </div>
+            <!-- PDF Controls -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200">
+              <div class="flex items-center space-x-3">
+                <button
+                  (click)="previousPage()"
+                  [class]="'p-2 rounded-lg ' + (currentPdfPage === 1 ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
+                  [disabled]="currentPdfPage === 1">
+                  <i class="pi pi-chevron-left"></i>
+                </button>
+                <span class="text-sm text-gray-700">
+                  Page {{ currentPdfPage }} / {{ totalPdfPages }}
+                </span>
+                <button
+                  (click)="nextPage()"
+                  [class]="'p-2 rounded-lg ' + (currentPdfPage === totalPdfPages ? 'text-gray-400' : 'text-gray-700 hover:bg-white')"
+                  [disabled]="currentPdfPage === totalPdfPages">
+                  <i class="pi pi-chevron-right"></i>
+                </button>
+              </div>
+              <div class="flex items-center space-x-3">
+                <button
+                  (click)="zoomOut()"
+                  class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
+                  <i class="pi pi-search-minus"></i>
+                </button>
+                <span class="text-sm text-gray-700">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+                <button
+                  (click)="zoomIn()"
+                  class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors">
+                  <i class="pi pi-search-plus"></i>
+                </button>
+                <button
+                  (click)="resetZoom()"
+                  class="p-2 text-gray-700 hover:bg-white rounded-lg transition-colors text-sm">
+                  Reset Zoom
+                </button>
+              </div>
+              <div class="flex items-center space-x-3">
+                <button
+                  (click)="downloadItem(selectedPdf)"
+                  class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                  <i class="pi pi-download"></i>
+                  <span>Download</span>
+                </button>
+              </div>
+            </div>
+            <!-- Native Browser PDF Viewer -->
+            <div class="flex-1">
+              <iframe
+                [src]="pdfSrc"
+                class="w-full h-full"
+                frameborder="0"
+                title="PDF Viewer">
+                <div class="flex items-center justify-center h-full p-8">
+                  <div class="text-center">
+                    <i class="pi pi-exclamation-triangle text-4xl text-yellow-500 mb-4"></i>
+                    <p class="text-gray-600 mb-4">Your browser cannot display PDF</p>
+                    <button
+                      (click)="downloadItem(selectedPdf)"
+                      class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                      Download PDF
+                    </button>
+                  </div>
+                </div>
+              </iframe>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Call to Action -->
+      <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mt-8">
+        <i class="pi pi-inbox text-4xl text-primary mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Looking for More Resources?</h3>
+        <p class="text-gray-600 mb-6">Browse our complete collection or request specific resources</p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+            View Complete Collection
+          </button>
+          <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+            Request Resource
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- Call to Action -->
-    <div class="glass rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mt-8">
-      <i class="pi pi-inbox text-4xl text-primary mb-4"></i>
-      <h3 class="text-2xl font-bold text-gray-900 mb-2">Looking for More Resources?</h3>
-      <p class="text-gray-600 mb-6">Browse our complete collection or request specific resources</p>
-      
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
-          View Complete Collection
-        </button>
-        <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
-          Request Resource
-        </button>
-      </div>
-    </div>
   </div>
-</div>

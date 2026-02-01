@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-pdf-viewer-wrapper',
   standalone: true,
-  imports: [CommonModule, PdfViewerModule],
+  imports: [PdfViewerModule],
   template: `
     <div class="flex-1 overflow-auto p-4">
       @if (isBrowser) {

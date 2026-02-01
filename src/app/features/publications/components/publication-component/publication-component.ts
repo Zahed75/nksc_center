@@ -1,6 +1,6 @@
 // publication-component.ts
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PLATFORM_ID } from '@angular/core';
@@ -12,7 +12,7 @@ import { ApiService, Journal, FilterParams } from '../../../../core/api/service/
 @Component({
   selector: 'app-publication-component',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './publication-component.html',
   styleUrls: ['./publication-component.css']
 })

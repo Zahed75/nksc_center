@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { PeopleService, StaffMember, Department } from '../../services/people-se
 @Component({
   selector: 'app-people',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './people.html',
   styleUrls: ['./people.css'],
   providers: [PeopleService] // Add this line

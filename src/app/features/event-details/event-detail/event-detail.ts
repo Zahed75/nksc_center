@@ -1,7 +1,7 @@
 // event-detail.component.ts - FIXED VERSION
 import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { GalleryService, GalleryEvent, GalleryImage, GalleryVideo } from '../../../core/api/service/gallery/gallery-service';
 import { SafeUrlPipe } from '../../../safe-url-pipe';
@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-event-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './event-detail.html',
   styleUrls: ['./event-detail.css']
 })
