@@ -1,15 +1,16 @@
 // news.component.ts
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NewsService, NewsItem, NewsCategory, FilterParams, NewsResponse, CategoryResponse } from '../../../../core/api/service/news/news-service';
 import { environment } from '../../../../../enviornments/enviornment';
+import {SafeUrlPipe} from '../../../../safe-url-pipe';
 
 @Component({
   selector: 'app-news-component',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SafeUrlPipe],
   templateUrl: './news-component.html',
   styleUrls: ['./news-component.css']
 })
@@ -40,6 +41,7 @@ export class NewsComponent implements OnInit, OnDestroy {
   totalPages = 1;
   totalItems = 0;
   showLoadMore = false;
+  paginationType: 'load-more' | 'numbered' = 'load-more';
 
   // Selected news for detail view
   selectedNews: NewsItem | null = null;
@@ -57,6 +59,13 @@ export class NewsComponent implements OnInit, OnDestroy {
   // Bookmarked news
   bookmarkedNewsIds: number[] = [];
 
+  // Attachment viewer
+  isAttachmentViewerOpen = false;
+  currentAttachmentUrl: string = '';
+  currentAttachmentName: string = '';
+
+  @ViewChild('newsContainer') newsContainer!: ElementRef;
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(private newsService: NewsService) {
@@ -67,12 +76,20 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadNewsAndCategories();
+    // Set pagination type based on screen size
+    this.setPaginationType();
+    window.addEventListener('resize', () => this.setPaginationType());
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    window.removeEventListener('resize', () => this.setPaginationType());
     // Clean up body style
     document.body.style.overflow = 'auto';
+  }
+
+  setPaginationType(): void {
+    this.paginationType = window.innerWidth < 768 ? 'load-more' : 'numbered';
   }
 
   @HostListener('document:keydown.escape')
@@ -82,6 +99,9 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
     if (this.isMobileFilterOpen) {
       this.toggleMobileFilters();
+    }
+    if (this.isAttachmentViewerOpen) {
+      this.closeAttachmentViewer();
     }
   }
 
@@ -112,6 +132,99 @@ export class NewsComponent implements OnInit, OnDestroy {
   // Check if news is bookmarked
   isBookmarked(newsId: number): boolean {
     return this.bookmarkedNewsIds.includes(newsId);
+  }
+
+  // Open attachment viewer
+  openAttachmentViewer(attachmentUrl: string, fileName: string = ''): void {
+    this.currentAttachmentUrl = attachmentUrl;
+    this.currentAttachmentName = fileName || 'Attachment';
+    this.isAttachmentViewerOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Close attachment viewer
+  closeAttachmentViewer(): void {
+    this.isAttachmentViewerOpen = false;
+    this.currentAttachmentUrl = '';
+    this.currentAttachmentName = '';
+    document.body.style.overflow = 'auto';
+  }
+
+  // Download attachment
+  downloadAttachment(url: string, fileName: string = ''): void {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName || 'download';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Get file extension
+  getFileExtension(url: string): string {
+    return url.split('.').pop()?.toLowerCase() || '';
+  }
+
+  // Get file type icon
+  getFileTypeIcon(url: string): string {
+    const ext = this.getFileExtension(url);
+    switch (ext) {
+      case 'pdf':
+        return 'pi pi-file-pdf';
+      case 'doc':
+      case 'docx':
+        return 'pi pi-file-word';
+      case 'xls':
+      case 'xlsx':
+        return 'pi pi-file-excel';
+      case 'ppt':
+      case 'pptx':
+        return 'pi pi-file-powerpoint';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'pi pi-image';
+      case 'zip':
+      case 'rar':
+      case '7z':
+        return 'pi pi-file-archive';
+      default:
+        return 'pi pi-file';
+    }
+  }
+
+  // Get file type color
+  getFileTypeColor(url: string): string {
+    const ext = this.getFileExtension(url);
+    switch (ext) {
+      case 'pdf':
+        return 'bg-red-100 text-red-600';
+      case 'doc':
+      case 'docx':
+        return 'bg-blue-100 text-blue-600';
+      case 'xls':
+      case 'xlsx':
+        return 'bg-green-100 text-green-600';
+      case 'ppt':
+      case 'pptx':
+        return 'bg-orange-100 text-orange-600';
+      default:
+        return 'bg-gray-100 text-gray-600';
+    }
+  }
+
+  // Format file size (mock function - you might need to get actual file size)
+  formatFileSize(size: number = 0): string {
+    if (size === 0) return 'N/A';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let unitIndex = 0;
+    while (size >= 1024 && unitIndex < units.length - 1) {
+      size /= 1024;
+      unitIndex++;
+    }
+    return `${size.toFixed(1)} ${units[unitIndex]}`;
   }
 
   // Load news and categories from API
@@ -232,7 +345,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         research_department: 'সমাজবিজ্ঞান বিভাগ',
         thumbnail_image: '/assets/images/news/research.jpg',
         banner_image: '/assets/images/news/banner-1.jpg',
-        attachment_file: '',
+        attachment_file: '/assets/documents/research-paper.pdf',
         author: 'ড. রহিমা আক্তার',
         is_published: true,
         publish_date: new Date().toISOString(),
@@ -262,7 +375,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         research_department: '',
         thumbnail_image: '/assets/images/news/seminar.jpg',
         banner_image: '/assets/images/news/banner-2.jpg',
-        attachment_file: '',
+        attachment_file: '/assets/documents/seminar-schedule.docx',
         author: 'প্রফেসর ড. জামাল উদ্দিন',
         is_published: true,
         publish_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
@@ -292,7 +405,7 @@ export class NewsComponent implements OnInit, OnDestroy {
         research_department: '',
         thumbnail_image: '/assets/images/news/journal.jpg',
         banner_image: '/assets/images/news/banner-3.jpg',
-        attachment_file: '',
+        attachment_file: '/assets/documents/journal-issue.zip',
         author: 'সম্পাদনা পর্ষদ',
         is_published: true,
         publish_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
@@ -427,7 +540,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     console.log(`Paginated news: ${this.paginatedNews.length} items (${startIndex} to ${endIndex})`);
   }
 
-  // Load more news
+  // Load more news (for load-more pagination)
   loadMoreNews(): void {
     if (this.currentPage < this.totalPages) {
       this.isLoadingMore = true;
@@ -444,7 +557,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Go to page
+  // Go to page (for numbered pagination)
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
@@ -475,7 +588,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Get page numbers for pagination
+  // Get page numbers for numbered pagination
   getPageNumbers(): number[] {
     const pages = [];
     const maxVisible = 5;

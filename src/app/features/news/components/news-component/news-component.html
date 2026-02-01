@@ -1,251 +1,878 @@
 <!-- news-component.html -->
-<div class="min-h-screen bg-gray-50">
-  <!-- Header -->
-  <div class="bg-blue-600 text-white py-12">
-    <div class="container mx-auto px-4">
-      <h1 class="text-4xl font-bold mb-4 bangla-font">খবর ও আপডেট</h1>
-      <p class="text-xl opacity-90 bangla-font">নাজমুল করিম স্টাডি সেন্টারের সর্বশেষ খবর</p>
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white">
+    <!-- Animated background -->
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
     </div>
-  </div>
+
+    <div class="relative container mx-auto px-4 py-16 md:py-24">
+      <div class="max-w-4xl mx-auto text-center">
+        <!-- Icon with animation -->
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 mb-8 animate-pulse">
+          <i class="pi pi-newspaper text-3xl"></i>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <span class="block bg-clip-text text-transparent bg-gradient-to-r from-white to-cyan-200">খবর ও আপডেট</span>
+          <span class="block text-xl md:text-2xl mt-4 font-light opacity-90">নাজমুল করিম স্টাডি সেন্টারের সর্বশেষ খবর</span>
+        </h1>
+
+        <!-- Description -->
+        <p class="text-lg text-white/90 mb-10 leading-relaxed max-w-2xl mx-auto">
+          গবেষণা প্রকাশনা, সেমিনার, কর্মশালা, জার্নাল এবং গুরুত্বপূর্ণ ঘোষণা সম্পর্কে সর্বশেষ তথ্য
+        </p>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          <div class="glass-card rounded-xl p-4 hover:scale-105 transition-transform duration-300">
+            <div class="text-2xl md:text-3xl font-bold mb-1">{{ formatNumber(getTotalNews()) }}</div>
+            <div class="text-sm opacity-90 bangla-font">মোট খবর</div>
+          </div>
+          <div class="glass-card rounded-xl p-4 hover:scale-105 transition-transform duration-300">
+            <div class="text-2xl md:text-3xl font-bold mb-1">{{ formatNumber(getBreakingNews().length) }}</div>
+            <div class="text-sm opacity-90 bangla-font">জরুরি খবর</div>
+          </div>
+          <div class="glass-card rounded-xl p-4 hover:scale-105 transition-transform duration-300">
+            <div class="text-2xl md:text-3xl font-bold mb-1">{{ formatNumber(categories.length) }}</div>
+            <div class="text-sm opacity-90 bangla-font">বিভাগ</div>
+          </div>
+          <div class="glass-card rounded-xl p-4 hover:scale-105 transition-transform duration-300">
+            <div class="text-2xl md:text-3xl font-bold mb-1">{{ formatNumber(getResearchNews().length) }}</div>
+            <div class="text-sm opacity-90 bangla-font">গবেষণা</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave separator -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg class="w-full h-12 text-white" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="currentColor" opacity=".25"></path>
+        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="currentColor" opacity=".5"></path>
+        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"></path>
+      </svg>
+    </div>
+  </section>
 
   <!-- Main Content -->
-  <div class="container mx-auto px-4 py-8">
-    <!-- Search and Filters -->
-    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
-      <div class="flex flex-col md:flex-row gap-4 mb-4">
-        <!-- Search -->
-        <div class="flex-1">
-          <input
-            type="text"
-            [(ngModel)]="searchTerm"
-            (input)="applyFilters()"
-            placeholder="খবর অনুসন্ধান করুন..."
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+  <section class="py-8 md:py-12">
+    <div class="container mx-auto px-4">
+
+      <!-- Quick Stats Bar -->
+      <div class="mb-8">
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <button class="md:hidden px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors"
+                      (click)="toggleMobileFilters()">
+                <i class="pi pi-filter mr-2"></i>
+                ফিল্টার
+              </button>
+              <h2 class="text-xl font-bold text-gray-800 bangla-font">সর্বশেষ খবর</h2>
+              <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                {{ formatNumber(totalItems) }}টি খবর
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <!-- Sort Options -->
+              <div class="hidden md:flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                <button class="px-3 py-1.5 rounded-md text-sm transition-colors"
+                        [class.bg-white.shadow-sm.text-blue-600]="sortBy === 'latest'"
+                        [class.text-gray-600.hover:text-blue-600]="sortBy !== 'latest'"
+                        (click)="sortNews('latest')">
+                  সর্বশেষ
+                </button>
+                <button class="px-3 py-1.5 rounded-md text-sm transition-colors"
+                        [class.bg-white.shadow-sm.text-blue-600]="sortBy === 'popular'"
+                        [class.text-gray-600.hover:text-blue-600]="sortBy !== 'popular'"
+                        (click)="sortNews('popular')">
+                  জনপ্রিয়
+                </button>
+                <button class="px-3 py-1.5 rounded-md text-sm transition-colors"
+                        [class.bg-white.shadow-sm.text-blue-600]="sortBy === 'oldest'"
+                        [class.text-gray-600.hover:text-blue-600]="sortBy !== 'oldest'"
+                        (click)="sortNews('oldest')">
+                  পুরানো
+                </button>
+              </div>
+
+              <!-- View Toggle -->
+              <div class="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+                <button class="p-2 rounded-md transition-colors"
+                        [class.bg-white.shadow-sm.text-blue-600]="viewMode === 'grid'"
+                        [class.text-gray-600.hover:text-blue-600]="viewMode !== 'grid'"
+                        (click)="changeViewMode('grid')"
+                        title="Grid View">
+                  <i class="pi pi-th-large"></i>
+                </button>
+                <button class="p-2 rounded-md transition-colors"
+                        [class.bg-white.shadow-sm.text-blue-600]="viewMode === 'list'"
+                        [class.text-gray-600.hover:text-blue-600]="viewMode !== 'list'"
+                        (click)="changeViewMode('list')"
+                        title="List View">
+                  <i class="pi pi-list"></i>
+                </button>
+                <button class="p-2 rounded-md transition-colors"
+                        [class.bg-white.shadow-sm.text-blue-600]="viewMode === 'featured'"
+                        [class.text-gray-600.hover:text-blue-600]="viewMode !== 'featured'"
+                        (click)="changeViewMode('featured')"
+                        title="Featured View">
+                  <i class="pi pi-star"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <!-- Category Filter -->
-        <div class="w-full md:w-48">
-          <select
-            [(ngModel)]="selectedCategory"
-            (change)="applyFilters()"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
-            <option value="all">সব বিভাগ</option>
-            @for (category of categories; track category.id) {
-              <option [value]="category.slug">{{ category.name }}</option>
-            }
-          </select>
-        </div>
       </div>
 
-      <div class="flex gap-4">
-        <button
-          (click)="applyFilters()"
-          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors bangla-font">
-          <i class="pi pi-filter mr-2"></i>
-          ফিল্টার
-        </button>
-        <button
-          (click)="clearFilters()"
-          class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors bangla-font">
-          <i class="pi pi-refresh mr-2"></i>
-          রিসেট
-        </button>
-      </div>
-    </div>
+      <!-- Main Layout -->
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Left Sidebar - Filters (Desktop) -->
+        <aside class="hidden lg:block w-full lg:w-72 flex-shrink-0">
+          <div class="sticky top-24">
+            <!-- Search -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 bangla-font">খবর খুঁজুন</h3>
+              <div class="relative">
+                <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text"
+                       [(ngModel)]="searchTerm"
+                       (input)="applyFilters()"
+                       placeholder="খবর অনুসন্ধান..."
+                       class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bangla-font">
+              </div>
+            </div>
 
-    <!-- Loading State -->
-    @if (isLoading) {
-      <div class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-        <p class="text-gray-600 bangla-font">খবর লোড হচ্ছে...</p>
-      </div>
-    }
+            <!-- Categories -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 bangla-font">বিভাগসমূহ</h3>
+              <div class="space-y-2">
+                <button class="w-full text-left px-3 py-2 rounded-lg transition-colors"
+                        [class.bg-blue-50.text-blue-600]="selectedCategory === 'all'"
+                        [class.text-gray-600.hover:bg-gray-100]="selectedCategory !== 'all'"
+                        (click)="selectedCategory = 'all'; applyFilters()">
+                  <span class="bangla-font">সব বিভাগ</span>
+                  <span class="float-right text-sm text-gray-500">{{ getTotalNews() }}</span>
+                </button>
+                @for (category of categories; track category.id) {
+                  <button class="w-full text-left px-3 py-2 rounded-lg transition-colors"
+                          [class.bg-blue-50.text-blue-600]="selectedCategory === category.slug"
+                          [class.text-gray-600.hover:bg-gray-100]="selectedCategory !== category.slug"
+                          (click)="selectedCategory = category.slug; applyFilters()">
+                    <span class="bangla-font">{{ category.name }}</span>
+                    <span class="float-right text-sm text-gray-500">
+                      {{ formatNumber(getTotalNews()) }}
+                    </span>
+                  </button>
+                }
+              </div>
+            </div>
 
-    <!-- Error State -->
-    @if (error) {
-      <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mb-8">
-        <p class="text-red-600 bangla-font">{{ error }}</p>
-      </div>
-    }
+            <!-- Urgency Filter -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 bangla-font">গুরুত্ব</h3>
+              <div class="space-y-2">
+                @for (urgency of ['all', 'urgent', 'important', 'normal']; track urgency) {
+                  <button class="w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center gap-2"
+                          [class.bg-blue-50.text-blue-600]="selectedUrgency === urgency"
+                          [class.text-gray-600.hover:bg-gray-100]="selectedUrgency !== urgency"
+                          (click)="selectedUrgency = urgency; applyFilters()">
+                    @if (urgency !== 'all') {
+                      <span class="w-3 h-3 rounded-full" [ngClass]="getUrgencyColor(urgency)"></span>
+                    }
+                    <span class="bangla-font">
+                      {{ urgency === 'all' ? 'সব গুরুত্ব' : getUrgencyText(urgency) }}
+                    </span>
+                  </button>
+                }
+              </div>
+            </div>
 
-    <!-- Results Count -->
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-gray-800 bangla-font">
-        @if (searchTerm || selectedCategory !== 'all') {
-          <span class="text-blue-600">{{ totalItems }}</span>টি খবর পাওয়া গেছে
-        } @else {
-          সর্বশেষ খবর
-        }
-      </h2>
-    </div>
+            <!-- Clear Filters Button -->
+            <button class="w-full mt-6 px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 rounded-xl hover:shadow-md transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 bangla-font font-medium"
+                    (click)="clearFilters()">
+              <i class="pi pi-refresh"></i>
+              সব ফিল্টার সরান
+            </button>
+          </div>
+        </aside>
 
-    <!-- News Grid -->
-    @if (!isLoading && totalItems > 0) {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        @for (news of paginatedNews; track news.id) {
-          <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-               (click)="openNewsDetail(news)">
-            <!-- Image -->
-            <div class="h-48 bg-gray-200 overflow-hidden">
-              @if (news.thumbnail_image) {
-                <img
-                  [src]="news.thumbnail_image"
-                  [alt]="news.title"
-                  class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  (error)="handleImageError($event)">
-              } @else {
-                <div class="w-full h-full bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center">
-                  <i class="pi pi-newspaper text-4xl text-gray-400"></i>
+        <!-- Main Content Area -->
+        <main class="flex-1" #newsContainer>
+          <!-- Mobile Filter Overlay -->
+          @if (isMobileFilterOpen) {
+            <div class="fixed inset-0 z-50 lg:hidden">
+              <!-- Backdrop -->
+              <div class="absolute inset-0 bg-black bg-opacity-50" (click)="toggleMobileFilters()"></div>
+
+              <!-- Filters Panel -->
+              <div class="absolute right-0 top-0 h-full w-80 bg-white shadow-2xl overflow-y-auto">
+                <div class="p-6">
+                  <!-- Header -->
+                  <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 bangla-font">ফিল্টার</h3>
+                    <button class="p-2 hover:bg-gray-100 rounded-lg" (click)="toggleMobileFilters()">
+                      <i class="pi pi-times text-xl"></i>
+                    </button>
+                  </div>
+
+                  <!-- Mobile Filters Content -->
+                  <div class="space-y-6">
+                    <!-- Search -->
+                    <div>
+                      <h4 class="text-sm font-semibold text-gray-700 mb-2 bangla-font">খোঁজ</h4>
+                      <div class="relative">
+                        <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text"
+                               [(ngModel)]="searchTerm"
+                               (input)="applyFilters()"
+                               placeholder="খবর অনুসন্ধান..."
+                               class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+                      </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div>
+                      <h4 class="text-sm font-semibold text-gray-700 mb-2 bangla-font">বিভাগ</h4>
+                      <select [(ngModel)]="selectedCategory" (change)="applyFilters()"
+                              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+                        <option value="all">সব বিভাগ</option>
+                        @for (category of categories; track category.id) {
+                          <option [value]="category.slug">{{ category.name }}</option>
+                        }
+                      </select>
+                    </div>
+
+                    <!-- Urgency -->
+                    <div>
+                      <h4 class="text-sm font-semibold text-gray-700 mb-2 bangla-font">গুরুত্ব</h4>
+                      <select [(ngModel)]="selectedUrgency" (change)="applyFilters()"
+                              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+                        <option value="all">সব গুরুত্ব</option>
+                        <option value="urgent">জরুরি</option>
+                        <option value="important">গুরুত্বপূর্ণ</option>
+                        <option value="normal">সাধারণ</option>
+                      </select>
+                    </div>
+
+                    <!-- Apply Button -->
+                    <button class="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all duration-300"
+                            (click)="toggleMobileFilters(); applyFilters()">
+                      <span class="bangla-font font-medium">ফিল্টার প্রয়োগ করুন</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Loading State -->
+          @if (isLoading) {
+            <div class="text-center py-12">
+              <div class="inline-block relative">
+                <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <i class="pi pi-newspaper text-xl text-blue-500"></i>
+                </div>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2 bangla-font">খবর লোড হচ্ছে</h3>
+              <p class="text-gray-500 bangla-font">অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন...</p>
+            </div>
+          }
+
+          <!-- Error State -->
+          @if (error && !isLoading) {
+            <div class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-2xl p-8 text-center mb-8">
+              <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="pi pi-exclamation-triangle text-3xl text-red-500"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-800 mb-3 bangla-font">সমস্যা হয়েছে</h3>
+              <p class="text-gray-600 mb-6 bangla-font">{{ error }}</p>
+              <button class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300"
+                      (click)="loadNewsAndCategories()">
+                <i class="pi pi-refresh mr-2"></i>
+                <span class="bangla-font font-medium">আবার চেষ্টা করুন</span>
+              </button>
+            </div>
+          }
+
+          <!-- No Results -->
+          @if (!isLoading && !error && totalItems === 0) {
+            <div class="text-center py-16">
+              <div class="w-32 h-32 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full flex items-center justify-center mx-auto mb-8">
+                <i class="pi pi-inbox text-5xl text-blue-400"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-4 bangla-font">কোনো খবর পাওয়া যায়নি</h3>
+              <p class="text-gray-600 mb-8 max-w-md mx-auto bangla-font">
+                আপনার অনুসন্ধানের সাথে মিলিয়ে কোনো খবর পাওয়া যায়নি। অনুগ্রহ করে নতুন করে অনুসন্ধান করুন।
+              </p>
+              <button class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
+                      (click)="clearFilters()">
+                <i class="pi pi-refresh"></i>
+                <span class="bangla-font font-medium">সব ফিল্টার সরান</span>
+              </button>
+            </div>
+          }
+
+          <!-- News Grid View -->
+          @if (!isLoading && !error && totalItems > 0 && viewMode === 'grid') {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              @for (news of paginatedNews; track news.id) {
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 border border-gray-100">
+                  <!-- Image Container -->
+                  <div class="relative h-48 overflow-hidden">
+                    @if (news.thumbnail_image) {
+                      <img [src]="news.thumbnail_image" [alt]="news.title"
+                           class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                           (error)="handleImageError($event)">
+                    } @else {
+                      <div class="w-full h-full bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+                        <div class="text-center">
+                          <i class="pi pi-newspaper text-4xl text-gray-400 mb-3"></i>
+                          <p class="text-sm text-gray-500 bangla-font">ছবি নেই</p>
+                        </div>
+                      </div>
+                    }
+
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                    <!-- Category Badge -->
+                    <div class="absolute top-4 left-4">
+                      <span class="px-3 py-1.5 rounded-full text-xs font-semibold text-white shadow-lg"
+                            [ngClass]="getCategoryColor(news.category)">
+                        {{ getCategoryName(news.category) }}
+                      </span>
+                    </div>
+
+                    <!-- Attachment Badge -->
+                    @if (news.attachment_file) {
+                      <div class="absolute top-4 right-4">
+                        <span class="px-2 py-1 rounded-md text-xs font-medium bg-white/90 text-blue-600 shadow-md flex items-center gap-1">
+                          <i [class]="getFileTypeIcon(news.attachment_file)"></i>
+                          <span class="bangla-font">ফাইল</span>
+                        </span>
+                      </div>
+                    }
+
+                    <!-- Bookmark Button -->
+                    <button class="absolute bottom-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-transform"
+                            (click)="$event.stopPropagation(); toggleBookmark(news.id)">
+                      <i class="pi" [ngClass]="isBookmarked(news.id) ? 'pi-bookmark-fill text-blue-500' : 'pi-bookmark text-gray-600'"></i>
+                    </button>
+                  </div>
+
+                  <!-- Content -->
+                  <div class="p-5">
+                    <!-- Urgency Badge -->
+                    @if (news.urgency !== 'normal') {
+                      <div class="mb-3">
+                        <span class="px-2 py-1 rounded-md text-xs font-medium text-white"
+                              [ngClass]="getUrgencyColor(news.urgency)">
+                          {{ getUrgencyText(news.urgency) }}
+                        </span>
+                      </div>
+                    }
+
+                    <!-- Title -->
+                    <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 bangla-font cursor-pointer"
+                        (click)="openNewsDetail(news)">
+                      {{ news.title }}
+                    </h3>
+
+                    <!-- Description -->
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3 bangla-font">
+                      {{ stripHtml(news.short_description) }}
+                    </p>
+
+                    <!-- Footer -->
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
+                          <i class="pi pi-user text-blue-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 font-medium bangla-font line-clamp-1">
+                          {{ news.author }}
+                        </span>
+                      </div>
+
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-500 flex items-center gap-1">
+                          <i class="pi pi-eye"></i>
+                          {{ formatNumber(news.views_count) }}
+                        </span>
+                        <span class="text-xs text-gray-500 bangla-font">
+                          {{ getRelativeTime(news.publish_date) }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               }
             </div>
+          }
 
-            <!-- Content -->
-            <div class="p-4">
-              <!-- Category -->
-              <div class="mb-2">
-                <span [class]="getCategoryColor(news.category) + ' px-3 py-1 rounded-full text-xs font-medium bangla-font'">
-                  {{ getCategoryName(news.category) }}
-                </span>
-              </div>
+          <!-- News List View -->
+          @if (!isLoading && !error && totalItems > 0 && viewMode === 'list') {
+            <div class="space-y-4 mb-8">
+              @for (news of paginatedNews; track news.id) {
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                  <div class="flex flex-col md:flex-row gap-6 p-6">
+                    <!-- Thumbnail -->
+                    <div class="relative w-full md:w-48 h-48 md:h-auto rounded-xl overflow-hidden flex-shrink-0">
+                      @if (news.thumbnail_image) {
+                        <img [src]="news.thumbnail_image" [alt]="news.title"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer"
+                             (click)="openNewsDetail(news)"
+                             (error)="handleImageError($event)">
+                      } @else {
+                        <div class="w-full h-full bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center cursor-pointer"
+                             (click)="openNewsDetail(news)">
+                          <i class="pi pi-newspaper text-3xl text-gray-400"></i>
+                        </div>
+                      }
+                      <div class="absolute top-3 right-3">
+                        <span class="px-2 py-1 rounded-md text-xs font-semibold text-white shadow-md"
+                              [ngClass]="getCategoryColor(news.category)">
+                          {{ getCategoryName(news.category) }}
+                        </span>
+                      </div>
+                    </div>
 
-              <!-- Title -->
-              <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 bangla-font">
-                {{ news.title }}
-              </h3>
+                    <!-- Content -->
+                    <div class="flex-1">
+                      <!-- Header -->
+                      <div class="flex items-center gap-3 mb-3">
+                        <span class="text-sm text-gray-500 bangla-font flex items-center gap-1">
+                          <i class="pi pi-calendar"></i>
+                          {{ formatDate(news.publish_date) }}
+                        </span>
+                        @if (news.urgency !== 'normal') {
+                          <span class="px-2 py-1 rounded-md text-xs font-medium text-white"
+                                [ngClass]="getUrgencyColor(news.urgency)">
+                            {{ getUrgencyText(news.urgency) }}
+                          </span>
+                        }
+                      </div>
 
-              <!-- Description -->
-              <p class="text-gray-600 text-sm mb-3 line-clamp-3 bangla-font">
-                {{ stripHtml(news.short_description) }}
-              </p>
+                      <!-- Title -->
+                      <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors bangla-font cursor-pointer"
+                          (click)="openNewsDetail(news)">
+                        {{ news.title }}
+                      </h3>
 
-              <!-- Footer -->
-              <div class="flex items-center justify-between text-sm text-gray-500">
-                <span class="bangla-font">{{ getRelativeTime(news.publish_date) }}</span>
-                <span>{{ news.views_count }} বার দেখা</span>
-              </div>
+                      <!-- Description -->
+                      <p class="text-gray-600 mb-4 bangla-font leading-relaxed line-clamp-2">
+                        {{ stripHtml(news.short_description) }}
+                      </p>
+
+                      <!-- Attachment Preview -->
+                      @if (news.attachment_file) {
+                        <div class="mb-4">
+                          <div class="flex items-center gap-2">
+                            <div class="px-3 py-2 rounded-lg flex items-center gap-2"
+                                 [ngClass]="getFileTypeColor(news.attachment_file)">
+                              <i [class]="getFileTypeIcon(news.attachment_file)"></i>
+                              <span class="text-sm bangla-font font-medium">সংযুক্তি</span>
+                            </div>
+                            <button class="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                                    (click)="$event.stopPropagation(); openAttachmentViewer(news.attachment_file, news.title)">
+                              <i class="pi pi-eye"></i>
+                              <span class="bangla-font">দেখুন</span>
+                            </button>
+                            <button class="text-sm text-green-600 hover:text-green-700 flex items-center gap-1"
+                                    (click)="$event.stopPropagation(); downloadAttachment(news.attachment_file, news.title)">
+                              <i class="pi pi-download"></i>
+                              <span class="bangla-font">ডাউনলোড</span>
+                            </button>
+                          </div>
+                        </div>
+                      }
+
+                      <!-- Meta Info -->
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                          <span class="text-sm text-gray-700 bangla-font flex items-center gap-1">
+                            <i class="pi pi-user"></i>
+                            {{ news.author }}
+                          </span>
+                          <span class="text-sm text-gray-500 flex items-center gap-1">
+                            <i class="pi pi-eye"></i>
+                            {{ formatNumber(news.views_count) }} বার দেখা
+                          </span>
+                          <span class="text-sm text-gray-500 bangla-font flex items-center gap-1">
+                            <i class="pi pi-clock"></i>
+                            {{ getReadTime(news.content) }}
+                          </span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                          <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                  (click)="$event.stopPropagation(); toggleBookmark(news.id)"
+                                  [title]="isBookmarked(news.id) ? 'বুকমার্ক সরান' : 'বুকমার্ক করুন'">
+                            <i class="pi" [ngClass]="isBookmarked(news.id) ? 'pi-bookmark-fill text-blue-500' : 'pi-bookmark text-gray-600'"></i>
+                          </button>
+                          <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                                  (click)="openNewsDetail(news)">
+                            <span class="text-sm bangla-font">বিস্তারিত</span>
+                            <i class="pi pi-arrow-right text-sm"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
-          </div>
-        }
-      </div>
+          }
 
-      <!-- Pagination -->
-      @if (totalPages > 1) {
-        <div class="flex items-center justify-between mt-8 pt-8 border-t border-gray-200">
-          <button
-            (click)="previousPage()"
-            [disabled]="currentPage === 1"
-            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 bangla-font">
-            পূর্ববর্তী
-          </button>
-
-          <div class="flex items-center gap-2">
-            @for (page of getPageNumbers(); track page) {
-              <button
-                (click)="goToPage(page)"
-                [class]="page === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                class="w-10 h-10 rounded-lg transition-colors">
-                {{ page }}
-              </button>
+          <!-- Pagination Section -->
+          @if (!isLoading && !error && totalItems > 0) {
+            <!-- Load More Button (Mobile/Tablet) -->
+            @if (paginationType === 'load-more' && showLoadMore) {
+              <div class="text-center my-8">
+                <button class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-xl transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
+                        (click)="loadMoreNews()"
+                        [disabled]="isLoadingMore">
+                  @if (isLoadingMore) {
+                    <i class="pi pi-spinner pi-spin"></i>
+                    <span class="bangla-font">লোড হচ্ছে...</span>
+                  } @else {
+                    <i class="pi pi-plus"></i>
+                    <span class="bangla-font font-medium">আরো খবর দেখুন ({{ currentPage }}/{{ totalPages }})</span>
+                  }
+                </button>
+                <p class="text-sm text-gray-500 mt-2 bangla-font">
+                  দেখানো হয়েছে {{ formatNumber(paginatedNews.length) }}টি, মোট {{ formatNumber(totalItems) }}টি খবর
+                </p>
+              </div>
             }
-          </div>
 
-          <button
-            (click)="nextPage()"
-            [disabled]="currentPage === totalPages"
-            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 bangla-font">
-            পরবর্তী
-          </button>
-        </div>
-      }
-    }
+            <!-- Numbered Pagination (Desktop) -->
+            @if (paginationType === 'numbered' && totalPages > 1) {
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-200">
+                <div class="text-sm text-gray-500 bangla-font">
+                  দেখানো হচ্ছে {{ getDisplayRange() }} নং খবর, মোট {{ formatNumber(totalItems) }}টি থেকে
+                </div>
 
-    <!-- No Results -->
-    @if (!isLoading && totalItems === 0) {
-      <div class="text-center py-12">
-        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <i class="pi pi-inbox text-3xl text-gray-400"></i>
-        </div>
-        <h3 class="text-xl font-bold text-gray-700 mb-2 bangla-font">কোনো খবর পাওয়া যায়নি</h3>
-        <p class="text-gray-500 mb-6 bangla-font">অনুগ্রহ করে আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করুন</p>
-        <button
-          (click)="clearFilters()"
-          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors bangla-font">
-          সব ফিল্টার সরান
-        </button>
+                <div class="flex items-center gap-2">
+                  <button (click)="previousPage()"
+                          [disabled]="currentPage === 1"
+                          class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bangla-font font-medium">
+                    <i class="pi pi-chevron-left"></i>
+                    <span>পূর্ববর্তী</span>
+                  </button>
+
+                  <div class="flex items-center gap-1">
+                    @for (page of getPageNumbers(); track page) {
+                      <button (click)="goToPage(page)"
+                              [class]="page === currentPage
+                                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md'
+                                : 'text-gray-600 hover:bg-gray-100'"
+                              class="w-10 h-10 rounded-xl font-medium transition-colors">
+                        {{ page }}
+                      </button>
+                    }
+                  </div>
+
+                  <button (click)="nextPage()"
+                          [disabled]="currentPage === totalPages"
+                          class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 bangla-font font-medium">
+                    <span>পরবর্তী</span>
+                    <i class="pi pi-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            }
+          }
+        </main>
       </div>
-    }
-  </div>
+    </div>
+  </section>
 
   <!-- News Detail Modal -->
   @if (isNewsDetailOpen && selectedNews) {
-    <div class="fixed inset-0 z-50 overflow-y-auto">
+    <div class="fixed inset-0 z-[100] overflow-y-auto">
       <!-- Backdrop -->
-      <div class="fixed inset-0 bg-black bg-opacity-50" (click)="closeNewsDetail()"></div>
+      <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" (click)="closeNewsDetail()"></div>
 
-      <!-- Modal -->
+      <!-- Modal Container -->
       <div class="relative min-h-screen flex items-center justify-center p-4">
-        <div class="relative bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+        <!-- Modal Content -->
+        <div class="relative bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl">
           <!-- Close Button -->
-          <button
-            (click)="closeNewsDetail()"
-            class="absolute top-4 right-4 z-10 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100">
+          <button (click)="closeNewsDetail()"
+                  class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-white transition-colors shadow-lg">
             <i class="pi pi-times"></i>
           </button>
 
           <!-- Banner Image -->
           @if (selectedNews.banner_image) {
-            <div class="relative h-64">
-              <img
-                [src]="selectedNews.banner_image"
-                [alt]="selectedNews.title"
-                class="w-full h-full object-cover">
+            <div class="relative h-64 md:h-80">
+              <img [src]="selectedNews.banner_image" [alt]="selectedNews.title"
+                   class="w-full h-full object-cover">
+              <!-- Gradient Overlay -->
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6">
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span class="px-3 py-1.5 rounded-full text-sm font-semibold text-white shadow-lg"
+                        [ngClass]="getCategoryColor(selectedNews.category)">
+                    {{ getCategoryName(selectedNews.category) }}
+                  </span>
+                  @if (selectedNews.urgency !== 'normal') {
+                    <span class="px-3 py-1.5 rounded-full text-sm font-semibold text-white shadow-lg"
+                          [ngClass]="getUrgencyColor(selectedNews.urgency)">
+                      {{ getUrgencyText(selectedNews.urgency) }}
+                    </span>
+                  }
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-white bangla-font leading-tight">
+                  {{ selectedNews.title }}
+                </h1>
+              </div>
             </div>
           }
 
           <!-- Content -->
-          <div class="p-6 overflow-y-auto max-h-[calc(90vh-16rem)]">
-            <!-- Title -->
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 bangla-font">
-              {{ selectedNews.title }}
-            </h1>
-
-            <!-- Meta Info -->
+          <div class="p-6 md:p-8 overflow-y-auto max-h-[calc(90vh-20rem)]">
+            <!-- Meta Information -->
             <div class="flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-gray-200">
               <div class="flex items-center gap-2">
                 <i class="pi pi-user text-gray-400"></i>
-                <span class="text-gray-700 bangla-font">{{ selectedNews.author }}</span>
+                <span class="text-gray-700 bangla-font font-medium">{{ selectedNews.author }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="pi pi-calendar text-gray-400"></i>
                 <span class="text-gray-600 bangla-font">{{ formatDate(selectedNews.publish_date) }}</span>
               </div>
               <div class="flex items-center gap-2">
+                <i class="pi pi-clock text-gray-400"></i>
+                <span class="text-gray-600 bangla-font">{{ getReadTime(selectedNews.content) }}</span>
+              </div>
+              <div class="flex items-center gap-2">
                 <i class="pi pi-eye text-gray-400"></i>
-                <span class="text-gray-600">{{ selectedNews.views_count }} বার দেখা</span>
+                <span class="text-gray-600">{{ formatNumber(selectedNews.views_count) }} বার দেখা হয়েছে</span>
               </div>
             </div>
 
-            <!-- Description -->
-            <div class="mb-6">
-              <h3 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">বিবরণ</h3>
-              <div class="text-gray-700 leading-relaxed bangla-font" [innerHTML]="selectedNews.content"></div>
+            <!-- Attachment Section -->
+            @if (selectedNews.attachment_file) {
+              <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">সংযুক্তি</h3>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center"
+                         [ngClass]="getFileTypeColor(selectedNews.attachment_file)">
+                      <i [class]="getFileTypeIcon(selectedNews.attachment_file)" class="text-xl"></i>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-600 bangla-font">সংযুক্ত ফাইল</p>
+                      <p class="text-gray-800 font-medium bangla-font">
+                        {{ selectedNews.title }}.{{ getFileExtension(selectedNews.attachment_file) }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button class="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors flex items-center gap-2"
+                            (click)="openAttachmentViewer(selectedNews.attachment_file, selectedNews.title)">
+                      <i class="pi pi-eye"></i>
+                      <span class="bangla-font">দেখুন</span>
+                    </button>
+                    <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+                            (click)="downloadAttachment(selectedNews.attachment_file, selectedNews.title)">
+                      <i class="pi pi-download"></i>
+                      <span class="bangla-font">ডাউনলোড</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- Event Information -->
+            @if (selectedNews.is_event && selectedNews.event_date) {
+              <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 bangla-font">ইভেন্টের তথ্য</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div class="flex items-center gap-2">
+                    <i class="pi pi-calendar text-blue-500"></i>
+                    <span class="text-gray-700 bangla-font">
+                      তারিখ: {{ formatDate(selectedNews.event_date) }}
+                    </span>
+                  </div>
+                  @if (selectedNews.event_location) {
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-map-marker text-blue-500"></i>
+                      <span class="text-gray-700 bangla-font">
+                        স্থান: {{ selectedNews.event_location }}
+                      </span>
+                    </div>
+                  }
+                  @if (selectedNews.event_speakers) {
+                    <div class="md:col-span-2">
+                      <div class="flex items-start gap-2">
+                        <i class="pi pi-users text-blue-500 mt-1"></i>
+                        <span class="text-gray-700 bangla-font">
+                          বক্তা: {{ selectedNews.event_speakers }}
+                        </span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Research Information -->
+            @if (selectedNews.is_research) {
+              <div class="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 bangla-font">গবেষণা তথ্য</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  @if (selectedNews.research_topic) {
+                    <div class="flex items-start gap-2">
+                      <i class="pi pi-book text-green-500 mt-1"></i>
+                      <span class="text-gray-700 bangla-font">
+                        বিষয়: {{ selectedNews.research_topic }}
+                      </span>
+                    </div>
+                  }
+                  @if (selectedNews.research_department) {
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-building text-green-500"></i>
+                      <span class="text-gray-700 bangla-font">
+                        বিভাগ: {{ selectedNews.research_department }}
+                      </span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Content -->
+            <div class="prose max-w-none text-gray-700 leading-relaxed bangla-font">
+              <div [innerHTML]="selectedNews.content"></div>
             </div>
 
-            <!-- Actions -->
-            <div class="flex gap-3 pt-6 border-t border-gray-200">
-              <button
-                (click)="shareNews(selectedNews)"
-                class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2 bangla-font">
+            <!-- Tags -->
+            @if (selectedNews.tags_list && selectedNews.tags_list.length > 0) {
+              <div class="mt-8 pt-8 border-t border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">ট্যাগসমূহ</h3>
+                <div class="flex flex-wrap gap-2">
+                  @for (tag of selectedNews.tags_list; track tag) {
+                    <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm bangla-font">
+                      #{{ tag }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-3 mt-8 pt-8 border-t border-gray-200">
+              <button (click)="toggleBookmark(selectedNews.id)"
+                      class="px-5 py-2.5 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-600 rounded-xl transition-colors flex items-center gap-2">
+                <i class="pi" [ngClass]="isBookmarked(selectedNews.id) ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+                <span class="bangla-font font-medium">
+                  {{ isBookmarked(selectedNews.id) ? 'বুকমার্ক করা হয়েছে' : 'বুকমার্ক করুন' }}
+                </span>
+              </button>
+              <button (click)="shareNews(selectedNews)"
+                      class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
                 <i class="pi pi-share-alt"></i>
-                শেয়ার করুন
+                <span class="bangla-font font-medium">শেয়ার করুন</span>
               </button>
-              <button
-                (click)="closeNewsDetail()"
-                class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors bangla-font">
-                বন্ধ করুন
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Attachment Viewer Modal -->
+  @if (isAttachmentViewerOpen) {
+    <div class="fixed inset-0 z-[110] overflow-y-auto">
+      <!-- Backdrop -->
+      <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" (click)="closeAttachmentViewer()"></div>
+
+      <!-- Modal Container -->
+      <div class="relative min-h-screen flex items-center justify-center p-4">
+        <!-- Modal Content -->
+        <div class="relative bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl">
+          <!-- Header -->
+          <div class="flex items-center justify-between p-6 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                   [ngClass]="getFileTypeColor(currentAttachmentUrl)">
+                <i [class]="getFileTypeIcon(currentAttachmentUrl)" class="text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-900 bangla-font">{{ currentAttachmentName }}</h2>
+                <p class="text-sm text-gray-500">
+                  ফাইল টাইপ: {{ getFileExtension(currentAttachmentUrl).toUpperCase() }}
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      (click)="downloadAttachment(currentAttachmentUrl, currentAttachmentName)">
+                <i class="pi pi-download text-gray-600"></i>
               </button>
+              <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      (click)="closeAttachmentViewer()">
+                <i class="pi pi-times text-gray-600"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- File Viewer -->
+          <div class="p-6 overflow-auto max-h-[calc(90vh-10rem)]">
+            @if (['pdf'].includes(getFileExtension(currentAttachmentUrl))) {
+              <iframe [src]="currentAttachmentUrl | safeUrl"
+                      class="w-full h-[500px] border rounded-lg"
+                      title="File Preview">
+              </iframe>
+            } @else if (['jpg', 'jpeg', 'png', 'gif'].includes(getFileExtension(currentAttachmentUrl))) {
+              <img [src]="currentAttachmentUrl"
+                   [alt]="currentAttachmentName"
+                   class="max-w-full h-auto mx-auto rounded-lg">
+            } @else {
+              <div class="text-center py-12">
+                <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <i [class]="getFileTypeIcon(currentAttachmentUrl)" class="text-3xl text-blue-500"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 bangla-font">ফাইল প্রিভিউ</h3>
+                <p class="text-gray-600 mb-6 bangla-font">
+                  এই ফাইলটির প্রিভিউ উপলব্ধ নয়। অনুগ্রহ করে ডাউনলোড করে দেখুন।
+                </p>
+                <button class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2"
+                        (click)="downloadAttachment(currentAttachmentUrl, currentAttachmentName)">
+                  <i class="pi pi-download"></i>
+                  <span class="bangla-font font-medium">ডাউনলোড করুন</span>
+                </button>
+              </div>
+            }
+          </div>
+
+          <!-- Footer -->
+          <div class="p-6 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <p class="text-sm text-gray-500 bangla-font">
+                ফাইল সাইজ: {{ formatFileSize() }}
+              </p>
+              <div class="flex items-center gap-2">
+                <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors bangla-font"
+                        (click)="closeAttachmentViewer()">
+                  বন্ধ করুন
+                </button>
+                <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all duration-300 bangla-font font-medium"
+                        (click)="downloadAttachment(currentAttachmentUrl, currentAttachmentName)">
+                  <i class="pi pi-download mr-2"></i>
+                  ডাউনলোড
+                </button>
+              </div>
             </div>
           </div>
         </div>
