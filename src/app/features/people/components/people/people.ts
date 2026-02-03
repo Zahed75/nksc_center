@@ -1,10 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
-
-// CORRECT THE IMPORT PATH - adjust based on your actual structure
-import { PeopleService, StaffMember, Department } from '../../services/people-service';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {PeopleService, StaffMember, Department, Education, Experience} from '../../services/people-service';
 
 @Component({
   selector: 'app-people',
@@ -12,7 +9,7 @@ import { PeopleService, StaffMember, Department } from '../../services/people-se
   imports: [FormsModule],
   templateUrl: './people.html',
   styleUrls: ['./people.css'],
-  providers: [PeopleService] // Add this line
+  providers: [PeopleService]
 })
 export class PeopleComponent implements OnInit, OnDestroy {
   // Staff data from API
@@ -31,7 +28,9 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   // Loading and error states
   isLoading = false;
+  isLoadingDetail = false;
   error: string | null = null;
+  detailError: string | null = null;
 
   // Pagination
   currentPage = 1;
@@ -45,7 +44,8 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private peopleService: PeopleService) {}
+  constructor(private peopleService: PeopleService) {
+  }
 
   ngOnInit() {
     this.loadStaff();
@@ -127,11 +127,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
     // Add designation filter
     if (this.selectedDesignation !== 'all') {
-      // Find the actual designation value from display text
-      const staffWithDesignation = this.staffMembers.find(s => s.designation_display === this.selectedDesignation);
-      if (staffWithDesignation) {
-        params.designation = staffWithDesignation.designation;
-      }
+      params.designation = this.selectedDesignation;
     }
 
     params.page = this.currentPage;
@@ -174,14 +170,58 @@ export class PeopleComponent implements OnInit, OnDestroy {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.loadStaff();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }
+  }
+
+  // Open staff detail with full data
+  openStaffDetail(staff: StaffMember): void {
+    this.isLoadingDetail = true;
+    this.detailError = null;
+
+    // First, use the basic data we already have
+    this.selectedStaff = staff;
+    this.isDetailOpen = true;
+    document.body.style.overflow = 'hidden';
+
+    // Then fetch detailed information
+    const sub = this.peopleService.getStaffDetail(staff.id).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          // Merge the detailed data with our existing staff object
+          this.selectedStaff = {...staff, ...response.data};
+        } else {
+          this.detailError = 'বিস্তারিত তথ্য লোড করতে সমস্যা হয়েছে';
+        }
+        this.isLoadingDetail = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading staff detail:', error);
+        this.detailError = 'বিস্তারিত তথ্য লোড করতে সমস্যা হয়েছে';
+        this.isLoadingDetail = false;
+      }
+    });
+
+    this.subscriptions.add(sub);
+  }
+
+  // Close staff detail
+  closeStaffDetail(): void {
+    this.isDetailOpen = false;
+    this.selectedStaff = null;
+    this.detailError = null;
+    document.body.style.overflow = 'auto';
   }
 
   // Get department color
   getDepartmentColor(department?: Department | null): string {
     if (!department?.color) {
       return 'bg-gray-100 text-gray-800 border border-gray-200';
+    }
+
+    // Extract color class if it's already a Tailwind class
+    if (department.color.includes('bg-')) {
+      return department.color;
     }
 
     const colorMap: Record<string, string> = {
@@ -220,20 +260,6 @@ export class PeopleComponent implements OnInit, OnDestroy {
     imgElement.parentNode.insertBefore(fallbackDiv, imgElement.nextSibling);
   }
 
-  // Open staff detail
-  openStaffDetail(staff: StaffMember): void {
-    this.selectedStaff = staff;
-    this.isDetailOpen = true;
-    document.body.style.overflow = 'hidden';
-  }
-
-  // Close staff detail
-  closeStaffDetail(): void {
-    this.isDetailOpen = false;
-    this.selectedStaff = null;
-    document.body.style.overflow = 'auto';
-  }
-
   // Get designation badge color
   getDesignationColor(designation?: string): string {
     if (!designation) {
@@ -248,6 +274,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
       'গবেষণা সহযোগী': 'bg-gradient-to-r from-teal-100 to-teal-50 text-teal-800 border border-teal-200',
       'গবেষণা ফেলো': 'bg-gradient-to-r from-indigo-100 to-indigo-50 text-indigo-800 border border-indigo-200',
       'সহকারী': 'bg-gradient-to-r from-pink-100 to-pink-50 text-pink-800 border border-pink-200',
+      'হিসাবরক্ষক (Accountant)': 'bg-gradient-to-r from-red-100 to-red-50 text-red-800 border border-red-200',
     };
 
     return colorMap[designation] || 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-800 border border-gray-200';
@@ -256,7 +283,21 @@ export class PeopleComponent implements OnInit, OnDestroy {
   // Format phone number
   formatPhoneNumber(phone?: string): string {
     if (!phone) return '';
-    return phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+
+    // Remove any non-digit characters
+    const cleaned = phone.replace(/\D/g, '');
+
+    // Format based on length
+    if (cleaned.length === 11) {
+      return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, '$1 $2 $3');
+    } else if (cleaned.length === 10) {
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+    } else if (cleaned.length > 6) {
+      // Try to format as best as possible
+      return cleaned.replace(/(\d{3})(\d{3})(\d+)/, '$1 $2 $3');
+    }
+
+    return phone;
   }
 
   // Get total staff count
@@ -281,5 +322,17 @@ export class PeopleComponent implements OnInit, OnDestroy {
     if (phone) {
       window.location.href = `tel:${phone}`;
     }
+  }
+
+  // Format date
+  formatDate(dateString?: string): string {
+    if (!dateString) return 'N/A';
+
+    const date = new Date(dateString);
+    return date.toLocaleDateString('bn-BD', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 }

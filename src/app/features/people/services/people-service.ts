@@ -1,7 +1,10 @@
+
+
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../enviornments/enviornment';
+import {environment} from '../../../../enviornments/enviornment';
 
 export interface Department {
   id: number;
@@ -12,6 +15,27 @@ export interface Department {
   color: string;
   display_order: number;
   staff_count: number;
+}
+
+export interface Education {
+  id: number;
+  degree: string;
+  institution: string;
+  year: string;
+  description: string;
+  display_order: number;
+}
+
+export interface Experience {
+  id: number;
+  position: string;
+  organization: string;
+  start_date: string;
+  end_date: string;
+  is_current: boolean;
+  duration: string;
+  description: string;
+  display_order: number;
 }
 
 export interface StaffMember {
@@ -27,6 +51,25 @@ export interface StaffMember {
   profile_image: string;
   is_active: boolean;
   display_order: number;
+
+  // Detailed fields
+  full_title?: string;
+  alternate_phone?: string;
+  bio?: string;
+  qualifications?: string;
+  research_interests?: string;
+  cv?: string;
+  website?: string;
+  linkedin?: string;
+  google_scholar?: string;
+  researchgate?: string;
+  orcid?: string;
+  office_room?: string;
+  office_hours?: string;
+  join_date?: string;
+  years_of_service?: number;
+  education?: Education[];
+  experience?: Experience[];
 }
 
 export interface StaffResponse {
@@ -99,5 +142,10 @@ export class PeopleService {
   // Get staff statistics
   getStaffStats(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/api/staff/stats/`);
+  }
+
+  // Get detailed staff information - ADD THIS METHOD
+  getStaffDetail(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/staff/${id}/`);
   }
 }

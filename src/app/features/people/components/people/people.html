@@ -1,12 +1,209 @@
-<!-- Staff Detail Modal -->
-@if (isDetailOpen && selectedStaff) {
-  <!-- Create a local variable for better type safety -->
-  @let staff = selectedStaff;
 
+
+
+
+<!-- Main Staff List Section -->
+<div class="p-4 sm:p-6 lg:p-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2 bangla-font">স্টাফ সদস্য</h1>
+    <p class="text-gray-600 bangla-font">মোট {{ getTotalStaff() }} জন সদস্য</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-gray-200">
+    <div class="flex flex-col lg:flex-row gap-4">
+      <!-- Search -->
+      <div class="flex-1">
+        <div class="relative">
+          <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="applyFilters()"
+            placeholder="নাম, ইমেইল বা ডিজাইনেশন অনুসন্ধান করুন..."
+            class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+        </div>
+      </div>
+
+      <!-- Department Filter -->
+      <div class="lg:w-64">
+        <select
+          [(ngModel)]="selectedDepartment"
+          (change)="applyFilters()"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+          <option value="all">সব বিভাগ</option>
+          @for (dept of departments; track dept.id) {
+            <option [value]="dept.slug">{{ dept.name }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Designation Filter -->
+      <div class="lg:w-64">
+        <select
+          [(ngModel)]="selectedDesignation"
+          (change)="applyFilters()"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bangla-font">
+          <option value="all">সব পদবী</option>
+          @for (designation of designations; track designation) {
+            <option [value]="designation">{{ designation }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Clear Filters Button -->
+      <button
+        (click)="clearFilters()"
+        class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors font-medium bangla-font">
+        <i class="pi pi-filter-slash mr-2"></i>ফিল্টার রিসেট
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <span class="ml-3 text-gray-600 bangla-font">লোড হচ্ছে...</span>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+    <div class="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+      <i class="pi pi-exclamation-triangle text-3xl text-red-500 mb-3"></i>
+      <p class="text-red-700 bangla-font">{{ error }}</p>
+      <button (click)="loadStaff()" class="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+        আবার চেষ্টা করুন
+      </button>
+    </div>
+  }
+
+  <!-- Staff Grid -->
+  @if (!isLoading && !error) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (staff of filteredStaff; track staff.id) {
+        <div
+          (click)="openStaffDetail(staff)"
+          class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300 cursor-pointer group">
+
+          <!-- Profile Image -->
+          <div class="h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+            @if (staff.profile_image) {
+              <img
+                [src]="staff.profile_image"
+                [alt]="staff.name"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                (error)="handleImageError($event)">
+            } @else {
+              <div class="text-center">
+                <i class="pi pi-user text-6xl text-gray-300"></i>
+                <p class="text-sm text-gray-400 mt-2 bangla-font">ছবি নেই</p>
+              </div>
+            }
+          </div>
+
+          <!-- Staff Info -->
+          <div class="p-6">
+            <!-- Name -->
+            <h3 class="text-lg font-bold text-gray-900 mb-2 bangla-font truncate">{{ staff.name }}</h3>
+
+            <!-- Designation -->
+            <div class="mb-3">
+              <span [class]="'px-3 py-1 text-xs rounded-full font-medium ' + getDesignationColor(staff.designation_display)">
+                {{ staff.designation_display }}
+              </span>
+            </div>
+
+            <!-- Department -->
+            <div class="mb-4">
+              @if (staff.department_detail) {
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-lg flex items-center justify-center"
+                       [class]="getDepartmentColor(staff.department_detail).split(' ')[0]">
+                    <i [class]="getDepartmentIcon(staff.department_detail) + ' text-xs'"></i>
+                  </div>
+                  <span class="text-sm text-gray-600 bangla-font truncate">{{ staff.department_detail.name }}</span>
+                </div>
+              }
+            </div>
+
+            <!-- Contact Info -->
+            <div class="space-y-2">
+              @if (staff.email) {
+                <div class="flex items-center gap-2 text-sm">
+                  <i class="pi pi-envelope text-gray-400"></i>
+                  <span class="text-gray-600 truncate">{{ staff.email }}</span>
+                </div>
+              }
+              @if (staff.phone) {
+                <div class="flex items-center gap-2 text-sm">
+                  <i class="pi pi-phone text-gray-400"></i>
+                  <span class="text-gray-600">{{ formatPhoneNumber(staff.phone) }}</span>
+                </div>
+              }
+            </div>
+
+            <!-- View Details Button -->
+            <div class="mt-4 pt-4 border-t border-gray-100">
+              <button class="w-full py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium bangla-font">
+                <i class="pi pi-eye mr-2"></i>বিস্তারিত দেখুন
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- No Results -->
+    @if (filteredStaff.length === 0) {
+      <div class="text-center py-16">
+        <i class="pi pi-users text-5xl text-gray-300 mb-4"></i>
+        <p class="text-gray-500 bangla-font">কোন স্টাফ সদস্য পাওয়া যায়নি</p>
+        <button (click)="clearFilters()" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          সব ফিল্টার সরান
+        </button>
+      </div>
+    }
+
+    <!-- Pagination -->
+    @if (totalPages > 1) {
+      <div class="mt-8 flex justify-center">
+        <nav class="flex items-center gap-2">
+          <button
+            (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+            class="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <i class="pi pi-chevron-left"></i>
+          </button>
+
+          @for (page of [].constructor(totalPages); track page; let i = $index) {
+            <button
+              (click)="changePage(i + 1)"
+              [class]="'px-4 py-2 rounded-lg font-medium ' + (currentPage === i + 1 ? 'bg-blue-600 text-white' : 'border border-gray-200 hover:bg-gray-50')">
+              {{ i + 1 }}
+            </button>
+          }
+
+          <button
+            (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+            class="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+            <i class="pi pi-chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+    }
+  }
+</div>
+
+<!-- Staff Detail Modal -->
+@if (isDetailOpen) {
   <div class="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4">
-    <div class="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+    <div class="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
       <!-- Modal Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+      <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white sticky top-0 z-10">
         <h3 class="text-2xl font-bold text-gray-900 bangla-font">সদস্য বিস্তারিত</h3>
         <button
           (click)="closeStaffDetail()"
@@ -15,134 +212,252 @@
         </button>
       </div>
 
-      <!-- Modal Content -->
-      <div class="flex-1 overflow-auto">
-        <div class="p-8">
-          <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Profile Section -->
-            <div class="lg:w-1/3">
-              <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 text-center">
-                <!-- Profile Image -->
-                <div class="w-48 h-48 mx-auto rounded-2xl overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 mb-6 shadow-lg">
-                  @if (staff.profile_image) {
-                    <img
-                      [src]="staff.profile_image"
-                      [alt]="staff.name"
-                      class="w-full h-full object-cover"
-                      (error)="handleImageError($event)">
-                  } @else {
-                    <div class="w-full h-full flex items-center justify-center">
-                      <i class="pi pi-user text-6xl text-gray-400"></i>
-                    </div>
-                  }
-                </div>
+      <!-- Loading State for Detail -->
+      @if (isLoadingDetail) {
+        <div class="flex-1 flex items-center justify-center">
+          <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-600 bangla-font">বিস্তারিত লোড হচ্ছে...</p>
+          </div>
+        </div>
+      }
 
-                <!-- Staff Name and Designation -->
-                <h3 class="text-2xl font-bold text-gray-900 mb-2 bangla-font">{{ staff.name }}</h3>
-                <div class="mb-4">
-                  <span [class]="'px-4 py-2 text-sm rounded-full font-medium ' + getDesignationColor(staff.designation_display)">
-                    {{ staff.designation_display }}
-                  </span>
-                </div>
+      <!-- Error State for Detail -->
+      @if (detailError && !isLoadingDetail) {
+        <div class="flex-1 flex items-center justify-center p-8">
+          <div class="text-center">
+            <i class="pi pi-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+            <p class="text-red-700 bangla-font mb-4">{{ detailError }}</p>
+            <button (click)="closeStaffDetail()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+              বন্ধ করুন
+            </button>
+          </div>
+        </div>
+      }
 
-                <!-- Department -->
-                <div class="mb-6">
-                  @if (staff.department_detail) {
-                    <span [class]="'px-4 py-2 text-sm rounded-full font-medium ' + getDepartmentColor(staff.department_detail)">
-                      {{ staff.department_detail.name }}
-                    </span>
-                  } @else {
-                    <span class="px-4 py-2 text-sm rounded-full font-medium bg-gray-100 text-gray-800">
-                      N/A
-                    </span>
-                  }
-                </div>
-
-                <!-- Contact Info -->
-                <div class="space-y-3">
-                  @if (staff.email) {
-                    <div class="flex items-center justify-center gap-2">
-                      <i class="pi pi-envelope text-gray-400"></i>
-                      <span class="text-gray-600">{{ staff.email }}</span>
-                    </div>
-                  }
-                  @if (staff.phone) {
-                    <div class="flex items-center justify-center gap-2">
-                      <i class="pi pi-phone text-gray-400"></i>
-                      <span class="text-gray-600">{{ formatPhoneNumber(staff.phone) }}</span>
-                    </div>
-                  }
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex gap-3 mt-6">
-                  @if (staff.email) {
-                    <button
-                      (click)="sendEmail(staff.email)"
-                      class="flex-1 py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors font-medium">
-                      <i class="pi pi-envelope mr-2"></i>ইমেইল
-                    </button>
-                  }
-                  @if (staff.phone) {
-                    <button
-                      (click)="callPhone(staff.phone)"
-                      class="flex-1 py-3 bg-green-50 text-green-600 rounded-xl hover:bg-green-100 transition-colors font-medium">
-                      <i class="pi pi-phone mr-2"></i>কল
-                    </button>
-                  }
-                </div>
-              </div>
-            </div>
-
-            <!-- Details Section -->
-            <div class="lg:w-2/3">
-              <div class="space-y-6">
-                <!-- Department Details -->
-                <div>
-                  <h4 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">বিভাগের তথ্য</h4>
-                  <div class="bg-gray-50 rounded-xl p-5">
-                    @if (staff.department_detail) {
-                      <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-lg flex items-center justify-center"
-                             [class]="getDepartmentColor(staff.department_detail).split(' ')[0]">
-                          <i [class]="getDepartmentIcon(staff.department_detail) + ' text-lg'"></i>
-                        </div>
-                        <div>
-                          <h5 class="font-bold text-gray-900 bangla-font">{{ staff.department_detail.name }}</h5>
-                          <p class="text-sm text-gray-600">{{ staff.department_detail.description || 'বিস্তারিত তথ্য নেই' }}</p>
-                        </div>
-                      </div>
+      <!-- Detail Content -->
+      @if (selectedStaff && !isLoadingDetail && !detailError) {
+        <div class="flex-1 overflow-y-auto">
+          <div class="p-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+              <!-- Left Column - Profile Info -->
+              <div class="lg:w-2/5">
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 sticky top-8">
+                  <!-- Profile Image -->
+                  <div class="w-56 h-56 mx-auto rounded-2xl overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 mb-6 shadow-lg">
+                    @if (selectedStaff.profile_image) {
+                      <img
+                        [src]="selectedStaff.profile_image"
+                        [alt]="selectedStaff.name"
+                        class="w-full h-full object-cover"
+                        (error)="handleImageError($event)">
                     } @else {
-                      <p class="text-gray-500 text-center py-4">বিভাগের তথ্য নেই</p>
+                      <div class="w-full h-full flex items-center justify-center">
+                        <i class="pi pi-user text-6xl text-gray-400"></i>
+                      </div>
                     }
                   </div>
-                </div>
 
-                <!-- Additional Information -->
+                  <!-- Staff Info -->
+                  <div class="text-center">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2 bangla-font">{{ selectedStaff.name }}</h3>
+
+                    <!-- Designation -->
+                    <div class="mb-4">
+                      <span [class]="'px-4 py-2 text-sm rounded-full font-medium ' + getDesignationColor(selectedStaff.designation_display)">
+                        {{ selectedStaff.designation_display }}
+                      </span>
+                    </div>
+
+                    <!-- Department -->
+                    @if (selectedStaff.department_detail) {
+                      <div class="mb-6">
+                        <span [class]="'px-4 py-2 text-sm rounded-full font-medium ' + getDepartmentColor(selectedStaff.department_detail)">
+                          <i [class]="getDepartmentIcon(selectedStaff.department_detail) + ' mr-2'"></i>
+                          {{ selectedStaff.department_detail.name }}
+                        </span>
+                      </div>
+                    }
+
+                    <!-- Contact Info -->
+                    <div class="space-y-4 mb-6">
+                      @if (selectedStaff.email) {
+                        <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                            <i class="pi pi-envelope text-blue-600"></i>
+                          </div>
+                          <div class="text-left">
+                            <p class="text-sm text-gray-500">ইমেইল</p>
+                            <span class="text-gray-900 break-all">{{ selectedStaff.email }}</span>
+                          </div>
+                        </div>
+                      }
+
+                      @if (selectedStaff.phone) {
+                        <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+                            <i class="pi pi-phone text-green-600"></i>
+                          </div>
+                          <div class="text-left">
+                            <p class="text-sm text-gray-500">ফোন</p>
+                            <span class="text-gray-900">{{ formatPhoneNumber(selectedStaff.phone) }}</span>
+                          </div>
+                        </div>
+                      }
+
+                      @if (selectedStaff.office_room) {
+                        <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
+                            <i class="pi pi-building text-purple-600"></i>
+                          </div>
+                          <div class="text-left">
+                            <p class="text-sm text-gray-500">অফিস কক্ষ</p>
+                            <span class="text-gray-900">{{ selectedStaff.office_room }}</span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-3">
+                      @if (selectedStaff.email) {
+                        <button
+                          (click)="sendEmail(selectedStaff.email)"
+                          class="w-full py-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors font-medium">
+                          <i class="pi pi-envelope mr-2"></i>ইমেইল করুন
+                        </button>
+                      }
+
+                      @if (selectedStaff.phone) {
+                        <button
+                          (click)="callPhone(selectedStaff.phone)"
+                          class="w-full py-3 bg-green-50 text-green-600 rounded-xl hover:bg-green-100 transition-colors font-medium">
+                          <i class="pi pi-phone mr-2"></i>কল করুন
+                        </button>
+                      }
+
+                      @if (selectedStaff.cv) {
+                        <a
+                          [href]="selectedStaff.cv"
+                          target="_blank"
+                          class="block w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium text-center">
+                          <i class="pi pi-download mr-2"></i>সিভি ডাউনলোড
+                        </a>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column - Detailed Info -->
+              <div class="lg:w-3/5 space-y-8">
+                <!-- Bio -->
+                @if (selectedStaff.bio) {
+                  <div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 bangla-font">সংক্ষিপ্ত পরিচিতি</h4>
+                    <div class="bg-gray-50 rounded-xl p-6">
+                      <p class="text-gray-700 whitespace-pre-line bangla-font">{{ selectedStaff.bio }}</p>
+                    </div>
+                  </div>
+                }
+
+                <!-- Qualifications -->
+                @if (selectedStaff.qualifications) {
+                  <div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 bangla-font">যোগ্যতা</h4>
+                    <div class="bg-gray-50 rounded-xl p-6">
+                      <p class="text-gray-700 whitespace-pre-line bangla-font">{{ selectedStaff.qualifications }}</p>
+                    </div>
+                  </div>
+                }
+
+                <!-- Research Interests -->
+                @if (selectedStaff.research_interests) {
+                  <div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 bangla-font">গবেষণা আগ্রহ</h4>
+                    <div class="bg-gray-50 rounded-xl p-6">
+                      <p class="text-gray-700 whitespace-pre-line bangla-font">{{ selectedStaff.research_interests }}</p>
+                    </div>
+                  </div>
+                }
+
+                <!-- Education -->
+                @if (selectedStaff.education && selectedStaff.education.length > 0) {
+                  <div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 bangla-font">শিক্ষাগত যোগ্যতা</h4>
+                    <div class="space-y-4">
+                      @for (edu of selectedStaff.education; track edu.id) {
+                        <div class="bg-gray-50 rounded-xl p-6">
+                          <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-semibold text-gray-900 bangla-font">{{ edu.degree }}</h5>
+                            <span class="text-sm text-gray-500">{{ edu.year }}</span>
+                          </div>
+                          <p class="text-gray-700 mb-2">{{ edu.institution }}</p>
+                          @if (edu.description) {
+                            <p class="text-gray-600 text-sm whitespace-pre-line bangla-font">{{ edu.description }}</p>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Experience -->
+                @if (selectedStaff.experience && selectedStaff.experience.length > 0) {
+                  <div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 bangla-font">পেশাগত অভিজ্ঞতা</h4>
+                    <div class="space-y-4">
+                      @for (exp of selectedStaff.experience; track exp.id) {
+                        <div class="bg-gray-50 rounded-xl p-6">
+                          <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-semibold text-gray-900 bangla-font">{{ exp.position }}</h5>
+                            <span class="text-sm text-gray-500">
+                              {{ formatDate(exp.start_date) }} - {{ exp.is_current ? 'বর্তমান' : formatDate(exp.end_date) }}
+                              @if (exp.duration) {
+                                <br>({{ exp.duration }})
+                              }
+                            </span>
+                          </div>
+                          <p class="text-gray-700 mb-2">{{ exp.organization }}</p>
+                          @if (exp.description) {
+                            <p class="text-gray-600 text-sm whitespace-pre-line bangla-font">{{ exp.description }}</p>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Additional Info -->
                 <div>
-                  <h4 class="text-lg font-semibold text-gray-900 mb-3 bangla-font">অতিরিক্ত তথ্য</h4>
+                  <h4 class="text-xl font-bold text-gray-900 mb-4 bangla-font">অতিরিক্ত তথ্য</h4>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-gray-50 rounded-xl p-5">
-                      <div class="flex items-center gap-2 mb-2">
-                        <i class="pi pi-id-card text-gray-400"></i>
-                        <span class="text-sm text-gray-500">স্ট্যাটাস</span>
+                    @if (selectedStaff.join_date) {
+                      <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                          <i class="pi pi-calendar text-blue-600"></i>
+                          <span class="text-gray-500 bangla-font">যোগদান তারিখ</span>
+                        </div>
+                        <span class="text-gray-900 font-medium">
+                          {{ formatDate(selectedStaff.join_date) }}
+                        </span>
+                      </div>
+                    }
+
+                    <div class="bg-gray-50 rounded-xl p-6">
+                      <div class="flex items-center gap-2 mb-3">
+                        <i class="pi pi-id-card text-blue-600"></i>
+                        <span class="text-gray-500 bangla-font">স্ট্যাটাস</span>
                       </div>
                       <div class="flex items-center gap-2">
-                        @if (staff.is_active) {
+                        @if (selectedStaff.is_active) {
                           <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                          <span class="text-green-600 font-medium">সক্রিয়</span>
+                          <span class="text-green-600 font-medium bangla-font">সক্রিয়</span>
                         } @else {
                           <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                          <span class="text-red-600 font-medium">নিষ্ক্রিয়</span>
+                          <span class="text-red-600 font-medium bangla-font">নিষ্ক্রিয়</span>
                         }
                       </div>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-5">
-                      <div class="flex items-center gap-2 mb-2">
-                        <i class="pi pi-sort-numeric-up text-gray-400"></i>
-                        <span class="text-sm text-gray-500">ডিসপ্লে অর্ডার</span>
-                      </div>
-                      <span class="text-gray-900 font-medium">{{ staff.display_order || 'N/A' }}</span>
                     </div>
                   </div>
                 </div>
@@ -150,7 +465,7 @@
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 }
