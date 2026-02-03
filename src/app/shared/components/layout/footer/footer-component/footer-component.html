@@ -1,70 +1,174 @@
-<!-- footer.component.html -->
-<footer class="bg-neutral-900 text-white mt-20">
+<!-- footer-component.html -->
+<footer class="bg-gradient-to-br from-white/95 via-white/90 to-white/95 backdrop-blur-md shadow-lg shadow-gray-200/50">
   <div class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Brand Section -->
-      <div class="lg:col-span-2">
-        <div class="flex items-center space-x-3 mb-4">
-          <div class="glass w-10 h-10 rounded-lg flex items-center justify-center border border-white/20">
-            <span class="text-primary font-bold text-sm">NKSC</span>
-          </div>
-          <div>
-            <h3 class="text-white font-bold text-lg">Nazmul Karim Study Center</h3>
-            <p class="text-neutral-400 text-sm">University of Dhaka</p>
+    <!-- Main Footer Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-12">
+      <!-- Brand Section - Now takes full width of first column -->
+      <div>
+        <div class="mb-6">
+          <h3 class="text-gray-900 font-bold text-xl mb-2">নাজমুল করিম সেন্টার</h3>
+          <p class="text-primary font-semibold text-base">Nazmul Karim Study Center</p>
+          <p class="text-gray-600 text-sm mt-1">University of Dhaka</p>
+        </div>
+
+        <p class="text-gray-700 leading-relaxed text-sm mb-6 max-w-sm">
+          A premier research institution dedicated to advancing sociological studies through
+          innovative research, quality education, and meaningful community engagement.
+        </p>
+
+        <!-- University Links -->
+        <div>
+          <h4 class="text-gray-900 font-semibold text-sm mb-3">University Links</h4>
+          <div class="flex flex-wrap gap-2">
+            @for (link of importantLinks; track link.name) {
+              <a
+                [href]="link.url"
+                target="_blank"
+                class="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-gray-300/70 rounded-lg text-gray-700 hover:text-primary hover:border-primary/40 hover:shadow-sm transition-all duration-200 text-xs hover:bg-blue-50/50"
+              >
+                <span>{{ link.icon }}</span>
+                <span>{{ link.name }}</span>
+                <i class="pi pi-external-link text-xs opacity-60 ml-1"></i>
+              </a>
+            }
           </div>
         </div>
-        <p class="text-neutral-300 max-w-md leading-relaxed">
-          A premier research institution advancing sociological studies through innovative research, 
-          quality education, and community engagement under Professor Nazmul Karim's leadership.
-        </p>
       </div>
 
-      <!-- Quick Links -->
+      <!-- Links Section -->
       <div>
-        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Quick Links</h4>
-        <ul class="space-y-2">
+        <h4 class="text-gray-900 font-semibold mb-6 text-base border-l-4 border-primary pl-3">Navigation</h4>
+        <div class="space-y-4">
           @for (link of quickLinks; track link.name) {
-            <li>
-              <a 
-                [routerLink]="link.path" 
-                class="text-neutral-300 hover:text-white smooth-transition text-sm"
-              >
-                {{ link.name }}
-              </a>
-            </li>
+            <a
+              [routerLink]="link.path"
+              class="block text-gray-700 hover:text-primary hover:translate-x-2 transition-all duration-300 text-sm py-2 group"
+            >
+              <div class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 bg-primary/30 rounded-full group-hover:bg-primary transition-colors"></div>
+                <span>{{ link.name }}</span>
+              </div>
+            </a>
           }
-        </ul>
+        </div>
+
+        <!-- Social Media - Moved here for better balance -->
+        <div class="mt-8">
+          <h5 class="text-gray-900 font-semibold mb-4 text-sm">Follow Us</h5>
+          <div class="flex gap-3">
+            @for (social of socialLinks; track social.name) {
+              <a
+                [href]="social.url"
+                target="_blank"
+                [class]="'w-10 h-10 rounded-full flex items-center justify-center ' + social.color + ' text-white hover:scale-110 hover:shadow-md transition-all duration-300 shadow-sm'"
+                [title]="social.name"
+              >
+                <i [class]="'pi pi-' + social.icon + ' text-sm'"></i>
+              </a>
+            }
+          </div>
+        </div>
       </div>
 
-      <!-- Contact Info -->
+      <!-- Contact Section -->
       <div>
-        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Contact</h4>
-        <div class="space-y-2 text-neutral-300 text-sm">
-          <p class="flex items-start space-x-2">
-            <span class="mt-0.5">📍</span>
-            <span>{{ contactInfo.address }}</span>
-          </p>
-          <p class="flex items-center space-x-2">
-            <span>📧</span>
-            <span>{{ contactInfo.email }}</span>
-          </p>
-          <p class="flex items-center space-x-2">
-            <span>📞</span>
-            <span>{{ contactInfo.phone }}</span>
-          </p>
+        <h4 class="text-gray-900 font-semibold mb-6 text-base border-l-4 border-primary pl-3">Contact Information</h4>
+
+        <div class="space-y-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <i class="pi pi-map-pin text-primary"></i>
+            </div>
+            <div>
+              <p class="text-gray-700 text-sm leading-relaxed">{{ contactInfo.address }}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <i class="pi pi-phone text-primary"></i>
+            </div>
+            <div>
+              <a [href]="'tel:' + contactInfo.phone" class="text-gray-700 hover:text-primary text-sm font-medium block">
+                {{ contactInfo.phone }}
+              </a>
+              <p class="text-gray-500 text-xs mt-0.5">Office Hours: 9 AM - 5 PM</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <i class="pi pi-envelope text-primary"></i>
+            </div>
+            <a [href]="'mailto:' + contactInfo.email" class="text-gray-700 hover:text-primary text-sm font-medium">
+              {{ contactInfo.email }}
+            </a>
+          </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="mt-8 bg-gradient-to-r from-blue-50/50 to-white/50 rounded-xl p-5 border border-blue-100">
+          <h5 class="text-gray-900 font-semibold mb-3 text-sm">Subscribe for Updates</h5>
+          <div class="flex gap-2">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              class="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 text-sm"
+            >
+            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm shadow-sm">
+              Subscribe
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Bottom Bar -->
-    <div class="border-t border-neutral-800 mt-8 pt-8 flex flex-col lg:flex-row justify-between items-center">
-      <p class="text-neutral-400 text-sm text-center lg:text-left">
-        © {{ currentYear }} Nazmul Karim Study Center. All rights reserved.
-      </p>
-      <div class="flex space-x-6 mt-4 lg:mt-0 text-neutral-400 text-sm">
-        <a href="#" class="hover:text-white smooth-transition">Privacy</a>
-        <a href="#" class="hover:text-white smooth-transition">Terms</a>
-        <a href="#" class="hover:text-white smooth-transition">Accessibility</a>
+    <!-- Divider -->
+    <div class="border-t border-gray-300/50 my-10"></div>
+
+    <!-- Bottom Section -->
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <!-- Copyright -->
+      <div class="text-center md:text-left">
+        <p class="text-gray-600 text-sm">
+          © {{ currentYear }} Nazmul Karim Study Center, University of Dhaka. All rights reserved.
+        </p>
+        <p class="text-gray-500 text-xs mt-1">An Academic Research Center of University of Dhaka</p>
+      </div>
+
+      <!-- Legal Links -->
+      <div class="flex gap-5 text-gray-500 text-sm">
+        <a href="#" class="hover:text-primary transition-colors hover:underline">Privacy Policy</a>
+        <a href="#" class="hover:text-primary transition-colors hover:underline">Terms of Service</a>
+        <a href="#" class="hover:text-primary transition-colors hover:underline">Contact</a>
+      </div>
+
+      <!-- Developer Credit - HIGHLIGHTED -->
+      <div class="text-center">
+        <p class="text-gray-600 text-sm">
+          <span class="text-gray-500">Designed & Developed by</span>
+          <a
+            [href]="developerInfo.website"
+            target="_blank"
+            class="ml-2 font-bold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1.5 group"
+          >
+            <span class="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent font-bold">
+              {{ developerInfo.name }}
+            </span>
+            <i class="pi pi-external-link text-xs group-hover:translate-x-0.5 transition-transform"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- University Badge -->
+    <div class="mt-8 pt-8 border-t border-gray-300/30 flex justify-center">
+      <div class="flex items-center gap-3 text-gray-700 text-sm bg-gradient-to-r from-blue-50 to-white px-6 py-3 rounded-full border border-blue-100">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center shadow-sm">
+          <i class="pi pi-star text-white text-xs"></i>
+        </div>
+        <span class="font-medium">Official Research Center of</span>
+        <span class="text-primary font-bold">University of Dhaka</span>
       </div>
     </div>
   </div>

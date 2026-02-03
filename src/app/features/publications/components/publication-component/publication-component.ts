@@ -291,4 +291,41 @@ export class PublicationComponent implements OnInit, OnDestroy {
     const newest = this.availableYears[0];
     return `${oldest} - ${newest}`;
   }
+
+  // Add this method to your PublicationComponent class
+handleImageError(event: any, publication: Journal): void {
+  const imgElement = event.target;
+  imgElement.style.display = 'none';
+
+  // Create fallback preview
+  const parent = imgElement.parentElement;
+  if (parent) {
+    const fallbackDiv = document.createElement('div');
+    fallbackDiv.className = 'w-full h-full flex flex-col items-center justify-center p-6 text-center';
+    fallbackDiv.innerHTML = `
+      <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4">
+        <i class="pi pi-book text-3xl text-white"></i>
+      </div>
+      <h4 class="text-xl font-bold text-gray-800 mb-2">Journal Preview</h4>
+      <p class="text-sm text-gray-600 mb-1">Volume ${publication.volume}, Issue ${publication.issue}</p>
+      <p class="text-xs text-gray-500">${publication.year}</p>
+      <div class="mt-4 px-4 py-2 bg-white/90 backdrop-blur-sm text-blue-800 rounded-full text-xs font-medium border border-blue-200">
+        ISSN: ${publication.issn}
+      </div>
+    `;
+
+    // Add badges
+    const volumeBadge = document.createElement('div');
+    volumeBadge.className = 'absolute top-4 right-4';
+    volumeBadge.innerHTML = `<span class="${this.getJournalBadge(publication.volume)} px-4 py-2 rounded-full text-sm font-bold shadow-lg">Vol. ${publication.volume}</span>`;
+
+    const yearBadge = document.createElement('div');
+    yearBadge.className = 'absolute top-4 left-4';
+    yearBadge.innerHTML = `<span class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-800 shadow-lg">${publication.year}</span>`;
+
+    fallbackDiv.appendChild(volumeBadge);
+    fallbackDiv.appendChild(yearBadge);
+    parent.appendChild(fallbackDiv);
+  }
+}
 }

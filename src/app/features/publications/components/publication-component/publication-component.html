@@ -1,51 +1,93 @@
 <!-- publication-component.html -->
-<div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50/50">
+<div class="min-h-screen bg-gradient-to-br from-gray-50/50 via-white to-gray-100/30">
 
-  <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white overflow-hidden">
-    <!-- Background -->
-    <div class="absolute inset-0">
-      <div class="absolute top-1/4 right-1/4 w-48 h-48 bg-gradient-to-br from-blue-500/20 to-cyan-400/20 rounded-full blur-2xl"></div>
-      <div class="absolute bottom-1/4 left-1/4 w-48 h-48 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-2xl"></div>
-    </div>
+  <!-- Hero Section - White Glass Effect -->
+  <section class="relative py-12 md:py-16 bg-gradient-to-br from-white via-gray-50 to-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-200/20 via-transparent to-transparent"></div>
 
-    <div class="relative container mx-auto px-4 py-12 md:py-16">
-      <div class="max-w-6xl mx-auto text-center">
-        <!-- Icon -->
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 mb-8 transform transition-all duration-300 hover:scale-110 hover:rotate-6">
-          <i class="pi pi-book-open text-3xl"></i>
-        </div>
+    <div class="relative container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <!-- Glass Container -->
+        <div class="backdrop-blur-xl bg-white/80 rounded-3xl border border-white/50 shadow-2xl shadow-gray-200/50 p-8 md:p-12">
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <!-- Title Section -->
+            <div class="flex-1">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl border border-blue-200/50 flex items-center justify-center shadow-sm">
+                  <i class="pi pi-book text-blue-600 text-2xl"></i>
+                </div>
+                <div>
+                  <h1 class="text-3xl md:text-4xl font-bold text-gray-900">NKSC Research Journals</h1>
+                  <p class="text-gray-600 mt-2">Peer-reviewed sociological publications</p>
+                </div>
+              </div>
 
-        <!-- Title -->
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-          <span class="block">Academic Journals</span>
-          <span class="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-white text-3xl md:text-4xl mt-2">Nazmul Karim Study Center</span>
-        </h1>
+              <!-- Description -->
+              <p class="text-gray-700 max-w-2xl mb-6">
+                Academic journals and research publications from Nazmul Karim Study Center,
+                University of Dhaka. Contributing to sociological research since 1999.
+              </p>
+            </div>
 
-        <!-- Description -->
-        <p class="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-          Peer-reviewed sociology journals and research publications from University of Dhaka
-        </p>
-
-        <!-- Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-md mx-auto">
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-            <div class="text-2xl font-bold">{{ publications.length }}</div>
-            <div class="text-sm opacity-90">Journals</div>
-          </div>
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-            <div class="text-2xl font-bold">{{ getLatestPublicationsCount() }}</div>
-            <div class="text-sm opacity-90">
-              @if (availableYears.length > 0) {
-                Latest ({{ availableYears[0] }})
-              } @else {
-                Latest
-              }
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-3 gap-4">
+              <div class="backdrop-blur-sm bg-white/60 rounded-2xl p-4 border border-gray-200/50 shadow-sm">
+                <div class="text-2xl font-bold text-blue-600">{{ publications.length }}</div>
+                <div class="text-sm text-gray-600 mt-1">Journals</div>
+              </div>
+              <div class="backdrop-blur-sm bg-white/60 rounded-2xl p-4 border border-gray-200/50 shadow-sm">
+                <div class="text-2xl font-bold text-purple-600">{{ availableYears.length }}</div>
+                <div class="text-sm text-gray-600 mt-1">Years</div>
+              </div>
+              <div class="backdrop-blur-sm bg-white/60 rounded-2xl p-4 border border-gray-200/50 shadow-sm">
+                <div class="text-lg font-bold text-gray-900">ISSN</div>
+                <div class="text-sm text-gray-600 mt-1">1813-2871</div>
+              </div>
             </div>
           </div>
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-            <div class="text-2xl font-bold">ISSN 1813-2871</div>
-            <div class="text-sm opacity-90">ISSN</div>
+
+          <!-- Search Bar -->
+          <div class="mt-8">
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="relative">
+                <div class="flex flex-col lg:flex-row gap-4">
+                  <div class="flex-1">
+                    <div class="relative">
+                      <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                      <input
+                        type="text"
+                        [(ngModel)]="searchTerm"
+                        (input)="onSearch(searchTerm)"
+                        placeholder="Search journals, editors, or keywords..."
+                        [disabled]="isLoading"
+                        class="w-full pl-12 pr-4 py-3.5 bg-white/90 border border-gray-300/50 rounded-xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400/50 transition-all duration-200 placeholder:text-gray-400 text-gray-900">
+                    </div>
+                  </div>
+                  <div class="flex gap-3">
+                    <select
+                      [(ngModel)]="selectedYear"
+                      (change)="onYearFilter(selectedYear)"
+                      [disabled]="isLoading"
+                      class="px-4 py-3.5 bg-white/90 border border-gray-300/50 rounded-xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400/50 text-gray-900 min-w-[120px]">
+                      <option value="">All Years</option>
+                      @for (year of availableYears; track year) {
+                        <option [value]="year">{{ year }}</option>
+                      }
+                    </select>
+                    <button
+                      (click)="clearFilters()"
+                      [disabled]="isLoading || (!searchTerm && !selectedYear)"
+                      [class.opacity-40]="!searchTerm && !selectedYear"
+                      class="px-4 py-3.5 bg-white/90 border border-gray-300/50 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-2">
+                      <i class="pi pi-refresh"></i>
+                      <span class="font-medium">Reset</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -55,103 +97,66 @@
   <!-- Main Content -->
   <section class="py-8 md:py-12">
     <div class="container mx-auto px-4">
-      <!-- Search and Filter Section -->
-      <div class="glass-effect rounded-2xl p-6 mb-8 shadow-lg border border-neutral-200/50 backdrop-blur-sm">
-        <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
-          <!-- Search -->
-          <div class="flex-1 w-full max-w-xl">
-            <div class="relative group">
-              <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-              <div class="relative">
-                <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-neutral-400"></i>
-                <input
-                  type="text"
-                  [(ngModel)]="searchTerm"
-                  (input)="onSearch(searchTerm)"
-                  placeholder="Search journals by title, editor, or description..."
-                  [disabled]="isLoading"
-                  class="w-full pl-12 pr-4 py-3.5 bg-white border border-neutral-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder:text-neutral-400 shadow-sm">
-              </div>
-            </div>
-          </div>
-
-          <!-- Filters -->
-          <div class="flex items-center gap-4">
-            <!-- Year Filter -->
-            <select
-              [(ngModel)]="selectedYear"
-              (change)="onYearFilter(selectedYear)"
-              [disabled]="isLoading"
-              class="px-4 py-2.5 bg-white border border-neutral-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none min-w-[120px]">
-              <option value="">All Years</option>
-              @for (year of availableYears; track year) {
-                <option [value]="year">{{ year }}</option>
+      <!-- Results Header -->
+      <div class="mb-8">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">
+              @if (searchTerm || selectedYear) {
+                <span class="text-blue-600">{{ filteredPublications.length }}</span> Results Found
+              } @else {
+                All Research Journals
               }
-            </select>
-
-            <!-- Clear Filters -->
-            <button
-              (click)="clearFilters()"
-              [disabled]="isLoading || (!searchTerm && !selectedYear)"
-              [class.opacity-50]="!searchTerm && !selectedYear"
-              class="px-4 py-2.5 bg-gradient-to-r from-neutral-100 to-white border border-neutral-200 text-neutral-700 rounded-xl hover:shadow-md transition-all duration-300 hover:scale-105 disabled:hover:scale-100 flex items-center gap-2">
-              <i class="pi pi-refresh"></i>
-              <span class="font-medium">Reset</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Results Count -->
-        <div class="mt-6 pt-6 border-t border-neutral-100">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-xl font-bold text-neutral-900">
-                @if (searchTerm || selectedYear) {
-                  <span class="text-blue-600">{{ filteredPublications.length }}</span> Journals Found
-                } @else {
-                  All Journals
-                }
-              </h2>
+            </h2>
+            <p class="text-gray-600">
               @if (filteredPublications.length > 0) {
-                <p class="text-sm text-neutral-600 mt-1">Showing {{ filteredPublications.length }} of {{ publications.length }} journals</p>
+                Showing {{ filteredPublications.length }} of {{ publications.length }} academic publications
+                @if (selectedYear) {
+                  from {{ selectedYear }}
+                }
+              } @else {
+                Browse our collection of peer-reviewed sociological research
               }
-            </div>
-            @if (isLoading) {
-              <div class="flex items-center gap-2">
-                <i class="pi pi-spinner pi-spin text-blue-600"></i>
-                <span class="text-sm text-neutral-600">Loading...</span>
-              </div>
-            }
+            </p>
           </div>
+
+          @if (isLoading) {
+            <div class="flex items-center gap-2 text-blue-600">
+              <i class="pi pi-spinner pi-spin"></i>
+              <span>Loading publications...</span>
+            </div>
+          }
         </div>
       </div>
 
       <!-- Loading State -->
       @if (isLoading) {
         <div class="text-center py-16">
-          <div class="inline-block mb-8">
-            <div class="w-20 h-20 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div class="inline-block relative mb-8">
+            <div class="w-16 h-16 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <i class="pi pi-book text-2xl text-blue-400"></i>
+            </div>
           </div>
-          <h3 class="text-2xl font-bold text-neutral-700 mb-3">Loading Journals</h3>
-          <p class="text-neutral-500">Fetching academic publications...</p>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Loading Academic Journals</h3>
+          <p class="text-gray-600">Fetching peer-reviewed publications...</p>
         </div>
       }
 
       <!-- No Results -->
-      @if (!isLoading && filteredPublications.length === 0) {
-        <div class="text-center py-16 glass-effect rounded-2xl">
-          <div class="w-32 h-32 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full flex items-center justify-center mx-auto mb-8">
-            <i class="pi pi-inbox text-6xl text-blue-400"></i>
+      @if (!isLoading && filteredPublications.length === 0 && publications.length > 0) {
+        <div class="text-center py-16 backdrop-blur-sm bg-white/60 rounded-3xl border border-gray-200/50">
+          <div class="w-32 h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-8">
+            <i class="pi pi-search text-5xl text-gray-400"></i>
           </div>
-          <h3 class="text-2xl font-bold text-neutral-700 mb-4">No journals found</h3>
-          <p class="text-neutral-500 mb-8 max-w-md mx-auto">
-            We couldn't find any journals matching your criteria. Try adjusting your search or filters.
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">No journals found</h3>
+          <p class="text-gray-600 mb-8 max-w-md mx-auto">
+            Try adjusting your search terms or filters
           </p>
           <button
             (click)="clearFilters()"
-            class="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 inline-flex items-center gap-2">
-            <i class="pi pi-refresh"></i>
-            <span class="font-medium">Clear All Filters</span>
+            class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:shadow-lg transition-all duration-300">
+            Clear All Filters
           </button>
         </div>
       }
@@ -160,122 +165,129 @@
       @if (!isLoading && filteredPublications.length > 0) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           @for (publication of filteredPublications; track publication.id) {
-            <div class="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-neutral-200">
+            <div class="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-200 backdrop-blur-sm">
 
-              <!-- Journal Cover Image / Preview -->
-              <div class="relative h-64 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
+              <!-- Full Cover Image -->
+              <div class="relative h-80 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                 @if (publication.preview_image) {
-                  <!-- Has preview image -->
-                  <div class="relative w-full h-full">
-                    <img
-                      [src]="publication.preview_image"
-                      [alt]="publication.title"
-                      class="w-full h-full object-contain p-4 cursor-pointer"
-                      (click)="viewPdf(publication)"
-                      style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)">
+                  <!-- Full Cover Image -->
+                  <img
+                    [src]="publication.preview_image"
+                    [alt]="publication.title"
+                    class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                    (error)="handleImageError($event, publication)">
 
-                    <!-- View Overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <button
-                        (click)="viewPdf(publication)"
-                        class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-110 flex items-center gap-2 transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <!-- Gradient Overlay -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                  <!-- Volume Badge -->
+                  <div class="absolute top-4 right-4">
+                    <span [class]="getJournalBadge(publication.volume) + ' px-4 py-2 rounded-full text-sm font-bold shadow-lg'">
+                      Vol. {{ publication.volume }}
+                    </span>
+                  </div>
+
+                  <!-- Year Badge -->
+                  <div class="absolute top-4 left-4">
+                    <span class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-800 shadow-lg">
+                      {{ publication.year }}
+                    </span>
+                  </div>
+
+                  <!-- View Overlay -->
+                  <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div class="px-6 py-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <div class="flex items-center gap-2 text-blue-600 font-medium">
                         <i class="pi pi-eye"></i>
-                        <span class="text-sm font-medium">View Journal</span>
-                      </button>
+                        <span>View Journal</span>
+                      </div>
                     </div>
                   </div>
                 } @else {
-                  <!-- Default cover with journal info -->
-                  <div class="w-full h-full flex flex-col items-center justify-center p-6 text-center cursor-pointer" (click)="viewPdf(publication)">
-                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-500">
+                  <!-- Default Cover -->
+                  <div class="w-full h-full flex flex-col items-center justify-center p-6">
+                    <div class="w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                       <i class="pi pi-book text-3xl text-white"></i>
                     </div>
-                    <h4 class="text-xl font-bold text-neutral-800 mb-2">Journal of Sociology</h4>
-                    <p class="text-sm text-neutral-600 mb-1">Volume {{ publication.volume }}, Issue {{ publication.issue }}</p>
-                    <p class="text-xs text-neutral-500">{{ publication.year }}</p>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">Journal of Sociology</h4>
+                    <p class="text-sm text-gray-600 mb-1">Volume {{ publication.volume }}, Issue {{ publication.issue }}</p>
+                    <p class="text-xs text-gray-500">{{ publication.year }}</p>
 
-                    <!-- ISSN Badge -->
-                    <div class="mt-4 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                      ISSN: {{ publication.issn }}
+                    <!-- Volume Badge -->
+                    <div class="absolute top-4 right-4">
+                      <span [class]="getJournalBadge(publication.volume) + ' px-4 py-2 rounded-full text-sm font-bold shadow-lg'">
+                        Vol. {{ publication.volume }}
+                      </span>
+                    </div>
+
+                    <!-- Year Badge -->
+                    <div class="absolute top-4 left-4">
+                      <span class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-800 shadow-lg">
+                        {{ publication.year }}
+                      </span>
                     </div>
                   </div>
                 }
-
-                <!-- Volume Badge -->
-                <div class="absolute top-4 right-4">
-                  <span [class]="getJournalBadge(publication.volume) + ' px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm'">
-                    Vol. {{ publication.volume }}
-                  </span>
-                </div>
-
-                <!-- Year Badge -->
-                <div class="absolute top-4 left-4">
-                  <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-neutral-800 shadow-sm">
-                    {{ publication.year }}
-                  </span>
-                </div>
               </div>
 
               <!-- Content -->
-              <div class="p-5">
+              <div class="p-6">
                 <!-- Title -->
-                <h3 class="text-lg font-bold text-neutral-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
                   {{ publication.title }}
                 </h3>
 
                 <!-- Editor Info -->
                 <div class="flex items-start mb-4">
-                  <div class="w-8 h-8 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
-                    <i class="pi pi-user text-blue-600 text-sm"></i>
+                  <div class="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
+                    <i class="pi pi-user text-gray-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-sm text-neutral-700 font-medium line-clamp-1">{{ getEditorName(publication.editor) }}</p>
-                    <p class="text-xs text-neutral-500">Editor</p>
+                    <p class="text-sm text-gray-700 font-medium line-clamp-1">{{ getEditorName(publication.editor) }}</p>
+                    <p class="text-xs text-gray-500">Editor</p>
                   </div>
                 </div>
 
                 <!-- Description -->
-                <p class="text-neutral-600 text-sm mb-4 line-clamp-3">
+                <p class="text-gray-600 text-sm mb-4 line-clamp-3">
                   {{ getShortDescription(publication.description) }}
                 </p>
 
-                <!-- Journal Details -->
+                <!-- Metadata -->
                 <div class="space-y-2 mb-4">
-                  <div class="flex items-center text-xs text-neutral-500">
+                  <div class="flex items-center text-xs text-gray-500">
                     <i class="pi pi-file mr-2"></i>
                     <span>{{ publication.pages }} pages • {{ formatFileSize(publication.file_size_mb) }}</span>
                   </div>
-                  <div class="flex items-center text-xs text-neutral-500">
+                  <div class="flex items-center text-xs text-gray-500">
                     <i class="pi pi-tag mr-2"></i>
                     <span>ISSN: {{ publication.issn }}</span>
                   </div>
                   @if (publication.doi_url) {
                     <div class="flex items-center text-xs text-blue-600">
                       <i class="pi pi-external-link mr-2"></i>
-                      <a [href]="publication.doi_url" target="_blank" class="hover:underline truncate" (click)="$event.stopPropagation()">DOI Link</a>
+                      <a [href]="publication.doi_url" target="_blank" class="hover:underline truncate">DOI Link</a>
                     </div>
                   }
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex items-center justify-between pt-4 border-t border-neutral-100">
-                  <div class="flex items-center gap-3">
-                    <button
-                      (click)="viewPdf(publication)"
-                      class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1.5 group/btn">
-                      <i class="pi pi-eye"></i>
-                      <span>View PDF</span>
-                      <i class="pi pi-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
-                    </button>
-                  </div>
-                  <div class="text-right">
-                    <button
-                      (click)="downloadPdf(publication); $event.stopPropagation()"
-                      class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center gap-1.5 group/download">
-                      <i class="pi pi-download"></i>
-                      <span>Download</span>
-                    </button>
-                  </div>
+                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <button
+                    (click)="viewPdf(publication)"
+                    class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1.5 group/btn">
+                    <i class="pi pi-eye"></i>
+                    <span>View PDF</span>
+                    <i class="pi pi-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
+                  </button>
+
+                  <button
+                    (click)="downloadPdf(publication); $event.stopPropagation()"
+                    class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center gap-1.5 group/download">
+                    <i class="pi pi-download"></i>
+                    <span>Download</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -284,60 +296,60 @@
       }
 
       <!-- Editorial Board -->
-      <div class="glass-effect rounded-2xl p-8 mb-12">
-        <h2 class="text-2xl font-bold text-neutral-900 mb-8 text-center">Editorial Board</h2>
+      <div class="backdrop-blur-sm bg-white/60 rounded-3xl border border-gray-200/50 p-8 mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Editorial Board</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="text-center">
-            <div class="w-20 h-20 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-user text-blue-600 text-2xl"></i>
+            <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i class="pi pi-user text-gray-600 text-2xl"></i>
             </div>
-            <h4 class="font-bold text-neutral-900">Editor-in-Chief</h4>
-            <p class="text-neutral-600 text-sm mt-1">Prof. Dr. A K M Jamal Uddin</p>
-            <p class="text-neutral-500 text-xs mt-1">University of Dhaka</p>
+            <h4 class="font-bold text-gray-900">Editor-in-Chief</h4>
+            <p class="text-gray-600 text-sm mt-1">Prof. Dr. A K M Jamal Uddin</p>
+            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
           </div>
           <div class="text-center">
-            <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-users text-green-600 text-2xl"></i>
+            <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i class="pi pi-users text-gray-600 text-2xl"></i>
             </div>
-            <h4 class="font-bold text-neutral-900">Editorial Board</h4>
-            <p class="text-neutral-600 text-sm mt-1">Prof. Dr. Zeenat Huda</p>
-            <p class="text-neutral-500 text-xs mt-1">University of Dhaka</p>
+            <h4 class="font-bold text-gray-900">Editorial Board</h4>
+            <p class="text-gray-600 text-sm mt-1">Prof. Dr. Zeenat Huda</p>
+            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
           </div>
           <div class="text-center">
-            <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-users text-purple-600 text-2xl"></i>
+            <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i class="pi pi-users text-gray-600 text-2xl"></i>
             </div>
-            <h4 class="font-bold text-neutral-900">Editorial Board</h4>
-            <p class="text-neutral-600 text-sm mt-1">Prof. Dr. A.S.M. Amanullah</p>
-            <p class="text-neutral-500 text-xs mt-1">University of Dhaka</p>
+            <h4 class="font-bold text-gray-900">Editorial Board</h4>
+            <p class="text-gray-600 text-sm mt-1">Prof. Dr. A.S.M. Amanullah</p>
+            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
           </div>
           <div class="text-center">
-            <div class="w-20 h-20 bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-users text-orange-600 text-2xl"></i>
+            <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i class="pi pi-users text-gray-600 text-2xl"></i>
             </div>
-            <h4 class="font-bold text-neutral-900">Editorial Board</h4>
-            <p class="text-neutral-600 text-sm mt-1">Prof. Salma Akhter</p>
-            <p class="text-neutral-500 text-xs mt-1">University of Dhaka</p>
+            <h4 class="font-bold text-gray-900">Editorial Board</h4>
+            <p class="text-gray-600 text-sm mt-1">Prof. Salma Akhter</p>
+            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
           </div>
         </div>
       </div>
 
       <!-- Contact Section -->
-      <div class="glass-effect rounded-2xl p-8 text-center border-2 border-dashed border-blue-200">
+      <div class="backdrop-blur-sm bg-gradient-to-r from-gray-50 to-white rounded-3xl border border-gray-200 p-8">
         <div class="flex flex-col md:flex-row items-center justify-between gap-6">
           <div class="text-left">
-            <h3 class="text-xl font-bold text-neutral-900 mb-3">Journal Information</h3>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Journal Information</h3>
             <div class="space-y-2">
-              <p class="text-neutral-600 text-sm flex items-center">
-                <i class="pi pi-book mr-2 text-blue-600"></i>
+              <p class="text-gray-600 text-sm flex items-center">
+                <i class="pi pi-book mr-2 text-gray-600"></i>
                 <span class="font-medium">ISSN:</span> 1813-2871
               </p>
-              <p class="text-neutral-600 text-sm flex items-center">
-                <i class="pi pi-envelope mr-2 text-blue-600"></i>
+              <p class="text-gray-600 text-sm flex items-center">
+                <i class="pi pi-envelope mr-2 text-gray-600"></i>
                 <span class="font-medium">Email:</span> nksc1511@gmail.com
               </p>
-              <p class="text-neutral-600 text-sm flex items-center">
-                <i class="pi pi-map-marker mr-2 text-blue-600"></i>
+              <p class="text-gray-600 text-sm flex items-center">
+                <i class="pi pi-map-marker mr-2 text-gray-600"></i>
                 <span class="font-medium">Address:</span> Nazmul Karim Study Center, University of Dhaka
               </p>
             </div>
@@ -347,15 +359,14 @@
             @if (publications.length > 0) {
               <button
                 (click)="viewPdf(publications[0])"
-                class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 inline-flex items-center gap-2">
+                class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2">
                 <i class="pi pi-eye"></i>
                 <span class="font-medium">View Latest Issue</span>
               </button>
             }
             <a
               href="mailto:nksc1511@gmail.com"
-              class="px-6 py-3 bg-gradient-to-r from-neutral-600 to-neutral-700 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
-              (click)="$event.stopPropagation()">
+              class="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
               <i class="pi pi-envelope"></i>
               <span class="font-medium">Contact Editorial</span>
             </a>
@@ -365,12 +376,12 @@
     </div>
   </section>
 
-  <!-- Simple PDF Modal (for confirmation) -->
+  <!-- Simple PDF Modal -->
   @if (isPdfModalOpen && selectedPdf) {
-    <div class="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
         <!-- Modal Header -->
-        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6">
+        <div class="bg-gradient-to-r from-gray-700 to-gray-800 text-white p-6">
           <div class="flex items-center justify-between">
             <h3 class="text-xl font-bold">Open Journal PDF</h3>
             <button
@@ -383,31 +394,32 @@
 
         <!-- Modal Content -->
         <div class="p-6">
+          <!-- Preview Image in Modal -->
+          @if (selectedPdf.preview_image) {
+            <div class="mb-6 rounded-lg overflow-hidden border border-gray-200">
+              <img
+                [src]="selectedPdf.preview_image"
+                [alt]="'Preview: ' + selectedPdf.title"
+                class="w-full h-48 object-cover object-center"
+                (error)="handleImageError($event, selectedPdf)">
+            </div>
+          }
+
           <div class="flex items-start gap-4 mb-6">
-            <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <i class="pi pi-file-pdf text-2xl text-blue-600"></i>
+            <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
+              <i class="pi pi-file-pdf text-2xl text-gray-600"></i>
             </div>
             <div>
-              <h4 class="font-bold text-neutral-900 mb-1 line-clamp-2">{{ selectedPdf.title }}</h4>
-              <p class="text-sm text-neutral-600">Volume {{ selectedPdf.volume }}, Issue {{ selectedPdf.issue }} • {{ selectedPdf.year }}</p>
-              <p class="text-xs text-neutral-500 mt-1">{{ formatFileSize(selectedPdf.file_size_mb) }} • {{ selectedPdf.pages }} pages</p>
+              <h4 class="font-bold text-gray-900 mb-1 line-clamp-2">{{ getShortTitle(selectedPdf.title) }}</h4>
+              <p class="text-sm text-gray-600">Volume {{ selectedPdf.volume }}, Issue {{ selectedPdf.issue }} • {{ selectedPdf.year }}</p>
+              <p class="text-xs text-gray-500 mt-1">{{ formatFileSize(selectedPdf.file_size_mb) }} • {{ selectedPdf.pages }} pages</p>
             </div>
           </div>
 
           <div class="space-y-3">
-            <p class="text-neutral-600 text-sm">
+            <p class="text-gray-600 text-sm">
               The journal PDF will open in a new browser tab for better viewing experience.
             </p>
-
-            <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-              <div class="flex items-start gap-3">
-                <i class="pi pi-info-circle text-yellow-600 mt-0.5"></i>
-                <div class="text-sm text-yellow-800">
-                  <p class="font-medium mb-1">Security Notice:</p>
-                  <p class="text-xs">For security reasons, PDFs cannot be embedded directly. They will open in your browser's PDF viewer.</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -415,12 +427,12 @@
         <div class="flex flex-col sm:flex-row gap-3 p-6 pt-0">
           <button
             (click)="closePdfModal()"
-            class="flex-1 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-xl hover:bg-neutral-50 transition-colors">
+            class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors">
             Cancel
           </button>
           <button
             (click)="openPdfInNewTab(selectedPdf)"
-            class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2">
+            class="flex-1 px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
             <i class="pi pi-external-link"></i>
             Open PDF
           </button>
