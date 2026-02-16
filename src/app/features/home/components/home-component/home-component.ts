@@ -138,7 +138,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
               this.taiaburProfile = {
                 name: taiabur.name,
                 designation: taiabur.position + (taiabur.period ? `, ${taiabur.period}` : ''),
-                image: taiabur.image || '/assets/images/director.png',
+                image: taiabur.image || '/assets/images/dr.png',
                 bio: this.stripHtml(taiabur.bio || ''),
                 email: taiabur.email
               };

@@ -138,7 +138,7 @@ export class AboutComponent implements OnInit, OnDestroy {
         qualifications: 'Ph.D. in Public Policy and Governance',
         email: 'taiaburrahman.dvs@du.ac.bd',
         phone: '',
-        image: '/assets/images/directors/director_5.jpg',
+        image: '/assets/images/dr.png',
         website: '',
         linkedin: '',
         is_current: false,
