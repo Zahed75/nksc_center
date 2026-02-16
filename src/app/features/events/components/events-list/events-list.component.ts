@@ -40,47 +40,52 @@ import { Subscription } from 'rxjs';
           </button>
         </div>
 
-        <!-- Events Grid -->
-        <div *ngIf="!isLoading && events.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div *ngFor="let event of events" class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full hover:-translate-y-1">
+        <!-- Events List -->
+        <div *ngIf="!isLoading && events.length > 0" class="max-w-5xl mx-auto space-y-4">
+          <div *ngFor="let event of events" class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col md:flex-row gap-6">
             
-            <!-- Event Image/Placeholder -->
-            <div class="relative h-56 overflow-hidden bg-gray-100">
-                <img [src]="event.thumbnail_image || '/assets/images/event-placeholder.jpg'" [alt]="event.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" (error)="handleImageError($event)">
-                
-                <!-- Date Badge -->
-                <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg text-center min-w-[3.5rem]">
-                    <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider">{{ (event.event_date || event.publish_date) | date:'MMM' }}</span>
-                    <span class="block text-2xl font-bold text-gray-900">{{ (event.event_date || event.publish_date) | date:'dd' }}</span>
-                    <span class="block text-xs font-medium text-gray-400">{{ (event.event_date || event.publish_date) | date:'yyyy' }}</span>
-                </div>
+            <!-- Date Box -->
+            <div class="flex-shrink-0 flex md:flex-col items-center justify-center bg-primary/5 rounded-xl p-4 min-w-[100px] text-center border border-primary/10">
+                <span class="block text-sm font-bold text-primary uppercase tracking-wider">{{ (event.event_date || event.publish_date) | date:'MMM' }}</span>
+                <span class="block text-3xl font-bold text-gray-900 my-1">{{ (event.event_date || event.publish_date) | date:'dd' }}</span>
+                <span class="block text-sm font-medium text-gray-500">{{ (event.event_date || event.publish_date) | date:'yyyy' }}</span>
             </div>
 
             <!-- Content -->
-            <div class="p-6 flex flex-col flex-grow">
-                <div class="mb-4">
-                    <span *ngIf="event.category_detail" class="inline-block px-3 py-1 bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+            <div class="flex-grow">
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span *ngIf="event.category_detail" class="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs font-semibold uppercase tracking-wider rounded-md">
                         {{ event.category_detail.name }}
                     </span>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2" title="{{ event.title }}">
-                        {{ event.title }}
-                    </h3>
-                    <p class="text-gray-600 text-sm line-clamp-3 mb-4">
-                        {{ event.short_description }}
-                    </p>
+                    <span *ngIf="!event.event_date && !event.publish_date" class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-md">Date TBA</span>
                 </div>
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                    {{ event.title }}
+                </h3>
+                
+                <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                    {{ event.short_description }}
+                </p>
 
-                <div class="mt-auto pt-4 border-t border-gray-100 space-y-3">
-                    <div class="flex items-start text-sm text-gray-500">
-                        <i class="pi pi-user mr-2 mt-1 text-primary"></i>
-                        <span class="line-clamp-1">{{ event.event_speakers || event.author || 'Speaker TBA' }}</span>
+                <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                    <div class="flex items-center">
+                        <i class="pi pi-user mr-2 text-primary"></i>
+                        <span>{{ event.event_speakers || event.author || 'Speaker TBA' }}</span>
                     </div>
-                    <div class="flex items-start text-sm text-gray-500">
-                        <i class="pi pi-map-marker mr-2 mt-1 text-primary"></i>
-                        <span class="line-clamp-1">{{ event.event_location || 'Location TBA' }}</span>
+                    <div class="flex items-center">
+                        <i class="pi pi-map-marker mr-2 text-primary"></i>
+                        <span>{{ event.event_location || 'Location TBA' }}</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Action (Optional, e.g., Details arrow) -->
+            <!-- <div class="hidden md:flex items-center justify-center px-4">
+                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                    <i class="pi pi-arrow-right"></i>
+                </div>
+            </div> -->
             
           </div>
         </div>
