@@ -306,3 +306,9 @@ print("=" * 50)
 
 # Add this after DATABASES configuration
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Override migrations for third-party apps to store them locally
+MIGRATION_MODULES = {
+    'jet': 'nksc_backend.jet_migrations',
+    'dashboard': 'nksc_backend.dashboard_migrations',
+}
