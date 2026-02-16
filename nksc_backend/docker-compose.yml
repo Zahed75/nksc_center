@@ -1,0 +1,114 @@
+#services:
+#  nksc-db:
+#    image: mariadb:10.11
+#    container_name: nksc-db
+#    restart: unless-stopped
+#    environment:
+#      MYSQL_ROOT_PASSWORD: Nksc@2026
+#      MYSQL_DATABASE: nksc_db
+#      MYSQL_ROOT_HOST: '%'
+#    volumes:
+#      - db_data:/var/lib/mysql
+#    ports:
+#      - "3307:3306"
+#    healthcheck:
+#      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+#      timeout: 10s
+#      retries: 10
+#      start_period: 30s
+#
+#  nksc-backend:
+#    build: .
+#    container_name: nksc-backend
+#    restart: unless-stopped
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - ./media:/app/media
+#      - ./staticfiles:/app/staticfiles
+#      - ./logs:/app/logs
+#    depends_on:
+#      nksc-db:
+#        condition: service_healthy
+#    command: >
+#      sh -c "sleep 5 &&
+#             python manage.py migrate --noinput &&
+#             gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 nksc_backend.wsgi:application"
+#
+#  nksc-redis:
+#    image: redis:alpine
+#    container_name: nksc-redis
+#    restart: unless-stopped
+#
+#volumes:
+#  db_data:
+
+
+
+
+
+
+
+
+
+
+
+
+services:
+  nksc-db:
+    image: mariadb:10.11
+    container_name: nksc-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Nksc@2026
+      MYSQL_DATABASE: nksc_db
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  nksc-backend:
+    build: .
+    container_name: nksc-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
+      - ./logs:/app/logs
+    depends_on:
+      nksc-db:
+        condition: service_healthy
+    command: >
+      sh -c "sleep 5 &&
+             python manage.py migrate --noinput &&
+             gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 nksc_backend.wsgi:application"
+
+  nksc-redis:
+    image: redis:alpine
+    container_name: nksc-redis
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: nksc-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: nksc-db  # Docker service name (not localhost)
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 512M
+      PMA_ARBITRARY: 1  # Allows connecting to any server
+    ports:
+      - "8080:80"  # Access at http://103.191.51.220:8080
+    depends_on:
+      - nksc-db
+
+volumes:
+  db_data:

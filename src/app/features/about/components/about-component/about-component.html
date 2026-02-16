@@ -1,457 +1,291 @@
-<!-- features/about/components/about-component/about-component.html -->
-<div class="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50/50">
+<!-- features/about/pages/about-page/about-component.html -->
+<div class="min-h-screen bg-gray-50/50">
+
   <!-- Hero Section -->
-  <section class="relative pt-28 pb-20 overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-accent/5"></div>
-    <div class="absolute top-0 right-0 w-64 h-64 bg-linear-to-br from-primary/10 to-accent/10 rounded-full -translate-y-32 translate-x-32 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-primary/10 to-accent/10 rounded-full translate-y-32 -translate-x-32 blur-3xl"></div>
+  <section class="relative py-20 bg-white overflow-hidden border-b border-gray-100">
+    <div class="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-purple-500/5 pointer-events-none">
+    </div>
+    <div class="container relative mx-auto px-4 text-center">
+      <div
+        class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-6 animate-fade-in-up">
+        <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+        About NKSC
+      </div>
+      <h1
+        class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 font-display tracking-tight animate-fade-in-up delay-100">
+        Nazmul Karim <span class="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-600">Study
+          Center</span>
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200">
+        A premier center for sociological research and academic excellence at the University of Dhaka.
+      </p>
+    </div>
+  </section>
 
-    <div class="container relative mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-6xl mx-auto">
-        <div class="relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50 overflow-hidden">
-          <!-- Animated Background Elements -->
-          <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-primary/10 to-accent/10 rounded-full -translate-y-24 translate-x-24 blur-3xl"></div>
-
-          <div class="relative">
-            <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20 mb-8">
-              <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-              <span class="text-sm font-semibold text-primary tracking-wide uppercase">Established 2000</span>
-            </div>
-
-            <!-- Main Heading -->
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              <span class="block text-gray-900">Nazmul Karim</span>
-              <span class="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent block mt-2">
-                Study Center
-              </span>
-            </h1>
-
-            <!-- Description -->
-            <p class="text-lg md:text-xl text-gray-700 mb-10 max-w-3xl leading-relaxed">
-              An academic research institute dedicated to preserving and promoting the legacy, philosophy,
-              and contributions of <span class="font-semibold text-primary">Professor Dr. A. K. Nazmul Karim</span>,
-              a pioneer in Bangladeshi sociology.
-            </p>
-
-            <!-- Stats Bar -->
-            <div class="flex flex-wrap gap-4 mb-8">
-              <div class="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                <span class="text-sm font-medium text-gray-700">University of Dhaka</span>
-              </div>
-              <div class="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <i class="pi pi-users text-primary text-sm"></i>
-                <span class="text-sm font-medium text-gray-700">Research Center</span>
-              </div>
-              <div class="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <i class="pi pi-book text-primary text-sm"></i>
-                <span class="text-sm font-medium text-gray-700">Academic Institution</span>
-              </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="flex flex-wrap gap-4 mt-8">
-              <a
-                href="#contact"
-                class="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors duration-300 font-medium hover:shadow-lg inline-flex items-center gap-2"
-              >
-                <i class="pi pi-send"></i>
-                Contact Us
-              </a>
-              <a
-                href="#directors"
-                class="px-6 py-3 bg-white text-primary border border-primary rounded-xl hover:bg-primary/5 transition-colors duration-300 font-medium inline-flex items-center gap-2"
-              >
-                <i class="pi pi-users"></i>
-                Meet Our Team
-              </a>
-            </div>
+  <!-- About Sections (History, Mission, Vision) -->
+  <section class="py-16 md:py-24">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- History Card -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+          <div
+            class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-history text-2xl text-blue-600"></i>
           </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Our History</h3>
+          <p class="text-gray-600 leading-relaxed"
+            [innerHTML]="sanitizeHtml(historySection?.content || 'Established in 1999 to honor Professor A.K. Nazmul Karim.')">
+          </p>
+        </div>
+
+        <!-- Mission Card -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+          <div
+            class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-compass text-2xl text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Our Mission</h3>
+          <p class="text-gray-600 leading-relaxed"
+            [innerHTML]="sanitizeHtml(missionSection?.content || 'To promote advanced research in sociology and social sciences.')">
+          </p>
+        </div>
+
+        <!-- Vision Card -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+          <div
+            class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="pi pi-eye text-2xl text-purple-600"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Our Vision</h3>
+          <p class="text-gray-600 leading-relaxed"
+            [innerHTML]="sanitizeHtml(visionSection?.content || 'To be a global center of excellence in sociological research.')">
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Loading State -->
-  @if (isLoading) {
-    <div class="py-16">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center">
-            <div class="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-6"></div>
-            <p class="text-gray-600">Loading information...</p>
-          </div>
-        </div>
+  <!-- Timeline Section -->
+  <section class="py-16 bg-white overflow-hidden relative">
+    <div class="absolute inset-0 bg-gray-50/50 skew-y-3 transform origin-bottom-right pointer-events-none"></div>
+    <div class="container relative mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Journey</h2>
+        <div class="w-24 h-1 bg-linear-to-r from-primary to-transparent mx-auto rounded-full"></div>
       </div>
-    </div>
-  }
 
-  <!-- Error State -->
-  @if (error && !isLoading) {
-    <div class="py-16">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto">
-          <div class="bg-white rounded-2xl p-8 border border-red-200 shadow-lg">
-            <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <i class="pi pi-exclamation-triangle text-3xl text-red-600"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Data Loading Error</h3>
-            <p class="text-gray-600 mb-8 text-center">{{ error }}</p>
-            <button
-              (click)="refreshData()"
-              class="w-full md:w-auto mx-auto flex items-center justify-center gap-3 px-8 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-[1.02]">
-              <i class="pi pi-refresh text-lg"></i>
-              Try Again
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
+      <div class="relative max-w-5xl mx-auto">
+        <!-- Vertical Line -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200 hidden md:block"></div>
 
-  @if (!isLoading && !error) {
-    <!-- About Cards -->
-    <section class="py-16">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              About the Center
-            </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our mission, vision, and academic journey
-            </p>
-          </div>
+        <div class="space-y-12">
+          @for (event of timelineEvents; track event.id; let i = $index) {
+          <div class="relative flex flex-col md:flex-row items-center justify-between group">
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            @for (section of aboutSections; track section.id) {
-              <div class="group bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/20">
-                <div class="flex flex-col items-center text-center">
-                  <div class="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i [class]="section.icon + ' text-2xl text-primary'"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-gray-900 mb-3">{{ section.title }}</h3>
-                  @if (section.subtitle) {
-                    <p class="text-primary text-lg font-medium mb-4">{{ section.subtitle }}</p>
-                  }
-                  <div class="text-gray-600 leading-relaxed text-center" [innerHTML]="sanitizeHtml(section.content)"></div>
+            <!-- Left Side Content (for even items on desktop) -->
+            <div class="w-full md:w-5/12 mb-8 md:mb-0" [class.md:text-right]="i % 2 === 0"
+              [class.md:order-1]="i % 2 === 0" [class.md:order-3]="i % 2 !== 0">
+              <!-- Text Content (Shows on Left for Even, Right for Odd on Desktop) -->
+              <div *ngIf="i % 2 === 0" class="md:pr-8 group-hover:md:-translate-x-2 transition-transform duration-300">
+                <span class="hidden md:block text-5xl font-bold text-gray-100 absolute -top-6 right-8 z-0">{{ event.year
+                  }}</span>
+                <span class="md:hidden text-2xl font-bold text-primary mb-2 block">{{ event.year }}</span>
+                <div class="relative z-10">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">{{ event.title }}</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">{{ event.description }}</p>
+                </div>
+                <!-- Image for Even items (Mobile only) -->
+                <div *ngIf="event.image" class="mt-4 rounded-xl overflow-hidden shadow-md md:hidden">
+                  <img [src]="event.image" alt="{{ event.title }}" class="w-full h-48 object-cover">
                 </div>
               </div>
+            </div>
+
+            <!-- Center Point (Desktop Only) -->
+            <div
+              class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full border-4 border-white shadow-lg bg-primary z-10 items-center justify-center md:order-2 group-hover:scale-110 transition-transform duration-300">
+              <div class="w-3 h-3 bg-white rounded-full"></div>
+            </div>
+
+            <!-- Right Side Content -->
+            <div class="w-full md:w-5/12" [class.md:order-3]="i % 2 === 0" [class.md:order-1]="i % 2 !== 0">
+              <!-- Text Content for Odd items (Shows on Left on Desktop) -->
+              <div *ngIf="i % 2 !== 0"
+                class="md:pl-8 group-hover:md:translate-x-2 transition-transform duration-300 md:text-left">
+                <span class="hidden md:block text-5xl font-bold text-gray-100 absolute -top-6 left-8 z-0">{{ event.year
+                  }}</span>
+                <span class="md:hidden text-2xl font-bold text-primary mb-2 block">{{ event.year }}</span>
+                <div class="relative z-10">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">{{ event.title }}</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">{{ event.description }}</p>
+                </div>
+                <!-- Image for Odd items (Desktop & Mobile) -->
+                <div *ngIf="event.image" class="mt-4 rounded-xl overflow-hidden shadow-md">
+                  <img [src]="event.image" alt="{{ event.title }}"
+                    class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+              </div>
+
+              <!-- Image for Even items (Desktop Only - on Right) -->
+              <div *ngIf="i % 2 === 0 && event.image"
+                class="hidden md:block pl-8 group-hover:translate-x-2 transition-transform duration-300">
+                <div class="rounded-xl overflow-hidden shadow-md">
+                  <img [src]="event.image" alt="{{ event.title }}"
+                    class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+              </div>
+            </div>
+
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Section -->
+  <section class="py-16 md:py-24 bg-gray-50 border-t border-gray-200">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Leadership</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Distinguished academics who have led the center over the years.
+        </p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex justify-center mb-12">
+        <div class="bg-white p-1 rounded-xl shadow-sm border border-gray-100 inline-flex">
+          <button (click)="switchDirectorTab('current')" [class.bg-primary]="activeDirectorTab === 'current'"
+            [class.text-white]="activeDirectorTab === 'current'" [class.shadow-md]="activeDirectorTab === 'current'"
+            class="px-8 py-3 rounded-lg text-sm font-medium transition-all duration-300 text-gray-600 hover:text-gray-900">
+            Current Leadership
+          </button>
+          <button (click)="switchDirectorTab('previous')" [class.bg-primary]="activeDirectorTab === 'previous'"
+            [class.text-white]="activeDirectorTab === 'previous'" [class.shadow-md]="activeDirectorTab === 'previous'"
+            class="px-8 py-3 rounded-lg text-sm font-medium transition-all duration-300 text-gray-600 hover:text-gray-900">
+            Former Directors
+          </button>
+        </div>
+      </div>
+
+      <!-- Current Director (If any) -->
+      @if (activeDirectorTab === 'current') {
+      <div class="text-center py-12 animate-fade-in-up">
+        @if (currentDirectors.length > 0) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+          @for (director of currentDirectors; track director.id) {
+          <!-- Director Card -->
+          <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 group max-w-sm mx-auto">
+            <div class="relative h-80 overflow-hidden bg-gray-100">
+              <img [src]="director.image || '/assets/images/director-placeholder.jpg'" [alt]="director.name"
+                class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110">
+              <div class="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent"></div>
+              <div class="absolute bottom-0 left-0 right-0 p-6 text-left">
+                <h3 class="text-xl font-bold text-white mb-1">{{ director.name }}</h3>
+                <p class="text-primary-300 font-medium text-sm">{{ director.position }}</p>
+              </div>
+            </div>
+            <div class="p-6 text-left space-y-4">
+              <p class="text-gray-600 text-sm line-clamp-3">{{ director.bio }}</p>
+              <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-xs text-gray-500 font-medium px-3 py-1 bg-gray-100 rounded-full">Since {{
+                  director.period }}</span>
+                <button class="text-primary hover:text-primary-dark font-medium text-sm">View Profile</button>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        } @else {
+        <div class="max-w-md mx-auto bg-white rounded-2xl p-12 shadow-sm border border-gray-100 text-center">
+          <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="pi pi-user text-4xl text-gray-300"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Director Position</h3>
+          <p class="text-gray-500">The position of Director is currently vacant or under appointment.</p>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Previous Directors -->
+      @if (activeDirectorTab === 'previous') {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in-up">
+        @for (director of previousDirectors; track director.id) {
+        <div
+          class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+          <div class="relative h-64 overflow-hidden bg-gray-100">
+            @if (director.image) {
+            <img [src]="director.image" [alt]="director.name"
+              class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+              (error)="handleImageError($event)">
+            } @else {
+            <div class="w-full h-full flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200">
+              <i class="pi pi-user text-4xl text-gray-400"></i>
+            </div>
             }
+
+            <!-- Overlay with Info -->
+            <div
+              class="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+              <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                <p class="text-white font-medium text-sm mb-2">{{ director.qualifications }}</p>
+                <div class="flex gap-3">
+                  <a *ngIf="director.email" [href]="'mailto:' + director.email"
+                    class="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-primary flex items-center justify-center transition-colors backdrop-blur-sm">
+                    <i class="pi pi-envelope text-xs"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 text-center">
+            <h3 class="text-lg font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors line-clamp-1"
+              title="{{ director.name }}">{{ director.name }}</h3>
+            <p class="text-primary font-medium text-sm mb-3">{{ director.position }}</p>
+            <div
+              class="inline-flex items-center px-3 py-1 rounded-full bg-gray-50 text-gray-600 text-xs font-medium border border-gray-100">
+              <i class="pi pi-calendar mr-1.5 text-gray-400"></i>
+              {{ director.period }}
+            </div>
           </div>
         </div>
+        }
       </div>
-    </section>
+      }
+    </div>
+  </section>
 
-    <!-- Statistics -->
-    @if (statistics.length > 0) {
-      <section class="py-16 bg-gradient-to-b from-white to-gray-50">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              @for (stat of statistics; track stat.id) {
-                <div class="bg-white rounded-2xl p-8 text-center hover:shadow-lg transition-shadow duration-300">
-                  <div class="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i [class]="stat.icon + ' text-2xl text-primary'"></i>
-                  </div>
-                  <div class="text-3xl font-bold text-gray-900 mb-2">
-                    {{ stat.prefix }}{{ stat.value }}{{ stat.suffix }}
-                  </div>
-                  <p class="text-gray-600 text-sm font-medium">{{ stat.label }}</p>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      </section>
-    }
-
-    <!-- Timeline -->
-    @if (timelineEvents.length > 0) {
-      <section class="py-16">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Our Journey
-              </h2>
-              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Key milestones in the development of Nazmul Karim Study Center
-              </p>
-            </div>
-
-            <div class="relative">
-              <!-- Timeline Line -->
-              <div class="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gradient-to-b from-primary via-accent to-emerald-500 h-full"></div>
-
-              <!-- Timeline Events -->
-              <div class="space-y-12">
-                @for (event of timelineEvents; track event.id; let index = $index) {
-                  <div class="relative flex items-center">
-                    <!-- Year -->
-                    <div class="w-1/2 pr-8 text-right">
-                      <div class="flex items-center justify-end gap-4">
-                        <span class="text-xl font-bold text-primary">{{ event.year }}</span>
-                        <div class="w-4 h-4 bg-white border-4 border-primary rounded-full"></div>
-                      </div>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="w-1/2 pl-8">
-                      <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-start gap-4">
-                          <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i [class]="event.icon + ' text-primary text-lg'"></i>
-                          </div>
-                          <div>
-                            <h4 class="text-lg font-bold text-gray-900 mb-2">{{ event.title }}</h4>
-                            <p class="text-gray-600 text-sm">{{ event.description }}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    }
-
-    <!-- Directors Section -->
-    <section id="directors" class="py-16 bg-gradient-to-b from-gray-50 to-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Leadership
-            </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-              Meet our dedicated team of directors
-            </p>
-          </div>
-
-          <!-- Director Tabs -->
-          <div class="flex justify-center mb-12">
-            <div class="inline-flex bg-gray-100 rounded-xl p-1">
-              <button
-                (click)="switchDirectorTab('current')"
-                [class]="'px-8 py-3 rounded-lg transition-all duration-300 font-medium ' +
-                  (activeDirectorTab === 'current' ?
-                    'bg-white text-primary shadow-lg' :
-                    'text-gray-600 hover:text-gray-900')">
-                Current Director
-              </button>
-              <button
-                (click)="switchDirectorTab('previous')"
-                [class]="'px-8 py-3 rounded-lg transition-all duration-300 font-medium ' +
-                  (activeDirectorTab === 'previous' ?
-                    'bg-white text-primary shadow-lg' :
-                    'text-gray-600 hover:text-gray-900')">
-                Former Directors
-              </button>
-            </div>
-          </div>
-
-          <!-- Current Director -->
-          @if (activeDirectorTab === 'current' && currentDirectors.length > 0) {
-            <div class="bg-white rounded-2xl overflow-hidden shadow-xl">
-              <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
-                <!-- Image Section -->
-                <div class="relative h-64 lg:h-auto bg-linear-to-br from-primary to-accent">
-                  <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
-                  <div class="relative h-full flex items-center justify-center p-8">
-                    <div class="w-48 h-48 rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl">
-                      <img
-                        [src]="getCurrentDirectorImage()"
-                        [alt]="currentDirectors[0].name"
-                        class="w-full h-full object-cover"
-                        (error)="handleImageError($event)"
-                      >
-                      <div class="w-full h-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center text-white text-5xl" style="display: none;">
-                        <i class="pi pi-user"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Info Section -->
-                <div class="lg:col-span-2 p-8 lg:p-12">
-                  <div class="space-y-6">
-                    <div>
-                      <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ currentDirectors[0].name }}</h3>
-                      <div class="flex flex-wrap gap-3 mb-4">
-                        <span class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                          {{ currentDirectors[0].position }}
-                        </span>
-                        <span class="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                          {{ currentDirectors[0].period }}
-                        </span>
-                      </div>
-
-                      @if (currentDirectors[0].bio) {
-                        <div class="text-gray-600 leading-relaxed mb-6" [innerHTML]="sanitizeHtml(currentDirectors[0].bio)"></div>
-                      }
-
-                      @if (currentDirectors[0].qualifications) {
-                        <div class="flex items-center gap-3 text-gray-700 mb-6">
-                          <i class="pi pi-graduation-cap text-primary"></i>
-                          <span class="font-medium">{{ currentDirectors[0].qualifications }}</span>
-                        </div>
-                      }
-                    </div>
-
-                    <!-- Contact Actions -->
-                    <div class="flex flex-wrap gap-4">
-                      @if (currentDirectors[0].email) {
-                        <button
-                          (click)="sendEmail(currentDirectors[0].email)"
-                          class="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium hover:scale-[1.02]">
-                          <i class="pi pi-envelope"></i>
-                          <span>Send Email</span>
-                        </button>
-                      }
-                      @if (currentDirectors[0].phone) {
-                        <button
-                          (click)="callPhone(currentDirectors[0].phone)"
-                          class="flex items-center gap-3 px-6 py-3 bg-white border border-primary text-primary rounded-xl hover:bg-primary/5 transition-all duration-300 font-medium hover:scale-[1.02]">
-                          <i class="pi pi-phone"></i>
-                          <span>Call Now</span>
-                        </button>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-
-          <!-- Previous Directors -->
-          @if (activeDirectorTab === 'previous' && previousDirectors.length > 0) {
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              @for (director of previousDirectors; track director.id) {
-                <div class="group bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/20">
-                  <div class="w-16 h-16 bg-linear-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <i class="pi pi-user text-2xl text-primary"></i>
-                  </div>
-                  <h4 class="font-bold text-gray-900 text-lg mb-2">{{ director.name }}</h4>
-                  <p class="text-primary text-sm font-medium mb-3">{{ director.position }}</p>
-                  <span class="text-gray-500 text-sm">{{ director.period }}</span>
-                </div>
-              }
-            </div>
-          }
-        </div>
+  <!-- Facilities Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Facilities</h2>
+        <div class="w-24 h-1 bg-linear-to-r from-primary to-transparent mx-auto rounded-full"></div>
       </div>
-    </section>
 
-    <!-- Facilities -->
-    @if (facilities.length > 0) {
-      <section class="py-16">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Our Facilities
-              </h2>
-              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                State-of-the-art resources for researchers and students
-              </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              @for (facility of facilities; track facility.id) {
-                <div class="group bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/20">
-                  <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i [class]="facility.icon + ' text-xl text-primary'"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-gray-900 mb-3">{{ facility.title }}</h3>
-                  <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ facility.description }}</p>
-
-                  @if (facility.location || facility.room_number) {
-                    <div class="pt-4 border-t border-gray-200">
-                      @if (facility.location) {
-                        <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                          <i class="pi pi-map-marker"></i>
-                          <span>{{ facility.location }}</span>
-                        </div>
-                      }
-                      @if (facility.room_number) {
-                        <div class="flex items-center gap-2 text-sm text-gray-500">
-                          <i class="pi pi-home"></i>
-                          <span>Room {{ facility.room_number }}</span>
-                        </div>
-                      }
-                    </div>
-                  }
-                </div>
-              }
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        @for (facility of facilities; track facility.id) {
+        <div
+          class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 group text-center">
+          <div
+            class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-100">
+            <i [class]="facility.icon + ' text-2xl text-primary'"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">{{ facility.title }}</h3>
+          <p class="text-gray-600 text-sm mb-4">{{ facility.description }}</p>
+          <div class="text-xs text-gray-500 font-medium">
+            <i class="pi pi-map-marker mr-1"></i> {{ facility.location }}
           </div>
         </div>
-      </section>
-    }
-
-    <!-- Contact Information -->
-    <section id="contact" class="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="bg-white rounded-2xl p-8 md:p-12 shadow-xl">
-            <div class="text-center mb-12">
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Contact Information
-              </h2>
-              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Get in touch with us through various channels
-              </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              @for (contact of contactInfo; track contact.id) {
-                <div class="bg-gray-50 rounded-2xl p-6 text-center hover:bg-white hover:shadow-lg transition-all duration-300">
-                  <div class="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <i [class]="contact.icon + ' text-xl text-primary'"></i>
-                  </div>
-                  <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ contact.label }}</h3>
-                  <p class="text-gray-600">{{ contact.value }}</p>
-                </div>
-              }
-            </div>
-
-            <!-- Additional Contact Form -->
-            <div class="mt-12 pt-12 border-t border-gray-200">
-              <div class="text-center mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Send us a Message</h3>
-                <p class="text-gray-600 max-w-lg mx-auto">
-                  Have questions? Feel free to reach out to us directly.
-                </p>
-              </div>
-
-              <div class="max-w-md mx-auto">
-                <div class="flex flex-wrap gap-4 justify-center">
-                  <button
-                    (click)="sendEmail('info@nazmulkareemstudycenter.edu.bd')"
-                    class="px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors duration-300 font-medium inline-flex items-center gap-2"
-                  >
-                    <i class="pi pi-envelope"></i>
-                    Email Inquiry
-                  </button>
-                  <button
-                    onclick="window.location.href='tel:+880XXXXXXXXXX'"
-                    class="px-8 py-3 bg-white text-primary border border-primary rounded-xl hover:bg-primary/5 transition-colors duration-300 font-medium inline-flex items-center gap-2"
-                  >
-                    <i class="pi pi-phone"></i>
-                    Call Office
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        }
       </div>
-    </section>
-  }
+    </div>
+  </section>
+
 </div>

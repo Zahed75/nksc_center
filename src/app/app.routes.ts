@@ -22,6 +22,8 @@ export const routes: Routes = [
   { path: 'gallery/:slug', component: EventDetailComponent },
   { path: 'news', component: NewsComponent },
   { path: 'people', component: PeopleComponent },
+  { path: 'video', loadComponent: () => import('./features/video/components/video-component/video-component').then(m => m.VideoComponent) },
+  { path: 'events', loadComponent: () => import('./features/events/components/events-list/events-list.component').then(m => m.EventsListComponent) },
 
 
   // Wildcard route LAST

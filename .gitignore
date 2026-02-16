@@ -6,3 +6,10 @@
 
 # Node modules
 node_modules/
+
+# Django / Backend
+nksc_backend/media/
+nksc_backend/.env
+nksc_backend/env/
+*.pyc
+__pycache__/

@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {environment} from '../../../../../enviornments/enviornment';
+import { environment } from '../../../../../enviornments/enviornment';
 
 
 export interface NewsCategory {
@@ -87,7 +87,14 @@ export class NewsService {
     return this.http.get<NewsResponse>(url);
   }
 
-  // Filter news
+  // Get upcoming events
+  getUpcomingEvents(): Observable<NewsResponse> {
+    const url = `${this.baseUrl}/api/news/upcoming-events/`;
+    console.log('Fetching upcoming events from:', url);
+    return this.http.get<NewsResponse>(url);
+  }
+
+  // Get filtered news
   filterNews(params: FilterParams): Observable<NewsResponse> {
     let httpParams = new HttpParams();
 

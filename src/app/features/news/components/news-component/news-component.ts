@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NewsService, NewsItem, NewsCategory, FilterParams, NewsResponse, CategoryResponse } from '../../../../core/api/service/news/news-service';
 import { environment } from '../../../../../enviornments/enviornment';
-import {SafeUrlPipe} from '../../../../safe-url-pipe';
+import { SafeUrlPipe } from '../../../../safe-url-pipe';
 
 @Component({
   selector: 'app-news-component',
@@ -308,113 +308,13 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   // Load mock categories for development
   loadMockCategories(): void {
-    this.categories = [
-      { id: 1, name: 'গবেষণা প্রকাশনা', slug: 'research-publications', description: 'গবেষণা প্রকাশনা' },
-      { id: 2, name: 'জার্নাল', slug: 'journal', description: 'জার্নাল প্রকাশনা' },
-      { id: 3, name: 'সেমিনার', slug: 'seminar', description: 'সেমিনার ও কর্মশালা' },
-      { id: 4, name: 'কর্মশালা', slug: 'workshop', description: 'কর্মশালা' },
-      { id: 5, name: 'সম্মেলন', slug: 'conference', description: 'কনফারেন্স' },
-      { id: 6, name: 'ঘোষণা', slug: 'announcement', description: 'ঘোষণা' },
-      { id: 7, name: 'ইভেন্ট', slug: 'event', description: 'বিশেষ ইভেন্ট' },
-      { id: 8, name: 'নোটিশ', slug: 'notice', description: 'সাধারণ নোটিশ' }
-    ];
+    this.categories = [];
   }
 
   // Load mock news data for development
   loadMockNewsData(): void {
     console.log('Loading mock news data...');
-    this.newsItems = [
-      {
-        id: 1,
-        title: 'নাজমুল করিম স্টাডি সেন্টারের নতুন গবেষণা প্রকাশনা - সামাজিক পরিবর্তনের প্রেক্ষাপট',
-        slug: 'nazmul-karim-study-center-new-research-publication',
-        short_description: 'সমাজবিজ্ঞান গবেষণার নতুন দিগন্ত উন্মোচন করেছে নাজমুল করিম স্টাডি সেন্টার। আমাদের সাম্প্রতিক গবেষণা বাংলাদেশের সামাজিক উন্নয়নে গুরুত্বপূর্ণ ভূমিকা রাখবে।',
-        content: '<p>সমাজবিজ্ঞান গবেষণার নতুন দিগন্ত উন্মোচন করেছে নাজমুল করিম স্টাডি সেন্টার। আমাদের সাম্প্রতিক গবেষণা বাংলাদেশের সামাজিক উন্নয়নে গুরুত্বপূর্ণ ভূমিকা রাখবে। এই গবেষণায় সমাজের বিভিন্ন স্তরের মানুষের জীবনযাত্রার মান উন্নয়নের উপায় নিয়ে আলোচনা করা হয়েছে।</p>',
-        category: 1,
-        category_detail: { id: 1, name: 'গবেষণা প্রকাশনা', slug: 'research-publications', description: 'গবেষণা প্রকাশনা' },
-        tags: 'গবেষণা,সমাজবিজ্ঞান,প্রকাশনা,সামাজিক পরিবর্তন',
-        tags_list: ['গবেষণা', 'সমাজবিজ্ঞান', 'প্রকাশনা', 'সামাজিক পরিবর্তন'],
-        urgency: 'urgent',
-        language: 'bn',
-        is_event: false,
-        event_date: null,
-        event_location: '',
-        event_speakers: '',
-        is_research: true,
-        research_topic: 'সামাজিক পরিবর্তনের প্রেক্ষাপট',
-        research_department: 'সমাজবিজ্ঞান বিভাগ',
-        thumbnail_image: '/assets/images/news/research.jpg',
-        banner_image: '/assets/images/news/banner-1.jpg',
-        attachment_file: '/assets/documents/research-paper.pdf',
-        author: 'ড. রহিমা আক্তার',
-        is_published: true,
-        publish_date: new Date().toISOString(),
-        views_count: 1254,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        days_ago: 1
-      },
-      {
-        id: 2,
-        title: 'সেমিনার: ডিজিটাল বাংলাদেশ ও সমাজ পরিবর্তন - বিশেষ আলোচনা সভা',
-        slug: 'seminar-digital-bangladesh-social-change',
-        short_description: 'ডিজিটাল বাংলাদেশের প্রেক্ষাপটে সমাজ পরিবর্তনের উপর বিশেষ সেমিনার আয়োজন করেছে নাজমুল করিম স্টাডি সেন্টার।',
-        content: '<p>ডিজিটাল বাংলাদেশের প্রেক্ষাপটে সমাজ পরিবর্তনের উপর বিশেষ সেমিনার আয়োজন করেছে নাজমুল করিম স্টাডি সেন্টার। এই সেমিনারে দেশের খ্যাতনামা গবেষক ও শিক্ষাবিদরা অংশগ্রহণ করবেন।</p>',
-        category: 3,
-        category_detail: { id: 3, name: 'সেমিনার', slug: 'seminar', description: 'সেমিনার ও কর্মশালা' },
-        tags: 'সেমিনার,ডিজিটাল বাংলাদেশ,সমাজ পরিবর্তন,আলোচনা সভা',
-        tags_list: ['সেমিনার', 'ডিজিটাল বাংলাদেশ', 'সমাজ পরিবর্তন', 'আলোচনা সভা'],
-        urgency: 'important',
-        language: 'bn',
-        is_event: true,
-        event_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        event_location: 'কার্জন হল, ঢাকা বিশ্ববিদ্যালয়',
-        event_speakers: 'ড. জামাল উদ্দিন, ড. শারমিন আহমেদ, প্রফেসর ড. রফিকুল ইসলাম',
-        is_research: false,
-        research_topic: '',
-        research_department: '',
-        thumbnail_image: '/assets/images/news/seminar.jpg',
-        banner_image: '/assets/images/news/banner-2.jpg',
-        attachment_file: '/assets/documents/seminar-schedule.docx',
-        author: 'প্রফেসর ড. জামাল উদ্দিন',
-        is_published: true,
-        publish_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        views_count: 987,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        days_ago: 2
-      },
-      {
-        id: 3,
-        title: 'সমাজবিজ্ঞান জার্নালের নতুন সংস্করণ প্রকাশ - বিশেষ গবেষণামূলক প্রবন্ধ',
-        slug: 'sociology-journal-new-edition-published',
-        short_description: 'সমাজবিজ্ঞান জার্নালের নতুন সংস্করণ প্রকাশিত হয়েছে যাতে বিভিন্ন গবেষণামূলক প্রবন্ধ রয়েছে।',
-        content: '<p>সমাজবিজ্ঞান জার্নালের নতুন সংস্করণ প্রকাশিত হয়েছে যাতে বিভিন্ন গবেষণামূলক প্রবন্ধ রয়েছে। এই সংখ্যায় সমাজের বিভিন্ন সমস্যা ও তাদের সমাধান নিয়ে আলোচনা করা হয়েছে।</p>',
-        category: 2,
-        category_detail: { id: 2, name: 'জার্নাল', slug: 'journal', description: 'জার্নাল প্রকাশনা' },
-        tags: 'জার্নাল,প্রকাশনা,গবেষণা,সামাজিক বিজ্ঞান',
-        tags_list: ['জার্নাল', 'প্রকাশনা', 'গবেষণা', 'সামাজিক বিজ্ঞান'],
-        urgency: 'normal',
-        language: 'bn',
-        is_event: false,
-        event_date: null,
-        event_location: '',
-        event_speakers: '',
-        is_research: false,
-        research_topic: '',
-        research_department: '',
-        thumbnail_image: '/assets/images/news/journal.jpg',
-        banner_image: '/assets/images/news/banner-3.jpg',
-        attachment_file: '/assets/documents/journal-issue.zip',
-        author: 'সম্পাদনা পর্ষদ',
-        is_published: true,
-        publish_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        views_count: 2342,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        days_ago: 5
-      }
-    ];
+    this.newsItems = [];
 
     this.applySorting();
     this.filteredNews = [...this.newsItems];
@@ -423,7 +323,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     this.calculatePagination();
     this.updatePaginatedNews();
     this.isLoading = false;
-    console.log('Mock data loaded successfully');
+    console.log('Mock data cleared as requested');
   }
 
   // Apply filters

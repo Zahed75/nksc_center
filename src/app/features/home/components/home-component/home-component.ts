@@ -1,25 +1,46 @@
 // features/home/pages/home-page/home-page.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { HomeService, CurrentChairman } from '../../services/home-service';
+import { HomeService } from '../../services/home-service';
+import { AboutService } from '../../../about/services/about-service';
+import { NewsService } from '../../../../core/api/service/news/news-service';
+
+export interface Profile {
+  name: string;
+  designation: string;
+  image: string;
+  bio?: string;
+  link?: string;
+  email?: string;
+  phone?: string;
+}
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './home-component.html',
   styleUrls: ['./home-component.css'],
   providers: [HomeService]
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-  // Current Director/Chairman from API
-  currentChairman: CurrentChairman | null = null;
+  // Profiles for Home Page
+  vcProfile: Profile = {
+    name: 'Professor Dr. Niaz Ahmed Khan, PhD',
+    designation: 'Vice Chancellor, University of Dhaka',
+    image: '/assets/images/vc/vc_profile.jpg', // Updated path
+    bio: 'Professor Dr. Niaz Ahmed Khan is the current Vice Chancellor of the University of Dhaka. He is a renowned academic and researcher in the field of Development Studies.',
+    email: 'vcoffice@du.ac.bd'
+  };
+
+  taiaburProfile: Profile | null = null;
+
   isLoading = false;
   error: string | null = null;
 
   // Home page content
-  features = [
+  features: any[] = [
     {
       icon: 'pi pi-microphone',
       title: 'Nazmul Karim Memorial Lecture',
@@ -59,18 +80,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
     keywords: ['Gender Equality', 'Women Empowerment', 'Sociology', 'Dr. Nazmul Karim']
   };
 
-  stats = [
-    { number: '20+', label: 'Years of Activity', icon: 'pi pi-calendar' },
-    { number: '500+', label: 'Research Papers', icon: 'pi pi-file' },
-    { number: '1000+', label: 'Library Resources', icon: 'pi pi-database' },
-    { number: '5+', label: 'Successful Directors', icon: 'pi pi-user-check' },
-    { number: '50+', label: 'Active Researchers', icon: 'pi pi-users' },
-    { number: '10+', label: 'Journal Issues', icon: 'pi pi-book' }
-  ];
-
-  aboutNKSC = {
+  stats: any[] = [];
+  aboutNKSC: any = {
     title: 'About Nazmul Karim Study Center',
-    description: 'The Nazmul Karim Study Center was established in honor of Professor Dr. A.K. Nazmul Karim, a pioneer in Bangladeshi sociology and the founding chairman of the Sociology Department at the University of Dhaka. Established on May 10, 2000, at the Curzon Hall, the center aims to preserve and promote Professor Karim\'s intellectual legacy while advancing sociological research and education.',
+    description: '',
     highlights: [
       'Preserving and promoting the work and philosophy of Professor Dr. A.K. Nazmul Karim',
       'Conducting advanced research projects in sociology and related fields',
@@ -80,115 +93,90 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ]
   };
 
-  upcomingEvents = [
-    {
-      date: 'Mar 15, 2025',
-      title: 'Annual Memorial Lecture',
-      description: 'Dr. Sarah Johnson on "Modern Sociology Trends"',
-      status: 'upcoming'
-    },
-    {
-      date: 'Feb 28, 2025',
-      title: 'Research Methodology Workshop',
-      description: 'Advanced qualitative research techniques',
-      status: 'upcoming'
-    },
-    {
-      date: 'Jan 20, 2025',
-      title: 'Journal Publication Launch',
-      description: 'Volume 12, Issue 3 of NKSC Journal',
-      status: 'completed'
-    }
-  ];
+  upcomingEvents: any[] = [];
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private homeService: HomeService) {}
+  constructor(
+    private homeService: HomeService,
+    private aboutService: AboutService,
+    private newsService: NewsService
+  ) { }
 
   ngOnInit() {
-    this.loadCurrentChairman();
+    this.loadData();
+  }
+
+  loadData() {
+    this.isLoading = true;
+
+    // 1. Fetch About Data (Sections, Stats, Directors)
+    this.subscriptions.add(
+      this.aboutService.getAllAboutData().subscribe({
+        next: (response) => {
+          if (response.success && response.data) {
+            // Stats
+            this.stats = response.data.statistics.map(s => ({
+              number: s.value + (s.suffix || ''),
+              label: s.label,
+              icon: s.icon || 'pi pi-chart-line'
+            }));
+
+            // About Section (History)
+            const history = response.data.sections.find(s => s.section_type === 'history');
+            if (history) {
+              this.aboutNKSC.title = history.title;
+              this.aboutNKSC.description = this.stripHtml(history.content).substring(0, 300) + '...';
+            }
+
+            // Taiabur Profile (Look for him in previous directors)
+            const taiabur = response.data.directors.previous.find(d =>
+              d.name.toLowerCase().includes('taiabur')
+            );
+
+            if (taiabur) {
+              this.taiaburProfile = {
+                name: taiabur.name,
+                designation: taiabur.position + (taiabur.period ? `, ${taiabur.period}` : ''),
+                image: taiabur.image || '/assets/images/director.png',
+                bio: this.stripHtml(taiabur.bio || ''),
+                email: taiabur.email
+              };
+            }
+          }
+        },
+        error: (err) => console.error('Failed to load about data', err)
+      })
+    );
+
+    // 2. Fetch Upcoming Events
+    this.subscriptions.add(
+      this.newsService.getUpcomingEvents().subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.upcomingEvents = response.data.slice(0, 3).map(e => ({
+              date: e.event_date || e.publish_date,
+              title: e.title,
+              description: e.short_description,
+              status: e.event_date && new Date(e.event_date) > new Date() ? 'upcoming' : 'completed'
+            }));
+          }
+        },
+        error: (err) => console.error('Failed to load events', err)
+      })
+    );
+
+    this.isLoading = false;
+  }
+
+  stripHtml(html: string): string {
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-  }
-
-  loadCurrentChairman(): void {
-    this.isLoading = true;
-    this.error = null;
-
-    const sub = this.homeService.getCurrentChairman().subscribe({
-      next: (response) => {
-        if (response.code === 200) {
-          this.currentChairman = response.data;
-        } else {
-          this.error = 'Failed to load director information';
-        }
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error loading chairman:', err);
-        this.error = 'Failed to load director information';
-        this.isLoading = false;
-
-        // Fallback data in case API fails
-        this.currentChairman = {
-          id: 1,
-          name_bangla: 'অধ্যাপক ড. তাইয়েবুর রহমান',
-          name_english: 'Professor Dr. Taiabur Rahman',
-          designation_bangla: 'পরিচালক, নাজমুল করিম স্টাডি সেন্টার',
-          designation_english: 'Director, Nazmul Karim Study Center',
-          bio_bangla: '',
-          bio_english: 'Professor Dr. Taiabur Rahman is the Director of Nazmul Karim Study Center and Acting Dean of the Faculty of Social Sciences at the University of Dhaka. With extensive experience in academia and research, he has contributed significantly to development studies and public policy.',
-          qualifications: 'Ph.D. in Public Policy and Governance',
-          qualifications_list: [
-            'Ph.D. in Public Policy and Governance, City University of Hong Kong',
-            'M.Phil. in Public Administration, University of Bergen, Norway',
-            'Masters in Public Administration, University of Dhaka',
-            'Bachelor in Public Administration, University of Dhaka'
-          ],
-          current_positions: 'Director, Nazmul Karim Study Center',
-          current_positions_list: ['Director, Nazmul Karim Study Center'],
-          previous_positions: '',
-          previous_positions_list: [],
-          email: 'taiaburrahman.dvs@du.ac.bd',
-          phone: '+88-01817590525',
-          profile_image: '/assets/images/dr.png',
-          signature_image: null,
-          is_active: true,
-          display_order: 0,
-          created_at: '',
-          updated_at: ''
-        };
-      }
-    });
-
-    this.subscriptions.add(sub);
-  }
-
-  getQualificationSummary(): string[] {
-    if (this.currentChairman?.qualifications_list && this.currentChairman.qualifications_list.length > 0) {
-      return this.currentChairman.qualifications_list.slice(0, 3);
-    }
-    return [
-      'Ph.D. in Public Policy and Governance',
-      'M.Phil. in Public Administration',
-      'Professor of Development Studies'
-    ];
-  }
-
-  getCurrentPositions(): string[] {
-    if (this.currentChairman?.current_positions_list && this.currentChairman.current_positions_list.length > 0) {
-      return this.currentChairman.current_positions_list;
-    }
-    return ['Director, Nazmul Karim Study Center'];
-  }
-
-  getProfileImage(): string {
-    if (this.currentChairman?.profile_image) {
-      return this.currentChairman.profile_image;
-    }
-    return '/assets/images/dr.png';
   }
 
   handleImageError(event: any): void {
@@ -201,13 +189,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  sendEmail(email: string): void {
+  sendEmail(email: string | undefined): void {
     if (email) {
       window.location.href = `mailto:${email}`;
     }
   }
 
-  callPhone(phone: string): void {
+  callPhone(phone: string | undefined): void {
     if (phone) {
       window.location.href = `tel:${phone}`;
     }

@@ -146,9 +146,13 @@ export class GalleryComponent implements OnInit, OnDestroy {
       this.galleryService.getAllGallery().subscribe({
         next: (response) => {
           if (response.success) {
-            this.galleryEvents = response.data;
-            this.filteredEvents = [...response.data];
-            this.totalItems = response.count;
+            // Filter out videos (heuristic based on title or category if applicable)
+            this.galleryEvents = response.data.filter(e =>
+              !e.title.toLowerCase().includes('video') &&
+              !(e.description && e.description.toLowerCase().includes('video'))
+            );
+            this.filteredEvents = [...this.galleryEvents];
+            this.totalItems = this.galleryEvents.length;
             this.calculatePagination();
             this.isLoading = false;
           }
@@ -306,7 +310,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
 
   // Add these methods to your GalleryComponent class:
 
-// Add these methods after existing methods in your component
+  // Add these methods after existing methods in your component
   getDisplayStart(): number {
     return (this.currentPage - 1) * this.itemsPerPage + 1;
   }
