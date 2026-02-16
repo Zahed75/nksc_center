@@ -8,7 +8,7 @@ export const environment = {
 
 
 // export const environment = {
-//   production: true,
+//   production: false,
 //   apiUrl: 'http://127.0.0.1:8000',
 //   siteName: 'Nazmul Karim Study Center',
 //   defaultImage: '/assets/images/og-image.png'

@@ -11,4 +11,4 @@ COPY . .
 EXPOSE 4200
 
 # Add --host 0.0.0.0 to ng serve
-CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
+CMD ["npx", "ng", "serve", "--host", "0.0.0.0", "--disable-host-check"]

@@ -15,7 +15,9 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -30,7 +32,6 @@
             "styles": [
               "src/styles.css"
             ]
-
           },
           "configurations": {
             "production": {
@@ -44,6 +45,12 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
                   "maximumError": "8kB"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/enviornments/enviornment.ts",
+                  "with": "src/enviornments/enviornment.prod.ts"
                 }
               ],
               "outputHashing": "all"

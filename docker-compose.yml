@@ -11,5 +11,7 @@ services:
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+    # Ensure command binds to 0.0.0.0 and disables host check to prevent 502/Invalid Host Header
+    command: npx ng serve --host 0.0.0.0 --disable-host-check
     stdin_open: true
     tty: true
