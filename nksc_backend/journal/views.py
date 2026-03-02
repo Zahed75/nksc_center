@@ -291,7 +291,7 @@ class JournalArticleRetrieveAPIView(APIView):
                     "volume": journal.volume,
                     "year": journal.year,
                     "issue": journal.issue,
-                    "pdf_file": journal.pdf_file.url if journal.pdf_file else None,
+                    "pdf_file": request.build_absolute_uri(journal.pdf_file.url) if journal.pdf_file else None,
                 },
                 "data": serializer.data,
             }
