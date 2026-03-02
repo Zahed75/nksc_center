@@ -205,31 +205,9 @@
               }
               {{ selectedArticle!.title }}
             </h4>
-            @if (selectedArticle!.title_bn) { <p class="aip-title-bn">{{ selectedArticle!.title_bn }}</p> }
-
-            <div class="aip-authors">
-              @for (author of selectedArticle!.authors_list; track author) {
-              <span class="author-chip-sm">{{ author }}</span>
-              }
-            </div>
-
-            <div class="aip-dates">
-              @if (selectedArticle!.date_submission) {
-              <div class="aip-date-item"><span class="di-label">Submitted</span><span class="di-val">{{
-                  formatDate(selectedArticle!.date_submission) }}</span></div>
-              }
-              @if (selectedArticle!.date_acceptance) {
-              <div class="aip-date-item"><span class="di-label">Accepted</span><span class="di-val">{{
-                  formatDate(selectedArticle!.date_acceptance) }}</span></div>
-              }
-              @if (selectedArticle!.date_publication) {
-              <div class="aip-date-item"><span class="di-label">Published</span><span class="di-val">{{
-                  formatDate(selectedArticle!.date_publication) }}</span></div>
-              }
-            </div>
 
             @if (selectedArticle!.keywords_list.length > 0) {
-            <div class="aip-keywords">
+            <div class="aip-keywords" style="margin-top: 12px;">
               <span class="kw-label">Keywords:</span>
               @for (kw of selectedArticle!.keywords_list; track kw) {
               <span class="kw-pill">{{ kw }}</span>
@@ -237,19 +215,20 @@
             </div>
             }
 
-            <div class="aip-abstract-section">
+            <div class="aip-abstract-section" style="margin-top: 16px;">
               <h5 class="aip-abstract-label">Abstract</h5>
-              <p class="aip-abstract-text">{{ truncateAbstract(selectedArticle!.abstract, 400) }}</p>
+              <p class="aip-abstract-text">{{ truncateAbstract(selectedArticle!.abstract, 500) }}</p>
             </div>
 
             <div class="aip-footer">
-              <button class="btn-view-full" (click)="openFullDetail()">
+              <a class="btn-view-full" [routerLink]="['/publications/article', selectedArticle!.id]"
+                style="text-decoration: none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
-                View Full Article
-              </button>
+                View Article
+              </a>
               <button class="btn-plain" (click)="closeAbstractPreview()">Close</button>
             </div>
           </div>

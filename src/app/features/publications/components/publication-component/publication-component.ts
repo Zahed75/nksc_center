@@ -6,11 +6,12 @@ import { PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ApiService, Journal, JournalArticle, FilterParams } from '../../../../core/api/service/publication/journal-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-publication-component',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './publication-component.html',
   styleUrls: ['./publication-component.css']
 })

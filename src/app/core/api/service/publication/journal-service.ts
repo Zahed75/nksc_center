@@ -96,7 +96,7 @@ export interface FilterResponse {
 export class ApiService {
   private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Get all journals (lightweight, no articles)
   getAllJournals(): Observable<{ message: string; code: number; data: Journal[] }> {
@@ -114,6 +114,12 @@ export class ApiService {
   getJournalArticles(journalId: number): Observable<{ message: string; code: number; data: JournalArticle[]; journal: any }> {
     const url = `${this.baseUrl}/api/journals/${journalId}/articles/`;
     return this.http.get<{ message: string; code: number; data: JournalArticle[]; journal: any }>(url);
+  }
+
+  // Get a specific article by ID
+  getArticleDetail(articleId: number): Observable<{ message: string; code: number; data: JournalArticle; journal: any }> {
+    const url = `${this.baseUrl}/api/journals/articles/detail/${articleId}/`;
+    return this.http.get<{ message: string; code: number; data: JournalArticle; journal: any }>(url);
   }
 
   // Filter journals with parameters

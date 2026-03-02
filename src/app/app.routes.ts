@@ -17,6 +17,7 @@ export const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'about', component: AboutComponent },
   { path: 'publications', component: PublicationComponent },
+  { path: 'publications/article/:id', loadComponent: () => import('./features/publications/components/article-detail/article-detail').then(m => m.ArticleDetail) },
   { path: 'elibrary', component: ElibraryComponent },
   { path: 'gallery', component: GalleryComponent },
   { path: 'gallery/:slug', component: EventDetailComponent },

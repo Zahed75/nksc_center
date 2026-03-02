@@ -1,0 +1,122 @@
+<div class="pub-page" *ngIf="!isLoading && article && journal">
+
+    <section class="hero-section">
+        <div class="hero-bg-pattern"></div>
+        <div class="container">
+            <div class="hero-card">
+                <div class="hero-content">
+                    <div class="hero-title-row">
+                        <div class="hero-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1>Article Details</h1>
+                            <p class="hero-subtitle">
+                                Journal of Sociology — Vol. {{ journal.volume }}, Issue {{ journal.issue }} {{
+                                journal.year }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="main-section container">
+        <div class="breadcrumb-row">
+            <a routerLink="/publications" class="back-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                </svg>
+                Back to Publications
+            </a>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-current">{{ article.title }}</span>
+        </div>
+
+        <div class="article-full-card">
+            <div class="afc-header">
+                <div class="afc-badges">
+                    <span class="lang-badge {{ article.language }}">{{ getArticleLanguageLabel(article.language)
+                        }}</span>
+                    <span class="page-badge" *ngIf="article.start_page">Page {{ article.start_page }}</span>
+                    <a *ngIf="article.doi" [href]="'https://doi.org/' + article.doi" target="_blank"
+                        class="doi-badge-sm">DOI: {{ article.doi }}</a>
+                </div>
+
+                <h2 class="afc-title">{{ article.title }}</h2>
+                <h3 class="afc-title-bn" *ngIf="article.title_bn">{{ article.title_bn }}</h3>
+
+                <div class="afc-authors">
+                    <span class="author-chip" *ngFor="let author of article.authors_list">{{ author }}</span>
+                </div>
+            </div>
+
+            <div class="afc-body">
+                <div class="afc-dates">
+                    <div class="afc-date-item" *ngIf="article.date_submission">
+                        <span class="di-label">Received</span>
+                        <span class="di-val">{{ formatDate(article.date_submission) }}</span>
+                    </div>
+                    <div class="afc-date-item" *ngIf="article.date_acceptance">
+                        <span class="di-label">Accepted</span>
+                        <span class="di-val">{{ formatDate(article.date_acceptance) }}</span>
+                    </div>
+                    <div class="afc-date-item" *ngIf="article.date_publication">
+                        <span class="di-label">Published</span>
+                        <span class="di-val">{{ formatDate(article.date_publication) }}</span>
+                    </div>
+                </div>
+
+                <div class="afc-keywords" *ngIf="article.keywords_list?.length">
+                    <span class="kw-label">Keywords:</span>
+                    <span class="kw-pill" *ngFor="let kw of article.keywords_list">{{ kw }}</span>
+                </div>
+
+                <div class="afc-abstract-box">
+                    <h4>Abstract</h4>
+                    <p>{{ article.abstract }}</p>
+                    <p class="abstract-bn" *ngIf="article.abstract_bn">{{ article.abstract_bn }}</p>
+                </div>
+
+                <div class="afc-affiliations" *ngIf="article.author_affiliations">
+                    <h4>Author Affiliations</h4>
+                    <p>{{ article.author_affiliations }}</p>
+                </div>
+
+            </div>
+
+            <div class="afc-footer">
+                <button class="btn-read-pdf" (click)="openPdfAtPage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    Read Full Article (PDF)
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="pub-page loading-view" *ngIf="isLoading">
+    <div class="loading-badge"><span class="spinner"></span> Loading Article...</div>
+</div>
+
+<div class="pub-page error-view container" *ngIf="error">
+    <div class="error-box">
+        <h2>Error</h2>
+        <p>{{ error }}</p>
+        <a routerLink="/publications" class="btn-primary mt-4">Return to Publications</a>
+    </div>
+</div>

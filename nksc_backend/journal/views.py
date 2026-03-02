@@ -251,6 +251,53 @@ class JournalArticleListAPIView(APIView):
         )
 
 
+class JournalArticleRetrieveAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        responses={200: JournalArticleSerializer},
+        parameters=[
+            OpenApiParameter(
+                name="article_id",
+                type=int,
+                location=OpenApiParameter.PATH,
+                description="Article ID",
+            )
+        ],
+        summary="Get Article Detail",
+        description="Get a single article's full details by its ID",
+    )
+    def get(self, request, article_id):
+        try:
+            article = JournalArticle.objects.get(id=article_id)
+        except JournalArticle.DoesNotExist:
+            return Response(
+                {"code": status.HTTP_404_NOT_FOUND, "message": "Article not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = JournalArticleSerializer(article)
+        
+        # Also return basic journal info for context
+        journal = article.journal
+        
+        return Response(
+            {
+                "message": "Article retrieved successfully",
+                "code": status.HTTP_200_OK,
+                "journal": {
+                    "id": journal.id,
+                    "title": journal.title,
+                    "volume": journal.volume,
+                    "year": journal.year,
+                    "issue": journal.issue,
+                    "pdf_file": journal.pdf_file.url if journal.pdf_file else None,
+                },
+                "data": serializer.data,
+            }
+        )
+
+
 class JournalArticleCreateAPIView(APIView):
     # permission_classes = [IsAuthenticated]
 

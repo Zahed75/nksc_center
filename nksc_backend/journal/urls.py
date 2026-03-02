@@ -10,6 +10,7 @@ from journal.views import (
     JournalArticleCreateAPIView,
     JournalArticleUpdateAPIView,
     JournalArticleDeleteAPIView,
+    JournalArticleRetrieveAPIView,
     filter_journals,
 )
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path("detail/<int:journal_id>/", JournalDetailAPIView.as_view()),
 
     # Articles
+    path("articles/detail/<int:article_id>/", JournalArticleRetrieveAPIView.as_view()),
     path("<int:journal_id>/articles/", JournalArticleListAPIView.as_view()),
     path("articles/create/", JournalArticleCreateAPIView.as_view()),
     path("articles/update/<int:article_id>/", JournalArticleUpdateAPIView.as_view()),
