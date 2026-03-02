@@ -1,7 +1,7 @@
 <!-- publication-component.html -->
 <div class="pub-page">
 
-  <!-- ─── HERO SECTION ─── -->
+  <!-- ─── HERO ─── -->
   <section class="hero-section">
     <div class="hero-bg-pattern"></div>
     <div class="container">
@@ -29,7 +29,6 @@
             <div class="stat-pill"><span class="stat-num">ISSN</span><span class="stat-label">1813-2871</span></div>
           </div>
         </div>
-        <!-- Search bar -->
         <div class="search-bar-wrap">
           <div class="search-input-wrap">
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -49,23 +48,19 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
               <polyline points="1 4 1 10 7 10" />
               <path d="M3.51 15a9 9 0 1 0 .49-3.17" />
-            </svg>
-            Reset
+            </svg>Reset
           </button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── MAIN CONTENT ─── -->
+  <!-- ─── MAIN ─── -->
   <section class="main-section">
     <div class="container">
 
-      <!-- ══════════════════════════════════════════
-           JOURNAL ISSUE DETAIL VIEW (New journals)
-      ══════════════════════════════════════════ -->
+      <!-- ═══════════ JOURNAL DETAIL VIEW (new journal with articles) ═══════════ -->
       @if (selectedJournal) {
-      <!-- Back breadcrumb -->
       <div class="breadcrumb-row">
         <button class="back-btn" (click)="closeJournalDetail()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -77,10 +72,9 @@
         <span class="breadcrumb-current">{{ selectedJournal.title }} · Vol. {{ selectedJournal.volume }}</span>
       </div>
 
-      <!-- Journal detail layout (cover + articles) -->
       <div class="journal-detail-layout">
 
-        <!-- LEFT: Cover + info -->
+        <!-- LEFT: Cover -->
         <aside class="journal-cover-col">
           <div class="cover-card">
             @if (selectedJournal.preview_image) {
@@ -99,31 +93,18 @@
             </div>
           </div>
 
-          <!-- Journal metadata card -->
           <div class="detail-meta-card">
-            <div class="detail-meta-row">
-              <span class="meta-key">Volume</span>
-              <span class="meta-val">{{ selectedJournal.volume }}</span>
-            </div>
-            <div class="detail-meta-row">
-              <span class="meta-key">Issue</span>
-              <span class="meta-val">{{ selectedJournal.issue }}</span>
-            </div>
-            <div class="detail-meta-row">
-              <span class="meta-key">Year</span>
-              <span class="meta-val">{{ selectedJournal.year }}</span>
-            </div>
-            <div class="detail-meta-row">
-              <span class="meta-key">Pages</span>
-              <span class="meta-val">{{ selectedJournal.pages }}</span>
-            </div>
-            <div class="detail-meta-row">
-              <span class="meta-key">Editor</span>
-              <span class="meta-val">{{ getEditorName(selectedJournal.editor) }}</span>
-            </div>
+            <div class="detail-meta-row"><span class="meta-key">Volume</span><span class="meta-val">{{
+                selectedJournal.volume }}</span></div>
+            <div class="detail-meta-row"><span class="meta-key">Issue</span><span class="meta-val">{{
+                selectedJournal.issue }}</span></div>
+            <div class="detail-meta-row"><span class="meta-key">Year</span><span class="meta-val">{{
+                selectedJournal.year }}</span></div>
+            <div class="detail-meta-row"><span class="meta-key">Pages</span><span class="meta-val">{{
+                selectedJournal.pages }}</span></div>
+            <div class="detail-meta-row"><span class="meta-key">Editor</span><span class="meta-val">{{
+                getEditorName(selectedJournal.editor) }}</span></div>
           </div>
-
-          <!-- PDF button -->
           <button class="btn-full-pdf" (click)="openPdfInNewTab(selectedJournal)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -133,77 +114,153 @@
           </button>
         </aside>
 
-        <!-- RIGHT: Article list -->
+        <!-- RIGHT: Article list + abstract preview -->
         <main class="journal-articles-col">
-          <!-- Issue heading -->
           <div class="issue-heading">
-            <h2 class="issue-vol-label">
-              Vol. {{ selectedJournal.volume }}, {{ selectedJournal.issue ? selectedJournal.issue + ' | ' : '' }}{{
-              selectedJournal.title }}
-            </h2>
+            <h2 class="issue-vol-label">Vol. {{ selectedJournal.volume }}, {{ selectedJournal.issue ?
+              selectedJournal.issue + ' | ' : '' }}{{ selectedJournal.title }}</h2>
             <p class="issue-publisher">Nazmul Karim Study Center, University of Dhaka</p>
           </div>
 
-          <!-- Loading state -->
           @if (isLoadingDetail) {
-          <div class="articles-loading">
-            <span class="spinner"></span>
+          <div class="articles-loading"><span class="spinner"></span>
             <p>Loading articles…</p>
           </div>
           }
 
-          <!-- No articles -->
           @if (!isLoadingDetail && (!selectedJournal.articles || selectedJournal.articles.length === 0)) {
           <div class="no-articles-box">
             <p>No individual articles listed for this issue.</p>
-            <button class="btn-primary small" (click)="openPdfInNewTab(selectedJournal)">Open PDF</button>
+            <button class="btn-primary small" (click)="openPdfInNewTab(selectedJournal!)">Open PDF</button>
           </div>
           }
 
-          <!-- Articles list -->
           @if (!isLoadingDetail && selectedJournal.articles && selectedJournal.articles.length > 0) {
-          <!-- Issue overview row (first item — journal-level) -->
+          <!-- Overview item -->
           <div class="article-list-item overview-item">
             <div class="ali-body">
-              <h3 class="ali-title overview">
-                Vol. {{ selectedJournal.volume }}, {{ selectedJournal.issue }} | {{ selectedJournal.title }}
-              </h3>
+              <h3 class="ali-title overview">Vol. {{ selectedJournal.volume }}, {{ selectedJournal.issue }} | {{
+                selectedJournal.title }}</h3>
               <p class="ali-author">Nazmul Karim Study Center, University of Dhaka</p>
             </div>
-            <button class="view-article-link" (click)="openPdfInNewTab(selectedJournal)">View Full Issue</button>
+            <button class="view-article-btn" (click)="openPdfInNewTab(selectedJournal!)">View Full Issue</button>
           </div>
 
           @for (article of selectedJournal.articles; track article.id) {
-          <div class="article-list-item" [class.highlighted]="selectedArticle?.id === article.id">
+          <!-- Article row -->
+          <div class="article-list-item" [class.is-selected]="selectedArticle?.id === article.id">
             <div class="ali-body">
-              <!-- Language badge for Bengali articles -->
               @if (article.language === 'bn' || article.language === 'both') {
               <span class="bn-badge">বাংলা</span>
               }
-
-              <h3 class="ali-title" (click)="openArticleDetail(article)">{{ article.title }}</h3>
-
-              @if (article.title_bn) {
-              <p class="ali-title-bn">{{ article.title_bn }}</p>
-              }
-
+              <!-- Title: clicking opens PDF at article's start page -->
+              <h3 class="ali-title" (click)="openPdfAtPage(selectedJournal, article.start_page)"
+                [title]="'Open PDF at page ' + article.start_page">
+                <span class="ali-title-link">
+                  <svg class="ali-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  p.{{ article.start_page }}
+                </span>
+                {{ article.title }}
+              </h3>
+              @if (article.title_bn) { <p class="ali-title-bn">{{ article.title_bn }}</p> }
               <p class="ali-author">
                 @for (author of article.authors_list; track author; let last = $last) {
                 {{ author }}@if (!last) { and }
                 }
               </p>
             </div>
-            <button class="view-article-link" (click)="openArticleDetail(article)">View Article</button>
+            <button class="view-article-btn" (click)="openAbstractPreview(article)">View Article</button>
           </div>
+
+          <!-- Inline abstract preview (expands below the clicked article) -->
+          @if (isAbstractPreviewOpen && selectedArticle?.id === article.id) {
+          <div class="abstract-inline-preview">
+            <div class="aip-header">
+              <div class="aip-badges">
+                <span class="lang-badge {{ selectedArticle!.language }}">{{
+                  getArticleLanguageLabel(selectedArticle!.language) }}</span>
+                @if (selectedArticle!.start_page) {
+                <span class="page-badge">Page {{ selectedArticle!.start_page }}</span>
+                }
+                @if (selectedArticle!.doi) {
+                <a [href]="'https://doi.org/' + selectedArticle!.doi" target="_blank" class="doi-badge-sm">DOI: {{
+                  selectedArticle!.doi }}</a>
+                }
+              </div>
+              <button class="aip-close-btn" (click)="closeAbstractPreview()" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <!-- Abstract preview title: clickable → opens PDF at article's start page -->
+            <h4 class="aip-title" (click)="openPdfAtPage(selectedJournal, selectedArticle!.start_page)"
+              [title]="'Open PDF at page ' + selectedArticle!.start_page">
+              @if (selectedArticle!.start_page) {
+              <span class="aip-page-chip">p.{{ selectedArticle!.start_page }} ↗</span>
+              }
+              {{ selectedArticle!.title }}
+            </h4>
+            @if (selectedArticle!.title_bn) { <p class="aip-title-bn">{{ selectedArticle!.title_bn }}</p> }
+
+            <div class="aip-authors">
+              @for (author of selectedArticle!.authors_list; track author) {
+              <span class="author-chip-sm">{{ author }}</span>
+              }
+            </div>
+
+            <div class="aip-dates">
+              @if (selectedArticle!.date_submission) {
+              <div class="aip-date-item"><span class="di-label">Submitted</span><span class="di-val">{{
+                  formatDate(selectedArticle!.date_submission) }}</span></div>
+              }
+              @if (selectedArticle!.date_acceptance) {
+              <div class="aip-date-item"><span class="di-label">Accepted</span><span class="di-val">{{
+                  formatDate(selectedArticle!.date_acceptance) }}</span></div>
+              }
+              @if (selectedArticle!.date_publication) {
+              <div class="aip-date-item"><span class="di-label">Published</span><span class="di-val">{{
+                  formatDate(selectedArticle!.date_publication) }}</span></div>
+              }
+            </div>
+
+            @if (selectedArticle!.keywords_list.length > 0) {
+            <div class="aip-keywords">
+              <span class="kw-label">Keywords:</span>
+              @for (kw of selectedArticle!.keywords_list; track kw) {
+              <span class="kw-pill">{{ kw }}</span>
+              }
+            </div>
+            }
+
+            <div class="aip-abstract-section">
+              <h5 class="aip-abstract-label">Abstract</h5>
+              <p class="aip-abstract-text">{{ truncateAbstract(selectedArticle!.abstract, 400) }}</p>
+            </div>
+
+            <div class="aip-footer">
+              <button class="btn-view-full" (click)="openFullDetail()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                View Full Article
+              </button>
+              <button class="btn-plain" (click)="closeAbstractPreview()">Close</button>
+            </div>
+          </div>
+          }
           }
           }
         </main>
       </div>
       }
 
-      <!-- ══════════════════════════════════════════
-           JOURNAL GRID (when no journal selected)
-      ══════════════════════════════════════════ -->
+      <!-- ═══════════ JOURNAL GRID (default view) ═══════════ -->
       @if (!selectedJournal) {
       <div class="grid-header">
         <h2 class="grid-title">
@@ -211,12 +268,9 @@
           <span class="accent">{{ filteredPublications.length }}</span> Results Found
           } @else { All Research Journals }
         </h2>
-        @if (isLoading) {
-        <div class="loading-badge"><span class="spinner"></span> Loading...</div>
-        }
+        @if (isLoading) { <div class="loading-badge"><span class="spinner"></span> Loading...</div> }
       </div>
 
-      <!-- Skeleton -->
       @if (isLoading) {
       <div class="journals-grid">
         @for (i of [1,2,3,4,5,6]; track i) {
@@ -232,7 +286,6 @@
       </div>
       }
 
-      <!-- Empty state -->
       @if (!isLoading && filteredPublications.length === 0 && publications.length > 0) {
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
@@ -242,14 +295,11 @@
       </div>
       }
 
-      <!-- Grid -->
       @if (!isLoading && filteredPublications.length > 0) {
       <div class="journals-grid">
         @for (pub of filteredPublications; track pub.id) {
         <div class="journal-card" (click)="openJournal(pub)" tabindex="0" (keydown.enter)="openJournal(pub)"
           role="button" [attr.aria-label]="'View ' + pub.title">
-
-          <!-- Cover -->
           <div class="card-cover">
             @if (pub.preview_image) {
             <img [src]="pub.preview_image" [alt]="pub.title" class="cover-img" loading="lazy"
@@ -263,11 +313,7 @@
             }
             <span class="cover-badge year-badge">{{ pub.year }}</span>
             <span class="cover-badge vol-badge {{ getJournalBadgeClass(pub.volume) }}">Vol. {{ pub.volume }}</span>
-
-            @if (pub.article_count > 0) {
-            <span class="article-count-chip">{{ pub.article_count }} Articles</span>
-            }
-
+            @if (pub.article_count > 0) { <span class="article-count-chip">{{ pub.article_count }} Articles</span> }
             <div class="cover-hover-overlay">
               <div class="hover-cta">
                 @if (pub.article_count > 0) {
@@ -286,8 +332,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Card body -->
           <div class="card-body">
             <h3 class="card-title">{{ pub.title }}</h3>
             <div class="card-meta">
@@ -324,26 +368,25 @@
       </div>
       }
       }
-
     </div>
   </section>
 </div>
 
 
 <!-- ═══════════════════════════════════════════════
-     ARTICLE DETAIL MODAL
+     FULL ARTICLE DETAIL MODAL (Step 2)
+     Opens when user clicks "View Full Article"
 ═══════════════════════════════════════════════ -->
-@if (isArticleDetailOpen && selectedArticle) {
-<div class="modal-backdrop" (click)="closeArticleDetail()"></div>
-<div class="article-modal" role="dialog" [attr.aria-label]="selectedArticle.title">
-  <!-- Modal header -->
-  <div class="modal-header">
-    <div class="modal-header-meta">
-      <span class="modal-journal-tag">{{ selectedJournal?.title }}</span>
-      <span class="modal-vol-tag">Vol. {{ selectedJournal?.volume }}, {{ selectedJournal?.issue }} · {{
+@if (isFullDetailOpen && selectedArticle) {
+<div class="modal-backdrop" (click)="closeFullDetail()"></div>
+<div class="full-detail-modal" role="dialog" [attr.aria-label]="selectedArticle.title">
+  <div class="fdm-header">
+    <div class="fdm-header-meta">
+      <span class="fdm-journal-tag">{{ selectedJournal?.title }}</span>
+      <span class="fdm-vol-tag">Vol. {{ selectedJournal?.volume }}, {{ selectedJournal?.issue }} · {{
         selectedJournal?.year }}</span>
     </div>
-    <button class="modal-close-btn" (click)="closeArticleDetail()" aria-label="Close">
+    <button class="fdm-close-btn" (click)="closeFullDetail()" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
@@ -351,87 +394,77 @@
     </button>
   </div>
 
-  <!-- Modal body -->
-  <div class="modal-body">
+  <div class="fdm-body">
     <!-- Badges -->
-    <div class="modal-top-badges">
+    <div class="fdm-top-badges">
       <span class="lang-badge {{ selectedArticle.language }}">{{ getArticleLanguageLabel(selectedArticle.language)
         }}</span>
-      @if (selectedArticle.start_page) {
-      <span class="page-badge">Page {{ selectedArticle.start_page }}</span>
-      }
+      @if (selectedArticle.start_page) { <span class="page-badge">Page {{ selectedArticle.start_page }}</span> }
       @if (selectedArticle.doi) {
-      <a [href]="'https://doi.org/' + selectedArticle.doi" target="_blank" class="doi-badge">
-        DOI: {{ selectedArticle.doi }}
-      </a>
+      <a [href]="'https://doi.org/' + selectedArticle.doi" target="_blank" class="doi-badge">DOI: {{ selectedArticle.doi
+        }}</a>
       }
     </div>
 
-    <!-- Title -->
-    <h2 class="modal-title">{{ selectedArticle.title }}</h2>
-    @if (selectedArticle.title_bn) {
-    <p class="modal-title-bn">{{ selectedArticle.title_bn }}</p>
-    }
+    <h2 class="fdm-title">{{ selectedArticle.title }}</h2>
+    @if (selectedArticle.title_bn) { <p class="fdm-title-bn">{{ selectedArticle.title_bn }}</p> }
 
     <!-- Authors -->
-    <div class="modal-section">
-      <h4 class="modal-section-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+    <div class="fdm-section">
+      <h4 class="fdm-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sec-icon">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
           <circle cx="9" cy="7" r="4" />
           <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-        Authors
+        </svg>Authors
       </h4>
-      <div class="modal-authors">
+      <div class="fdm-authors">
         @for (author of selectedArticle.authors_list; track author) {
         <span class="author-chip">{{ author }}</span>
         }
       </div>
       @if (selectedArticle.author_affiliations) {
-      <p class="author-affiliations">{{ selectedArticle.author_affiliations }}</p>
+      <p class="fdm-affiliations">{{ selectedArticle.author_affiliations }}</p>
       }
     </div>
 
-    <!-- AR T I C L E IN FO dates grid -->
-    <div class="article-info-box">
-      <h4 class="modal-section-label" style="margin-bottom:12px">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+    <!-- Article Info (dates) -->
+    <div class="fdm-info-box">
+      <h4 class="fdm-section-label" style="margin-bottom:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sec-icon">
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
           <line x1="16" y1="2" x2="16" y2="6" />
           <line x1="8" y1="2" x2="8" y2="6" />
           <line x1="3" y1="10" x2="21" y2="10" />
-        </svg>
-        Article Info
+        </svg>Article Info
       </h4>
-      <div class="dates-grid">
-        <div class="date-item">
-          <div class="date-label">Date of Submission</div>
-          <div class="date-val">{{ formatDate(selectedArticle.date_submission) }}</div>
+      <div class="fdm-dates">
+        <div class="fdm-date-item">
+          <div class="fdi-label">Date of Submission</div>
+          <div class="fdi-val">{{ formatDate(selectedArticle.date_submission) }}</div>
         </div>
-        <div class="date-item">
-          <div class="date-label">Date of Acceptance</div>
-          <div class="date-val">{{ formatDate(selectedArticle.date_acceptance) }}</div>
+        <div class="fdm-date-item">
+          <div class="fdi-label">Date of Acceptance</div>
+          <div class="fdi-val">{{ formatDate(selectedArticle.date_acceptance) }}</div>
         </div>
-        <div class="date-item">
-          <div class="date-label">Date of Publication</div>
-          <div class="date-val">{{ formatDate(selectedArticle.date_publication) }}</div>
+        <div class="fdm-date-item">
+          <div class="fdi-label">Date of Publication</div>
+          <div class="fdi-val">{{ formatDate(selectedArticle.date_publication) }}</div>
         </div>
       </div>
     </div>
 
     <!-- Keywords -->
     @if (selectedArticle.keywords_list.length > 0) {
-    <div class="modal-section">
-      <h4 class="modal-section-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+    <div class="fdm-section">
+      <h4 class="fdm-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sec-icon">
           <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
           <line x1="7" y1="7" x2="7.01" y2="7" />
-        </svg>
-        Keywords
+        </svg>Keywords
       </h4>
-      <div class="keyword-pills">
+      <div class="fdm-keywords">
         @for (kw of selectedArticle.keywords_list; track kw) {
         <span class="keyword-pill">{{ kw }}</span>
         }
@@ -439,38 +472,36 @@
     </div>
     }
 
-    <!-- Abstract -->
-    <div class="modal-section">
-      <h4 class="modal-section-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+    <!-- Abstract English -->
+    <div class="fdm-section">
+      <h4 class="fdm-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sec-icon">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
           <polyline points="14 2 14 8 20 8" />
           <line x1="16" y1="13" x2="8" y2="13" />
           <line x1="16" y1="17" x2="8" y2="17" />
-        </svg>
-        Abstract
+        </svg>Abstract
       </h4>
-      <p class="modal-abstract">{{ selectedArticle.abstract }}</p>
+      <p class="fdm-abstract">{{ selectedArticle.abstract }}</p>
     </div>
 
     @if (selectedArticle.abstract_bn) {
-    <div class="modal-section">
-      <h4 class="modal-section-label">বাংলা সারসংক্ষেপ (Bengali Abstract)</h4>
-      <p class="modal-abstract bn-text">{{ selectedArticle.abstract_bn }}</p>
+    <div class="fdm-section">
+      <h4 class="fdm-section-label">বাংলা সারসংক্ষেপ</h4>
+      <p class="fdm-abstract bn-text">{{ selectedArticle.abstract_bn }}</p>
     </div>
     }
   </div>
 
-  <!-- Footer -->
-  <div class="modal-footer">
-    <button class="btn-outline" (click)="closeArticleDetail()">← Back to Articles</button>
+  <div class="fdm-footer">
+    <button class="btn-outline" (click)="closeFullDetail()">← Back to Abstract</button>
     @if (selectedJournal) {
     <button class="btn-primary" (click)="openPdfInNewTab(selectedJournal)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-      </svg>
-      Open Full Journal PDF
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+      </svg>Open in PDF
     </button>
     }
   </div>
@@ -486,7 +517,7 @@
 <div class="pdf-modal" role="dialog">
   <div class="pdf-modal-header">
     <h3>Open Journal PDF</h3>
-    <button (click)="closePdfModal()" class="modal-close-btn">
+    <button (click)="closePdfModal()" class="fdm-close-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
@@ -512,8 +543,7 @@
         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
         <polyline points="15 3 21 3 21 9" />
         <line x1="10" y1="14" x2="21" y2="3" />
-      </svg>
-      Open PDF
+      </svg>Open PDF
     </button>
   </div>
 </div>

@@ -32,9 +32,12 @@ export class PublicationComponent implements OnInit, OnDestroy {
   // INLINE journal detail view (replaces the grid when a new journal is clicked)
   selectedJournal: Journal | null = null;
 
-  // Article detail modal
+  // Step 1: article abstract preview (inline sidebar / right panel)
   selectedArticle: JournalArticle | null = null;
-  isArticleDetailOpen = false;
+  isAbstractPreviewOpen = false;
+
+  // Step 2: full article detail modal
+  isFullDetailOpen = false;
 
   // Legacy PDF modal (old journals without articles)
   selectedPdfJournal: Journal | null = null;
@@ -130,7 +133,8 @@ export class PublicationComponent implements OnInit, OnDestroy {
 
   showJournalDetail(journal: Journal) {
     this.isLoadingDetail = true;
-    this.isArticleDetailOpen = false;
+    this.isAbstractPreviewOpen = false;
+    this.isFullDetailOpen = false;
     this.selectedArticle = null;
     this.selectedJournal = journal;
 
@@ -158,20 +162,42 @@ export class PublicationComponent implements OnInit, OnDestroy {
 
   closeJournalDetail() {
     this.selectedJournal = null;
-    this.isArticleDetailOpen = false;
+    this.isAbstractPreviewOpen = false;
+    this.isFullDetailOpen = false;
     this.selectedArticle = null;
   }
 
-  // ─── LEVEL 2 → 3: Open article detail ───
+  // ─── ARTICLE STEPS ───
 
-  openArticleDetail(article: JournalArticle) {
+  // Step 1: click article in list → show abstract preview
+  openAbstractPreview(article: JournalArticle) {
     this.selectedArticle = article;
-    this.isArticleDetailOpen = true;
+    this.isAbstractPreviewOpen = true;
+    this.isFullDetailOpen = false;
+  }
+
+  closeAbstractPreview() {
+    this.isAbstractPreviewOpen = false;
+    this.selectedArticle = null;
+    this.isFullDetailOpen = false;
+  }
+
+  // Step 2: click "View Full Article" → show full detail modal
+  openFullDetail() {
+    this.isFullDetailOpen = true;
+  }
+
+  closeFullDetail() {
+    this.isFullDetailOpen = false;
+  }
+
+  // Keep backward-compat alias
+  openArticleDetail(article: JournalArticle) {
+    this.openAbstractPreview(article);
   }
 
   closeArticleDetail() {
-    this.isArticleDetailOpen = false;
-    this.selectedArticle = null;
+    this.closeAbstractPreview();
   }
 
   // ─── LEGACY PDF MODAL ───
@@ -191,6 +217,13 @@ export class PublicationComponent implements OnInit, OnDestroy {
       this.closePdfModal();
       window.open(journal.pdf_file, '_blank', 'noopener,noreferrer');
     }
+  }
+
+  // Open PDF at a specific page number using #page=N anchor
+  openPdfAtPage(journal: Journal | null, pageNum?: number) {
+    if (!this.isBrowser || !journal) return;
+    const url = pageNum ? `${journal.pdf_file}#page=${pageNum}` : journal.pdf_file;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   downloadPdf(journal: Journal, event?: Event) {
