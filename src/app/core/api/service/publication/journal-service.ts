@@ -2,7 +2,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {environment} from '../../../../../enviornments/enviornment';
+import { environment } from '../../../../../enviornments/enviornment';
+
+export interface JournalArticle {
+  id: number;
+  journal: number;
+  title: string;
+  title_bn?: string;
+  authors: string;
+  authors_list: string[];
+  author_affiliations?: string;
+  abstract: string;
+  abstract_bn?: string;
+  keywords: string;
+  keywords_list: string[];
+  date_submission?: string;
+  date_acceptance?: string;
+  date_publication?: string;
+  doi?: string;
+  order_in_journal: number;
+  start_page?: number;
+  language: 'en' | 'bn' | 'both';
+  created_at: string;
+  updated_at: string;
+}
 
 export interface Journal {
   id: number;
@@ -20,6 +43,8 @@ export interface Journal {
   preview_image: string | null;
   is_published: boolean;
   created_at: string;
+  article_count: number;
+  articles?: JournalArticle[];
 }
 
 export interface FilterParams {
@@ -69,24 +94,32 @@ export interface FilterResponse {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = environment.apiUrl; // Use environment variable
+  private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
-    console.log('ApiService initialized with baseUrl:', this.baseUrl);
+  constructor(private http: HttpClient) {}
+
+  // Get all journals (lightweight, no articles)
+  getAllJournals(): Observable<{ message: string; code: number; data: Journal[] }> {
+    const url = `${this.baseUrl}/api/journals/get-all-journals`;
+    return this.http.get<{ message: string; code: number; data: Journal[] }>(url);
   }
 
-  // Get all journals
-  getAllJournals(): Observable<{message: string, code: number, data: Journal[]}> {
-    const url = `${this.baseUrl}/api/journals/get-all-journals`;
-    console.log('Fetching journals from:', url);
-    return this.http.get<{message: string, code: number, data: Journal[]}>(url);
+  // Get full journal detail with nested articles
+  getJournalDetail(journalId: number): Observable<{ message: string; code: number; data: Journal }> {
+    const url = `${this.baseUrl}/api/journals/detail/${journalId}/`;
+    return this.http.get<{ message: string; code: number; data: Journal }>(url);
+  }
+
+  // Get articles for a specific journal
+  getJournalArticles(journalId: number): Observable<{ message: string; code: number; data: JournalArticle[]; journal: any }> {
+    const url = `${this.baseUrl}/api/journals/${journalId}/articles/`;
+    return this.http.get<{ message: string; code: number; data: JournalArticle[]; journal: any }>(url);
   }
 
   // Filter journals with parameters
   filterJournals(params: FilterParams): Observable<FilterResponse> {
     let httpParams = new HttpParams();
 
-    // Add all parameters to the request
     Object.keys(params).forEach(key => {
       const value = params[key as keyof FilterParams];
       if (value !== undefined && value !== null) {
@@ -95,15 +128,12 @@ export class ApiService {
     });
 
     const url = `${this.baseUrl}/api/journals/filter/`;
-    console.log('Filtering journals from:', url, 'with params:', params);
-
     return this.http.get<FilterResponse>(url, { params: httpParams });
   }
 
   // Search journals by keyword
   searchJournals(query: string): Observable<FilterResponse> {
     const url = `${this.baseUrl}/api/journals/filter/`;
-    console.log('Searching journals from:', url, 'with query:', query);
     return this.http.get<FilterResponse>(url, { params: { search: query } });
   }
 }

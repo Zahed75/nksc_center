@@ -1,444 +1,520 @@
 <!-- publication-component.html -->
-<div class="min-h-screen bg-gradient-to-br from-gray-50/50 via-white to-gray-100/30">
+<div class="pub-page">
 
-  <!-- Hero Section - White Glass Effect -->
-  <section class="relative py-12 md:py-16 bg-gradient-to-br from-white via-gray-50 to-white">
-    <!-- Background Pattern -->
-    <div
-      class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-200/20 via-transparent to-transparent">
-    </div>
-
-    <div class="relative container mx-auto px-4">
-      <div class="max-w-6xl mx-auto">
-        <!-- Glass Container -->
-        <div
-          class="backdrop-blur-xl bg-white/80 rounded-3xl border border-white/50 shadow-2xl shadow-gray-200/50 p-8 md:p-12">
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <!-- Title Section -->
-            <div class="flex-1">
-              <div class="flex items-center gap-4 mb-6">
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl border border-blue-200/50 flex items-center justify-center shadow-sm">
-                  <i class="pi pi-book text-blue-600 text-2xl"></i>
-                </div>
-                <div>
-                  <h1 class="text-3xl md:text-4xl font-bold text-gray-900">NKSC Research Journals</h1>
-                  <p class="text-gray-600 mt-2">Peer-reviewed sociological publications</p>
-                </div>
-              </div>
-
-              <!-- Description -->
-              <p class="text-gray-700 max-w-2xl mb-6">
-                Academic journals and research publications from Nazmul Karim Study Center,
-                University of Dhaka. Contributing to sociological research since 1999.
-              </p>
+  <!-- ─── HERO SECTION ─── -->
+  <section class="hero-section">
+    <div class="hero-bg-pattern"></div>
+    <div class="container">
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="hero-title-row">
+            <div class="hero-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                <line x1="12" y1="7" x2="16" y2="7" />
+                <line x1="12" y1="11" x2="16" y2="11" />
+              </svg>
             </div>
-
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-3 gap-4">
-              <div class="backdrop-blur-sm bg-white/60 rounded-2xl p-4 border border-gray-200/50 shadow-sm">
-                <div class="text-2xl font-bold text-blue-600">{{ publications.length }}</div>
-                <div class="text-sm text-gray-600 mt-1">Journals</div>
-              </div>
-              <div class="backdrop-blur-sm bg-white/60 rounded-2xl p-4 border border-gray-200/50 shadow-sm">
-                <div class="text-2xl font-bold text-purple-600">{{ availableYears.length }}</div>
-                <div class="text-sm text-gray-600 mt-1">Years</div>
-              </div>
-              <div class="backdrop-blur-sm bg-white/60 rounded-2xl p-4 border border-gray-200/50 shadow-sm">
-                <div class="text-lg font-bold text-gray-900">ISSN</div>
-                <div class="text-sm text-gray-600 mt-1">1813-2871</div>
-              </div>
+            <div>
+              <h1>NKSC Research Journals</h1>
+              <p class="hero-subtitle">Peer-reviewed sociological publications · University of Dhaka</p>
             </div>
           </div>
-
-          <!-- Search Bar -->
-          <div class="mt-8">
-            <div class="relative group">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
-              <div class="relative">
-                <div class="flex flex-col lg:flex-row gap-4">
-                  <div class="flex-1">
-                    <div class="relative">
-                      <i class="pi pi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                      <input type="text" [(ngModel)]="searchTerm" (input)="onSearch(searchTerm)"
-                        placeholder="Search journals, editors, or keywords..." [disabled]="isLoading"
-                        class="w-full pl-12 pr-4 py-3.5 bg-white/90 border border-gray-300/50 rounded-xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400/50 transition-all duration-200 placeholder:text-gray-400 text-gray-900">
-                    </div>
-                  </div>
-                  <div class="flex gap-3">
-                    <select [(ngModel)]="selectedYear" (change)="onYearFilter(selectedYear)" [disabled]="isLoading"
-                      class="px-4 py-3.5 bg-white/90 border border-gray-300/50 rounded-xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400/50 text-gray-900 min-w-[120px]">
-                      <option value="">All Years</option>
-                      @for (year of availableYears; track year) {
-                      <option [value]="year">{{ year }}</option>
-                      }
-                    </select>
-                    <button (click)="clearFilters()" [disabled]="isLoading || (!searchTerm && !selectedYear)"
-                      [class.opacity-40]="!searchTerm && !selectedYear"
-                      class="px-4 py-3.5 bg-white/90 border border-gray-300/50 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-2">
-                      <i class="pi pi-refresh"></i>
-                      <span class="font-medium">Reset</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="hero-stats">
+            <div class="stat-pill"><span class="stat-num">{{ publications.length }}</span><span
+                class="stat-label">Issues</span></div>
+            <div class="stat-pill"><span class="stat-num">{{ availableYears.length }}</span><span
+                class="stat-label">Years</span></div>
+            <div class="stat-pill"><span class="stat-num">ISSN</span><span class="stat-label">1813-2871</span></div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Main Content -->
-  <section class="py-8 md:py-12">
-    <div class="container mx-auto px-4">
-      <!-- Results Header -->
-      <div class="mb-8">
-        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-2">
-              @if (searchTerm || selectedYear) {
-              <span class="text-blue-600">{{ filteredPublications.length }}</span> Results Found
-              } @else {
-              All Research Journals
-              }
-            </h2>
-            <p class="text-gray-600">
-              @if (filteredPublications.length > 0) {
-              Showing {{ filteredPublications.length }} of {{ publications.length }} academic publications
-              @if (selectedYear) {
-              from {{ selectedYear }}
-              }
-              } @else {
-              Browse our collection of peer-reviewed sociological research
-              }
-            </p>
+        <!-- Search bar -->
+        <div class="search-bar-wrap">
+          <div class="search-input-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="text" [(ngModel)]="searchTerm" (input)="onSearch(searchTerm)"
+              placeholder="Search journals, editors, keywords…" [disabled]="isLoading" id="journal-search-input"
+              class="search-input" />
           </div>
-
-          @if (isLoading) {
-          <div class="flex items-center gap-2 text-blue-600">
-            <i class="pi pi-spinner pi-spin"></i>
-            <span>Loading publications...</span>
-          </div>
-          }
-        </div>
-      </div>
-
-      <!-- Loading State -->
-      @if (isLoading) {
-      <div class="text-center py-16">
-        <div class="inline-block relative mb-8">
-          <div class="w-16 h-16 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <i class="pi pi-book text-2xl text-blue-400"></i>
-          </div>
-        </div>
-        <h3 class="text-xl font-bold text-gray-800 mb-3">Loading Academic Journals</h3>
-        <p class="text-gray-600">Fetching peer-reviewed publications...</p>
-      </div>
-      }
-
-      <!-- No Results -->
-      @if (!isLoading && filteredPublications.length === 0 && publications.length > 0) {
-      <div class="text-center py-16 backdrop-blur-sm bg-white/60 rounded-3xl border border-gray-200/50">
-        <div
-          class="w-32 h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-8">
-          <i class="pi pi-search text-5xl text-gray-400"></i>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-4">No journals found</h3>
-        <p class="text-gray-600 mb-8 max-w-md mx-auto">
-          Try adjusting your search terms or filters
-        </p>
-        <button (click)="clearFilters()"
-          class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:shadow-lg transition-all duration-300">
-          Clear All Filters
-        </button>
-      </div>
-      }
-
-      <!-- Journals Grid -->
-      @if (!isLoading && filteredPublications.length > 0) {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        @for (publication of filteredPublications; track publication.id) {
-        <div
-          class="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-200 backdrop-blur-sm">
-
-          <!-- Full Cover Image -->
-          <div class="relative h-80 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-            @if (publication.preview_image) {
-            <!-- Full Cover Image -->
-            <img [src]="publication.preview_image" [alt]="publication.title"
-              class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
-              loading="lazy" (error)="handleImageError($event, publication)">
-
-            <!-- Gradient Overlay -->
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            </div>
-
-            <!-- Volume Badge -->
-            <div class="absolute top-4 right-4">
-              <span
-                [class]="getJournalBadge(publication.volume) + ' px-4 py-2 rounded-full text-sm font-bold shadow-lg'">
-                Vol. {{ publication.volume }}
-              </span>
-            </div>
-
-            <!-- Year Badge -->
-            <div class="absolute top-4 left-4">
-              <span
-                class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-800 shadow-lg">
-                {{ publication.year }}
-              </span>
-            </div>
-
-            <!-- View Overlay -->
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div
-                class="px-6 py-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="flex items-center gap-2 text-blue-600 font-medium">
-                  <i class="pi pi-eye"></i>
-                  <span>View Journal</span>
-                </div>
-              </div>
-            </div>
-            } @else {
-            <!-- Default Cover -->
-            <div class="w-full h-full flex flex-col items-center justify-center p-6">
-              <div
-                class="w-20 h-20 bg-gradient-to-br from-gray-300 to-gray-400 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                <i class="pi pi-book text-3xl text-white"></i>
-              </div>
-              <h4 class="text-xl font-bold text-gray-800 mb-2">Journal of Sociology</h4>
-              <p class="text-sm text-gray-600 mb-1">Volume {{ publication.volume }}, Issue {{ publication.issue }}</p>
-              <p class="text-xs text-gray-500">{{ publication.year }}</p>
-
-              <!-- Volume Badge -->
-              <div class="absolute top-4 right-4">
-                <span
-                  [class]="getJournalBadge(publication.volume) + ' px-4 py-2 rounded-full text-sm font-bold shadow-lg'">
-                  Vol. {{ publication.volume }}
-                </span>
-              </div>
-
-              <!-- Year Badge -->
-              <div class="absolute top-4 left-4">
-                <span
-                  class="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-800 shadow-lg">
-                  {{ publication.year }}
-                </span>
-              </div>
-            </div>
-            }
-          </div>
-
-          <!-- Content -->
-          <div class="p-6">
-            <!-- Title -->
-            <h3 class="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
-              {{ publication.title }}
-            </h3>
-
-            <!-- Editor Info -->
-            <div class="flex items-start mb-4">
-              <div
-                class="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
-                <i class="pi pi-user text-gray-600 text-sm"></i>
-              </div>
-              <div>
-                <p class="text-sm text-gray-700 font-medium line-clamp-1">{{ getEditorName(publication.editor) }}</p>
-                <p class="text-xs text-gray-500">Editor</p>
-              </div>
-            </div>
-
-            <!-- Description -->
-            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-              {{ getShortDescription(publication.description) }}
-            </p>
-
-            <!-- Metadata -->
-            <div class="space-y-2 mb-4">
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="pi pi-file mr-2"></i>
-                <span>{{ publication.pages }} pages • {{ formatFileSize(publication.file_size_mb) }}</span>
-              </div>
-              <div class="flex items-center text-xs text-gray-500">
-                <i class="pi pi-tag mr-2"></i>
-                <span>ISSN: {{ publication.issn || '1813-2871' }}</span>
-              </div>
-              @if (publication.doi_url) {
-              <div class="flex items-center text-xs text-blue-600">
-                <i class="pi pi-external-link mr-2"></i>
-                <a [href]="publication.doi_url" target="_blank" class="hover:underline truncate">DOI Link</a>
-              </div>
-              }
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-              <button (click)="viewPdf(publication)"
-                class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1.5 group/btn">
-                <i class="pi pi-eye"></i>
-                <span>View PDF</span>
-                <i class="pi pi-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform"></i>
-              </button>
-
-              <button (click)="downloadPdf(publication); $event.stopPropagation()"
-                class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center gap-1.5 group/download">
-                <i class="pi pi-download"></i>
-                <span>Download</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        }
-      </div>
-      }
-
-      <!-- Editorial Board -->
-      <div class="backdrop-blur-sm bg-white/60 rounded-3xl border border-gray-200/50 p-8 mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Editorial Board</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="text-center">
-            <div
-              class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-user text-gray-600 text-2xl"></i>
-            </div>
-            <h4 class="font-bold text-gray-900">Editor-in-Chief</h4>
-            <p class="text-gray-600 text-sm mt-1">Prof. Dr. A K M Jamal Uddin</p>
-            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
-          </div>
-          <div class="text-center">
-            <div
-              class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-users text-gray-600 text-2xl"></i>
-            </div>
-            <h4 class="font-bold text-gray-900">Editorial Board</h4>
-            <p class="text-gray-600 text-sm mt-1">Prof. Dr. Zeenat Huda</p>
-            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
-          </div>
-          <div class="text-center">
-            <div
-              class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-users text-gray-600 text-2xl"></i>
-            </div>
-            <h4 class="font-bold text-gray-900">Editorial Board</h4>
-            <p class="text-gray-600 text-sm mt-1">Prof. Dr. A.S.M. Amanullah</p>
-            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
-          </div>
-          <div class="text-center">
-            <div
-              class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <i class="pi pi-users text-gray-600 text-2xl"></i>
-            </div>
-            <h4 class="font-bold text-gray-900">Editorial Board</h4>
-            <p class="text-gray-600 text-sm mt-1">Prof. Salma Akhter</p>
-            <p class="text-gray-500 text-xs mt-1">University of Dhaka</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contact Section -->
-      <div class="backdrop-blur-sm bg-gradient-to-r from-gray-50 to-white rounded-3xl border border-gray-200 p-8">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div class="text-left">
-            <h3 class="text-xl font-bold text-gray-900 mb-3">Journal Information</h3>
-            <div class="space-y-2">
-              <p class="text-gray-600 text-sm flex items-center">
-                <i class="pi pi-book mr-2 text-gray-600"></i>
-                <span class="font-medium">ISSN:</span> 1813-2871
-              </p>
-              <p class="text-gray-600 text-sm flex items-center">
-                <i class="pi pi-envelope mr-2 text-gray-600"></i>
-                <span class="font-medium">Email:</span> nksc1511@gmail.com
-              </p>
-              <p class="text-gray-600 text-sm flex items-center">
-                <i class="pi pi-map-marker mr-2 text-gray-600"></i>
-                <span class="font-medium">Address:</span> Nazmul Karim Study Center, University of Dhaka
-              </p>
-            </div>
-          </div>
-
-          <div class="flex flex-col sm:flex-row gap-4">
-            @if (publications.length > 0) {
-            <button (click)="viewPdf(publications[0])"
-              class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:shadow-lg transition-all duration-300 inline-flex items-center gap-2">
-              <i class="pi pi-eye"></i>
-              <span class="font-medium">View Latest Issue</span>
-            </button>
-            }
-            <a href="mailto:nksc1511@gmail.com"
-              class="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
-              <i class="pi pi-envelope"></i>
-              <span class="font-medium">Contact Editorial</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Simple PDF Modal -->
-  @if (isPdfModalOpen && selectedPdf) {
-  <div class="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
-      <!-- Modal Header -->
-      <div class="bg-gradient-to-r from-gray-700 to-gray-800 text-white p-6">
-        <div class="flex items-center justify-between">
-          <h3 class="text-xl font-bold">Open Journal PDF</h3>
-          <button (click)="closePdfModal()" class="text-white hover:text-gray-200">
-            <i class="pi pi-times text-lg"></i>
+          <select [(ngModel)]="selectedYear" (change)="onYearFilter(selectedYear)" [disabled]="isLoading"
+            class="year-select">
+            <option value="">All Years</option>
+            @for (year of availableYears; track year) { <option [value]="year">{{ year }}</option> }
+          </select>
+          <button (click)="clearFilters()" [disabled]="isLoading || (!searchTerm && !selectedYear)" class="reset-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 .49-3.17" />
+            </svg>
+            Reset
           </button>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Modal Content -->
-      <div class="p-6">
-        <!-- Preview Image in Modal -->
-        @if (selectedPdf.preview_image) {
-        <div class="mb-6 rounded-lg overflow-hidden border border-gray-200">
-          <img [src]="selectedPdf.preview_image" [alt]="'Preview: ' + selectedPdf.title"
-            class="w-full h-48 object-cover object-center" (error)="handleImageError($event, selectedPdf)">
+  <!-- ─── MAIN CONTENT ─── -->
+  <section class="main-section">
+    <div class="container">
+
+      <!-- ══════════════════════════════════════════
+           JOURNAL ISSUE DETAIL VIEW (New journals)
+      ══════════════════════════════════════════ -->
+      @if (selectedJournal) {
+      <!-- Back breadcrumb -->
+      <div class="breadcrumb-row">
+        <button class="back-btn" (click)="closeJournalDetail()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          All Journals
+        </button>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">{{ selectedJournal.title }} · Vol. {{ selectedJournal.volume }}</span>
+      </div>
+
+      <!-- Journal detail layout (cover + articles) -->
+      <div class="journal-detail-layout">
+
+        <!-- LEFT: Cover + info -->
+        <aside class="journal-cover-col">
+          <div class="cover-card">
+            @if (selectedJournal.preview_image) {
+            <div class="cover-img-wrap">
+              <img [src]="selectedJournal.preview_image" [alt]="selectedJournal.title" class="detail-cover-img" />
+            </div>
+            } @else {
+            <div class="cover-placeholder-lg">
+              <div class="cover-icon-lg">📖</div>
+              <span>Journal of Sociology</span>
+            </div>
+            }
+            <div class="cover-info">
+              <h2 class="cover-info-title">{{ selectedJournal.title }}</h2>
+              <div class="cover-info-issn">ISSN : {{ selectedJournal.issn || '1813-2871' }} (Print)</div>
+            </div>
+          </div>
+
+          <!-- Journal metadata card -->
+          <div class="detail-meta-card">
+            <div class="detail-meta-row">
+              <span class="meta-key">Volume</span>
+              <span class="meta-val">{{ selectedJournal.volume }}</span>
+            </div>
+            <div class="detail-meta-row">
+              <span class="meta-key">Issue</span>
+              <span class="meta-val">{{ selectedJournal.issue }}</span>
+            </div>
+            <div class="detail-meta-row">
+              <span class="meta-key">Year</span>
+              <span class="meta-val">{{ selectedJournal.year }}</span>
+            </div>
+            <div class="detail-meta-row">
+              <span class="meta-key">Pages</span>
+              <span class="meta-val">{{ selectedJournal.pages }}</span>
+            </div>
+            <div class="detail-meta-row">
+              <span class="meta-key">Editor</span>
+              <span class="meta-val">{{ getEditorName(selectedJournal.editor) }}</span>
+            </div>
+          </div>
+
+          <!-- PDF button -->
+          <button class="btn-full-pdf" (click)="openPdfInNewTab(selectedJournal)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Download Full Issue PDF
+          </button>
+        </aside>
+
+        <!-- RIGHT: Article list -->
+        <main class="journal-articles-col">
+          <!-- Issue heading -->
+          <div class="issue-heading">
+            <h2 class="issue-vol-label">
+              Vol. {{ selectedJournal.volume }}, {{ selectedJournal.issue ? selectedJournal.issue + ' | ' : '' }}{{
+              selectedJournal.title }}
+            </h2>
+            <p class="issue-publisher">Nazmul Karim Study Center, University of Dhaka</p>
+          </div>
+
+          <!-- Loading state -->
+          @if (isLoadingDetail) {
+          <div class="articles-loading">
+            <span class="spinner"></span>
+            <p>Loading articles…</p>
+          </div>
+          }
+
+          <!-- No articles -->
+          @if (!isLoadingDetail && (!selectedJournal.articles || selectedJournal.articles.length === 0)) {
+          <div class="no-articles-box">
+            <p>No individual articles listed for this issue.</p>
+            <button class="btn-primary small" (click)="openPdfInNewTab(selectedJournal)">Open PDF</button>
+          </div>
+          }
+
+          <!-- Articles list -->
+          @if (!isLoadingDetail && selectedJournal.articles && selectedJournal.articles.length > 0) {
+          <!-- Issue overview row (first item — journal-level) -->
+          <div class="article-list-item overview-item">
+            <div class="ali-body">
+              <h3 class="ali-title overview">
+                Vol. {{ selectedJournal.volume }}, {{ selectedJournal.issue }} | {{ selectedJournal.title }}
+              </h3>
+              <p class="ali-author">Nazmul Karim Study Center, University of Dhaka</p>
+            </div>
+            <button class="view-article-link" (click)="openPdfInNewTab(selectedJournal)">View Full Issue</button>
+          </div>
+
+          @for (article of selectedJournal.articles; track article.id) {
+          <div class="article-list-item" [class.highlighted]="selectedArticle?.id === article.id">
+            <div class="ali-body">
+              <!-- Language badge for Bengali articles -->
+              @if (article.language === 'bn' || article.language === 'both') {
+              <span class="bn-badge">বাংলা</span>
+              }
+
+              <h3 class="ali-title" (click)="openArticleDetail(article)">{{ article.title }}</h3>
+
+              @if (article.title_bn) {
+              <p class="ali-title-bn">{{ article.title_bn }}</p>
+              }
+
+              <p class="ali-author">
+                @for (author of article.authors_list; track author; let last = $last) {
+                {{ author }}@if (!last) { and }
+                }
+              </p>
+            </div>
+            <button class="view-article-link" (click)="openArticleDetail(article)">View Article</button>
+          </div>
+          }
+          }
+        </main>
+      </div>
+      }
+
+      <!-- ══════════════════════════════════════════
+           JOURNAL GRID (when no journal selected)
+      ══════════════════════════════════════════ -->
+      @if (!selectedJournal) {
+      <div class="grid-header">
+        <h2 class="grid-title">
+          @if (searchTerm || selectedYear) {
+          <span class="accent">{{ filteredPublications.length }}</span> Results Found
+          } @else { All Research Journals }
+        </h2>
+        @if (isLoading) {
+        <div class="loading-badge"><span class="spinner"></span> Loading...</div>
+        }
+      </div>
+
+      <!-- Skeleton -->
+      @if (isLoading) {
+      <div class="journals-grid">
+        @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="journal-card skeleton-card">
+          <div class="skeleton-cover"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line long"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium"></div>
+          </div>
         </div>
         }
-
-        <div class="flex items-start gap-4 mb-6">
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
-            <i class="pi pi-file-pdf text-2xl text-gray-600"></i>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 mb-1 line-clamp-2">{{ getShortTitle(selectedPdf.title) }}</h4>
-            <p class="text-sm text-gray-600">Volume {{ selectedPdf.volume }}, Issue {{ selectedPdf.issue }} • {{
-              selectedPdf.year }}</p>
-            <p class="text-xs text-gray-500 mt-1">{{ formatFileSize(selectedPdf.file_size_mb) }} • {{ selectedPdf.pages
-              }} pages</p>
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <p class="text-gray-600 text-sm">
-            The journal PDF will open in a new browser tab for better viewing experience.
-          </p>
-        </div>
       </div>
+      }
 
-      <!-- Modal Actions -->
-      <div class="flex flex-col sm:flex-row gap-3 p-6 pt-0">
-        <button (click)="closePdfModal()"
-          class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors">
-          Cancel
-        </button>
-        <button (click)="openPdfInNewTab(selectedPdf)"
-          class="flex-1 px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-          <i class="pi pi-external-link"></i>
-          Open PDF
-        </button>
+      <!-- Empty state -->
+      @if (!isLoading && filteredPublications.length === 0 && publications.length > 0) {
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>No journals found</h3>
+        <p>Try adjusting your search or filters</p>
+        <button (click)="clearFilters()" class="btn-primary">Clear Filters</button>
+      </div>
+      }
+
+      <!-- Grid -->
+      @if (!isLoading && filteredPublications.length > 0) {
+      <div class="journals-grid">
+        @for (pub of filteredPublications; track pub.id) {
+        <div class="journal-card" (click)="openJournal(pub)" tabindex="0" (keydown.enter)="openJournal(pub)"
+          role="button" [attr.aria-label]="'View ' + pub.title">
+
+          <!-- Cover -->
+          <div class="card-cover">
+            @if (pub.preview_image) {
+            <img [src]="pub.preview_image" [alt]="pub.title" class="cover-img" loading="lazy"
+              (error)="handleImageError($event, pub)" />
+            } @else {
+            <div class="cover-placeholder">
+              <div class="cover-icon">📖</div>
+              <span class="cover-journal-name">Journal of Sociology</span>
+              <span class="cover-vol-label">Vol. {{ pub.volume }}, Issue {{ pub.issue }}</span>
+            </div>
+            }
+            <span class="cover-badge year-badge">{{ pub.year }}</span>
+            <span class="cover-badge vol-badge {{ getJournalBadgeClass(pub.volume) }}">Vol. {{ pub.volume }}</span>
+
+            @if (pub.article_count > 0) {
+            <span class="article-count-chip">{{ pub.article_count }} Articles</span>
+            }
+
+            <div class="cover-hover-overlay">
+              <div class="hover-cta">
+                @if (pub.article_count > 0) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                View Articles
+                } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+                View PDF
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Card body -->
+          <div class="card-body">
+            <h3 class="card-title">{{ pub.title }}</h3>
+            <div class="card-meta">
+              <span class="meta-editor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="meta-icon">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                {{ getEditorName(pub.editor) }}
+              </span>
+              <span class="meta-pages">{{ pub.pages }} pages</span>
+            </div>
+            <p class="card-desc">{{ getShortDescription(pub.description) }}</p>
+            <div class="card-footer">
+              <span class="issn-tag">ISSN: {{ pub.issn || '1813-2871' }}</span>
+              <div class="card-actions">
+                @if (pub.article_count > 0) {
+                <button class="btn-view-arts" (click)="openJournal(pub); $event.stopPropagation()">Articles →</button>
+                } @else {
+                <button class="btn-view-pdf" (click)="openJournal(pub); $event.stopPropagation()">View PDF →</button>
+                }
+                <button class="btn-dl" (click)="downloadPdf(pub, $event)" title="Download PDF">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      }
+      }
+
+    </div>
+  </section>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     ARTICLE DETAIL MODAL
+═══════════════════════════════════════════════ -->
+@if (isArticleDetailOpen && selectedArticle) {
+<div class="modal-backdrop" (click)="closeArticleDetail()"></div>
+<div class="article-modal" role="dialog" [attr.aria-label]="selectedArticle.title">
+  <!-- Modal header -->
+  <div class="modal-header">
+    <div class="modal-header-meta">
+      <span class="modal-journal-tag">{{ selectedJournal?.title }}</span>
+      <span class="modal-vol-tag">Vol. {{ selectedJournal?.volume }}, {{ selectedJournal?.issue }} · {{
+        selectedJournal?.year }}</span>
+    </div>
+    <button class="modal-close-btn" (click)="closeArticleDetail()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body">
+    <!-- Badges -->
+    <div class="modal-top-badges">
+      <span class="lang-badge {{ selectedArticle.language }}">{{ getArticleLanguageLabel(selectedArticle.language)
+        }}</span>
+      @if (selectedArticle.start_page) {
+      <span class="page-badge">Page {{ selectedArticle.start_page }}</span>
+      }
+      @if (selectedArticle.doi) {
+      <a [href]="'https://doi.org/' + selectedArticle.doi" target="_blank" class="doi-badge">
+        DOI: {{ selectedArticle.doi }}
+      </a>
+      }
+    </div>
+
+    <!-- Title -->
+    <h2 class="modal-title">{{ selectedArticle.title }}</h2>
+    @if (selectedArticle.title_bn) {
+    <p class="modal-title-bn">{{ selectedArticle.title_bn }}</p>
+    }
+
+    <!-- Authors -->
+    <div class="modal-section">
+      <h4 class="modal-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        Authors
+      </h4>
+      <div class="modal-authors">
+        @for (author of selectedArticle.authors_list; track author) {
+        <span class="author-chip">{{ author }}</span>
+        }
+      </div>
+      @if (selectedArticle.author_affiliations) {
+      <p class="author-affiliations">{{ selectedArticle.author_affiliations }}</p>
+      }
+    </div>
+
+    <!-- AR T I C L E IN FO dates grid -->
+    <div class="article-info-box">
+      <h4 class="modal-section-label" style="margin-bottom:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Article Info
+      </h4>
+      <div class="dates-grid">
+        <div class="date-item">
+          <div class="date-label">Date of Submission</div>
+          <div class="date-val">{{ formatDate(selectedArticle.date_submission) }}</div>
+        </div>
+        <div class="date-item">
+          <div class="date-label">Date of Acceptance</div>
+          <div class="date-val">{{ formatDate(selectedArticle.date_acceptance) }}</div>
+        </div>
+        <div class="date-item">
+          <div class="date-label">Date of Publication</div>
+          <div class="date-val">{{ formatDate(selectedArticle.date_publication) }}</div>
+        </div>
       </div>
     </div>
+
+    <!-- Keywords -->
+    @if (selectedArticle.keywords_list.length > 0) {
+    <div class="modal-section">
+      <h4 class="modal-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+          <line x1="7" y1="7" x2="7.01" y2="7" />
+        </svg>
+        Keywords
+      </h4>
+      <div class="keyword-pills">
+        @for (kw of selectedArticle.keywords_list; track kw) {
+        <span class="keyword-pill">{{ kw }}</span>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Abstract -->
+    <div class="modal-section">
+      <h4 class="modal-section-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="section-icon">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+        </svg>
+        Abstract
+      </h4>
+      <p class="modal-abstract">{{ selectedArticle.abstract }}</p>
+    </div>
+
+    @if (selectedArticle.abstract_bn) {
+    <div class="modal-section">
+      <h4 class="modal-section-label">বাংলা সারসংক্ষেপ (Bengali Abstract)</h4>
+      <p class="modal-abstract bn-text">{{ selectedArticle.abstract_bn }}</p>
+    </div>
+    }
   </div>
-  }
+
+  <!-- Footer -->
+  <div class="modal-footer">
+    <button class="btn-outline" (click)="closeArticleDetail()">← Back to Articles</button>
+    @if (selectedJournal) {
+    <button class="btn-primary" (click)="openPdfInNewTab(selectedJournal)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+      </svg>
+      Open Full Journal PDF
+    </button>
+    }
+  </div>
 </div>
+}
+
+
+<!-- ═══════════════════════════════════════════════
+     LEGACY PDF MODAL (old journals without articles)
+═══════════════════════════════════════════════ -->
+@if (isPdfModalOpen && selectedPdfJournal) {
+<div class="modal-backdrop" (click)="closePdfModal()"></div>
+<div class="pdf-modal" role="dialog">
+  <div class="pdf-modal-header">
+    <h3>Open Journal PDF</h3>
+    <button (click)="closePdfModal()" class="modal-close-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+  <div class="pdf-modal-body">
+    @if (selectedPdfJournal.preview_image) {
+    <img [src]="selectedPdfJournal.preview_image" [alt]="selectedPdfJournal.title" class="pdf-modal-cover" />
+    }
+    <div class="pdf-modal-meta">
+      <h4>{{ selectedPdfJournal.title }}</h4>
+      <p>Vol. {{ selectedPdfJournal.volume }}, Issue {{ selectedPdfJournal.issue }} · {{ selectedPdfJournal.year }}</p>
+      <p class="small-meta">{{ selectedPdfJournal.pages }} pages · {{ formatFileSize(selectedPdfJournal.file_size_mb) }}
+      </p>
+    </div>
+    <p class="pdf-modal-note">The journal PDF will open in a new browser tab.</p>
+  </div>
+  <div class="pdf-modal-actions">
+    <button class="btn-outline" (click)="closePdfModal()">Cancel</button>
+    <button class="btn-primary" (click)="openPdfInNewTab(selectedPdfJournal)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+      </svg>
+      Open PDF
+    </button>
+  </div>
+</div>
+}

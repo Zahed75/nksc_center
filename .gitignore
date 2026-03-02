@@ -13,3 +13,4 @@ nksc_backend/.env
 nksc_backend/env/
 *.pyc
 __pycache__/
+node_modules

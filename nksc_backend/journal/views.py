@@ -12,9 +12,13 @@ from drf_spectacular.utils import (
     OpenApiParameter,
 )
 
-from .models import Journal
-from .serializers import JournalSerializer
+from .models import Journal, JournalArticle
+from .serializers import JournalSerializer, JournalListSerializer, JournalArticleSerializer
 
+
+# ─────────────────────────────────────────────────────────────
+# JOURNAL VIEWS
+# ─────────────────────────────────────────────────────────────
 
 class JournalCreateAPIView(APIView):
     # permission_classes = [IsAuthenticated]
@@ -27,9 +31,9 @@ class JournalCreateAPIView(APIView):
         description="Create a journal with PDF upload (multipart/form-data)",
     )
     def post(self, request):
-        serializer = JournalSerializer(
+        serializer = JournalListSerializer(
             data=request.data,
-            context={"request": request},  # Request context is passed here
+            context={"request": request},
         )
 
         if serializer.is_valid():
@@ -38,9 +42,9 @@ class JournalCreateAPIView(APIView):
                 {
                     "code": status.HTTP_201_CREATED,
                     "message": "Journal created successfully",
-                    "data": JournalSerializer(
+                    "data": JournalListSerializer(
                         journal,
-                        context={"request": request},  # Request context is passed here
+                        context={"request": request},
                     ).data,
                 },
                 status=status.HTTP_201_CREATED,
@@ -61,8 +65,8 @@ class JournalUpdateAPIView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     @extend_schema(
-        request=JournalSerializer,
-        responses={200: JournalSerializer},
+        request=JournalListSerializer,
+        responses={200: JournalListSerializer},
         parameters=[
             OpenApiParameter(
                 name="journal_id",
@@ -83,7 +87,7 @@ class JournalUpdateAPIView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = JournalSerializer(journal, data=request.data, partial=True, context={"request": request})
+        serializer = JournalListSerializer(journal, data=request.data, partial=True, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -108,23 +112,59 @@ class JournalListAPIView(APIView):
     permission_classes = [AllowAny]
 
     @extend_schema(
-        responses={200: JournalSerializer(many=True)},
+        responses={200: JournalListSerializer(many=True)},
         summary="List Journals",
-        description="Public API – list all published journals",
+        description="Public API – list all published journals (lightweight, no articles nested)",
     )
     def get(self, request):
         journals = Journal.objects.filter(is_published=True).order_by("-created_at")
-        
-        # Pass request context to serializer
-        serializer = JournalSerializer(
-            journals, 
-            many=True, 
-            context={"request": request}  # ADD THIS LINE
+
+        serializer = JournalListSerializer(
+            journals,
+            many=True,
+            context={"request": request}
         )
-        
+
         return Response(
             {
                 "message": "Journals retrieved successfully",
+                "code": status.HTTP_200_OK,
+                "data": serializer.data,
+            }
+        )
+
+
+class JournalDetailAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        responses={200: JournalSerializer},
+        parameters=[
+            OpenApiParameter(
+                name="journal_id",
+                type=int,
+                location=OpenApiParameter.PATH,
+                description="Journal ID",
+            )
+        ],
+        summary="Get Journal Detail with Articles",
+        description="Returns journal metadata and all nested articles with full details",
+    )
+    def get(self, request, journal_id):
+        try:
+            journal = Journal.objects.prefetch_related('articles').get(
+                id=journal_id, is_published=True
+            )
+        except Journal.DoesNotExist:
+            return Response(
+                {"code": status.HTTP_404_NOT_FOUND, "message": "Journal not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = JournalSerializer(journal, context={"request": request})
+        return Response(
+            {
+                "message": "Journal retrieved successfully",
                 "code": status.HTTP_200_OK,
                 "data": serializer.data,
             }
@@ -145,7 +185,7 @@ class JournalDeleteAPIView(APIView):
         ],
         responses={200: None},
         summary="Delete Journal",
-        description="Delete journal by ID",
+        description="Delete journal by ID (also deletes all nested articles)",
     )
     def delete(self, request, journal_id):
         try:
@@ -164,9 +204,168 @@ class JournalDeleteAPIView(APIView):
             )
 
 
+# ─────────────────────────────────────────────────────────────
+# JOURNAL ARTICLE VIEWS
+# ─────────────────────────────────────────────────────────────
+
+class JournalArticleListAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        responses={200: JournalArticleSerializer(many=True)},
+        parameters=[
+            OpenApiParameter(
+                name="journal_id",
+                type=int,
+                location=OpenApiParameter.PATH,
+                description="Journal ID",
+            )
+        ],
+        summary="List Articles for a Journal",
+        description="Get all articles for a specific journal",
+    )
+    def get(self, request, journal_id):
+        try:
+            journal = Journal.objects.get(id=journal_id, is_published=True)
+        except Journal.DoesNotExist:
+            return Response(
+                {"code": status.HTTP_404_NOT_FOUND, "message": "Journal not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        articles = journal.articles.all().order_by('order_in_journal')
+        serializer = JournalArticleSerializer(articles, many=True)
+        return Response(
+            {
+                "message": "Articles retrieved successfully",
+                "code": status.HTTP_200_OK,
+                "journal": {
+                    "id": journal.id,
+                    "title": journal.title,
+                    "volume": journal.volume,
+                    "year": journal.year,
+                    "issue": journal.issue,
+                },
+                "data": serializer.data,
+            }
+        )
 
 
+class JournalArticleCreateAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=JournalArticleSerializer,
+        responses={201: JournalArticleSerializer},
+        summary="Create Journal Article",
+        description="Add an article to a journal",
+    )
+    def post(self, request):
+        serializer = JournalArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            article = serializer.save()
+            return Response(
+                {
+                    "code": status.HTTP_201_CREATED,
+                    "message": "Article created successfully",
+                    "data": JournalArticleSerializer(article).data,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(
+            {
+                "code": status.HTTP_400_BAD_REQUEST,
+                "message": "Article creation failed",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
+class JournalArticleUpdateAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=JournalArticleSerializer,
+        responses={200: JournalArticleSerializer},
+        parameters=[
+            OpenApiParameter(
+                name="article_id",
+                type=int,
+                location=OpenApiParameter.PATH,
+                description="Article ID",
+            )
+        ],
+        summary="Update Journal Article",
+        description="Update an article's details",
+    )
+    def put(self, request, article_id):
+        try:
+            article = JournalArticle.objects.get(id=article_id)
+        except JournalArticle.DoesNotExist:
+            return Response(
+                {"code": status.HTTP_404_NOT_FOUND, "message": "Article not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = JournalArticleSerializer(article, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Article updated successfully",
+                    "code": status.HTTP_200_OK,
+                    "data": serializer.data,
+                }
+            )
+
+        return Response(
+            {
+                "code": status.HTTP_400_BAD_REQUEST,
+                "message": "Article update failed",
+                "errors": serializer.errors,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
+class JournalArticleDeleteAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="article_id",
+                type=int,
+                location=OpenApiParameter.PATH,
+                description="Article ID",
+            )
+        ],
+        responses={200: None},
+        summary="Delete Journal Article",
+        description="Delete an article by ID",
+    )
+    def delete(self, request, article_id):
+        try:
+            article = JournalArticle.objects.get(id=article_id)
+            article.delete()
+            return Response(
+                {
+                    "code": status.HTTP_200_OK,
+                    "message": "Article deleted successfully",
+                }
+            )
+        except JournalArticle.DoesNotExist:
+            return Response(
+                {"code": status.HTTP_404_NOT_FOUND, "message": "Article not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+
+# ─────────────────────────────────────────────────────────────
+# FILTER JOURNALS (unchanged from original, updated serializer)
+# ─────────────────────────────────────────────────────────────
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -291,7 +490,6 @@ def filter_journals(request):
         sort_by = request.query_params.get('sort_by', '-year')
         sort_order = request.query_params.get('sort_order')
 
-        # Map sort fields to actual model fields
         sort_mapping = {
             'year': 'year',
             '-year': '-year',
@@ -309,7 +507,6 @@ def filter_journals(request):
             '-editor': '-editor'
         }
 
-        # Handle sort_order parameter
         if sort_order and sort_by in sort_mapping:
             if sort_order.lower() == 'desc':
                 sort_field = f'-{sort_mapping[sort_by].lstrip("-")}'
@@ -318,14 +515,12 @@ def filter_journals(request):
         else:
             sort_field = sort_mapping.get(sort_by, '-year')
 
-        # Apply sorting
         journals = journals.order_by(sort_field)
 
         # ========== 4. CHECK IF ONLY STATISTICS ARE NEEDED ==========
         summary_only = request.query_params.get('summary', 'false').lower() == 'true'
 
         if summary_only:
-            # Return only statistics without journal data
             stats = _calculate_statistics(journals)
             return Response({
                 "code": status.HTTP_200_OK,
@@ -351,7 +546,7 @@ def filter_journals(request):
                     page = 1
                 if page_size < 1:
                     page_size = 10
-                if page_size > 100:  # Limit page size
+                if page_size > 100:
                     page_size = 100
             except ValueError:
                 page = 1
@@ -385,7 +580,7 @@ def filter_journals(request):
             }
 
         # ========== 6. SERIALIZE DATA ==========
-        serializer = JournalSerializer(
+        serializer = JournalListSerializer(
             journals_to_serialize,
             many=True,
             context={'request': request}
@@ -449,23 +644,19 @@ def _calculate_statistics(journals_queryset):
         oldest_date=Min('created_at')
     )
 
-    # Year distribution
     year_distribution = journals_queryset.values('year').annotate(
         count=Count('id'),
         latest=Max('created_at')
     ).order_by('-year')
 
-    # Editor distribution (top 10)
     editor_distribution = journals_queryset.values('editor').annotate(
         count=Count('id')
     ).order_by('-count')[:10]
 
-    # Volume distribution
     volume_distribution = journals_queryset.values('volume').annotate(
         count=Count('id')
     ).order_by('volume')
 
-    # Published status (if mixed)
     published_stats = journals_queryset.values('is_published').annotate(
         count=Count('id')
     )
@@ -526,7 +717,6 @@ def _get_applied_filters(request):
     """Helper function to extract applied filters from request"""
     applied_filters = {}
 
-    # List of all possible filter parameters
     filter_params = [
         'year', 'years', 'year_from', 'year_to',
         'volume', 'volumes',
