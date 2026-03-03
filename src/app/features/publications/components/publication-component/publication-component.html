@@ -153,17 +153,11 @@
               @if (article.language === 'bn' || article.language === 'both') {
               <span class="bn-badge">বাংলা</span>
               }
-              <!-- Title: clicking opens PDF at article's start page -->
-              <h3 class="ali-title" (click)="openPdfAtPage(selectedJournal, article.start_page)"
-                [title]="'Open PDF at page ' + article.start_page">
+              <!-- Title: clicking opens abstract preview instead of PDF -->
+              <h3 class="ali-title" (click)="openAbstractPreview(article)" title="View Abstract">
                 <span class="ali-title-link">
-                  <svg class="ali-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                  </svg>
-                  p.{{ article.start_page }}
+                  {{ article.title }}
                 </span>
-                {{ article.title }}
               </h3>
               @if (article.title_bn) { <p class="ali-title-bn">{{ article.title_bn }}</p> }
               <p class="ali-author">

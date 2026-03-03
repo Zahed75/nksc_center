@@ -11,6 +11,8 @@ from journal.views import (
     JournalArticleUpdateAPIView,
     JournalArticleDeleteAPIView,
     JournalArticleRetrieveAPIView,
+    ArticlePdfAPIView,
+    JournalPrelimsPdfAPIView,
     filter_journals,
 )
 
@@ -31,4 +33,8 @@ urlpatterns = [
     path("articles/create/", JournalArticleCreateAPIView.as_view()),
     path("articles/update/<int:article_id>/", JournalArticleUpdateAPIView.as_view()),
     path("articles/delete/<int:article_id>/", JournalArticleDeleteAPIView.as_view()),
+    
+    # PDF Extracts
+    path("<int:journal_id>/prelims/", JournalPrelimsPdfAPIView.as_view()),
+    path("articles/<int:article_id>/pdf/", ArticlePdfAPIView.as_view()),
 ]

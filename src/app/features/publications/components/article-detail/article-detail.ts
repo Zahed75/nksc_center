@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService, JournalArticle } from '../../../../core/api/service/publication/journal-service';
+import { environment } from '../../../../../enviornments/enviornment';
 
 @Component({
   selector: 'app-article-detail',
@@ -69,11 +70,8 @@ export class ArticleDetail implements OnInit {
   }
 
   openPdfAtPage(): void {
-    if (!this.journal || !this.journal.pdf_file) return;
-    let url = this.journal.pdf_file;
-    if (this.article?.start_page) {
-      url += `#page=${this.article.start_page}`;
-    }
-    window.open(url, '_blank');
+    if (!this.articleId) return;
+    const url = `${environment.apiUrl}/api/journals/articles/${this.articleId}/pdf/`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }

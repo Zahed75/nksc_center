@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import Count, Max, Min, Q, Sum, Avg
 from django.core.paginator import Paginator
+from django.http import HttpResponse, FileResponse
+import io
 from datetime import datetime
 from drf_spectacular.utils import (
     extend_schema,
@@ -203,6 +205,96 @@ class JournalDeleteAPIView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
+
+# ─────────────────────────────────────────────────────────────
+# PDF EXTRACTOR VIEWS
+# ─────────────────────────────────────────────────────────────
+
+def extract_pdf_pages(pdf_path, start_page, end_page, filename):
+    try:
+        from pypdf import PdfReader, PdfWriter
+    except ImportError:
+        return HttpResponse("pypdf not installed", status=500)
+    
+    try:
+        reader = PdfReader(pdf_path)
+        writer = PdfWriter()
+        
+        start_idx = max(0, start_page - 1)
+        end_idx = min(len(reader.pages) - 1, end_page - 1)
+        
+        for i in range(start_idx, end_idx + 1):
+            writer.add_page(reader.pages[i])
+            
+        out_io = io.BytesIO()
+        writer.write(out_io)
+        out_io.seek(0)
+        
+        response = HttpResponse(out_io.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{filename}"'
+        return response
+    except Exception as e:
+        return HttpResponse(f"Error extracting PDF: {str(e)}", status=500)
+
+class JournalPrelimsPdfAPIView(APIView):
+    permission_classes = [AllowAny]
+    
+    @extend_schema(
+        responses={200: bytes, 404: dict},
+        summary="Get Journal Prelims PDF",
+        description="Returns the pages of the journal before the first article (e.g., Cover, TOC)."
+    )
+    def get(self, request, journal_id):
+        try:
+            journal = Journal.objects.get(id=journal_id)
+        except Journal.DoesNotExist:
+            return Response({"message": "Journal not found"}, status=status.HTTP_404_NOT_FOUND)
+            
+        if not journal.pdf_file:
+            return Response({"message": "No PDF found"}, status=status.HTTP_404_NOT_FOUND)
+            
+        first_article = journal.articles.order_by('order_in_journal').first()
+        if first_article and first_article.start_page and first_article.start_page > 1:
+            end_page = first_article.start_page - 1
+            return extract_pdf_pages(journal.pdf_file.path, 1, end_page, f"{journal.volume}_{journal.issue}_prelims.pdf")
+        else:
+            return FileResponse(open(journal.pdf_file.path, 'rb'), content_type='application/pdf')
+
+
+class ArticlePdfAPIView(APIView):
+    permission_classes = [AllowAny]
+    
+    @extend_schema(
+        responses={200: bytes, 404: dict},
+        summary="Get Article PDF Subset",
+        description="Extracts and returns only the pages of a specific article from the journal PDF."
+    )
+    def get(self, request, article_id):
+        try:
+            article = JournalArticle.objects.select_related('journal').get(id=article_id)
+        except JournalArticle.DoesNotExist:
+            return Response({"message": "Article not found"}, status=status.HTTP_404_NOT_FOUND)
+            
+        journal = article.journal
+        if not journal.pdf_file:
+            return Response({"message": "No PDF associated with this journal"}, status=status.HTTP_404_NOT_FOUND)
+            
+        start_page = article.start_page
+        if not start_page:
+            return FileResponse(open(journal.pdf_file.path, 'rb'), content_type='application/pdf')
+            
+        next_article = JournalArticle.objects.filter(
+            journal=journal, 
+            order_in_journal__gt=article.order_in_journal
+        ).order_by('order_in_journal').first()
+        
+        if next_article and next_article.start_page:
+            end_page = next_article.start_page - 1
+        else:
+            end_page = journal.pages # Use the total pages of the journal
+            
+        filename = f"{article.title[:50].replace(' ', '_')}.pdf"
+        return extract_pdf_pages(journal.pdf_file.path, start_page, end_page, filename)
 
 # ─────────────────────────────────────────────────────────────
 # JOURNAL ARTICLE VIEWS

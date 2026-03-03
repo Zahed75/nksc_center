@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 
 import { ApiService, Journal, JournalArticle, FilterParams } from '../../../../core/api/service/publication/journal-service';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../../../enviornments/enviornment';
 
 @Component({
   selector: 'app-publication-component',
@@ -214,9 +215,16 @@ export class PublicationComponent implements OnInit, OnDestroy {
   }
 
   openPdfInNewTab(journal: Journal) {
-    if (this.isBrowser) {
+    if (this.isBrowser && journal) {
       this.closePdfModal();
-      window.open(journal.pdf_file, '_blank', 'noopener,noreferrer');
+      if (journal.articles && journal.articles.length > 0) {
+        // Show prelims (pages 1 to X) if the journal has articles
+        const url = `${environment.apiUrl}/api/journals/${journal.id}/prelims/`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        // Fallback for journals without articles
+        window.open(journal.pdf_file, '_blank', 'noopener,noreferrer');
+      }
     }
   }
 
@@ -225,6 +233,13 @@ export class PublicationComponent implements OnInit, OnDestroy {
     if (!this.isBrowser || !journal) return;
     const url = pageNum ? `${journal.pdf_file}#page=${pageNum}` : journal.pdf_file;
     window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  openArticlePdfInNewTab(articleId: number) {
+    if (this.isBrowser) {
+      const url = `${environment.apiUrl}/api/journals/articles/${articleId}/pdf/`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
   }
 
   downloadPdf(journal: Journal, event?: Event) {
