@@ -207,6 +207,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
+# Trust nginx X-Forwarded-Proto so build_absolute_uri returns https
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # ========== CSRF AND CORS SETTINGS ==========
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:4200",
@@ -218,7 +221,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.nkscdu.com",
     "https://www.api.nkscdu.com",
     "https://www.api.nkscdu.com",
-    "https://nkscdu.com"
+    "https://nkscdu.com",
+    "https://www.nkscdu.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -233,7 +237,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://api.nkscdu.com",
     "https://www.api.nkscdu.com",
     "https://www.api.nkscdu.com",
-    "https://nkscdu.com"
+    "https://nkscdu.com",
+    "https://www.nkscdu.com"
 ]
 
 # ========== IMPORTANT: NO SSL SETTINGS ==========
