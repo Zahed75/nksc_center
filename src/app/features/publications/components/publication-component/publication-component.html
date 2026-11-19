@@ -270,7 +270,7 @@
 
       @if (!isLoading && filteredPublications.length > 0) {
       <div class="journals-grid">
-        @for (pub of filteredPublications; track pub.id) {
+        @for (pub of filteredPublications; track pub.id; let first = $first) {
         <div class="journal-card" (click)="openJournal(pub)" tabindex="0" (keydown.enter)="openJournal(pub)"
           role="button" [attr.aria-label]="'View ' + pub.title">
           <div class="card-cover">
@@ -285,6 +285,7 @@
             </div>
             }
             <span class="cover-badge year-badge">{{ pub.year }}</span>
+            @if (first && !searchTerm && !selectedYear) { <span class="cover-badge latest-badge">★ Latest Issue</span> }
             <span class="cover-badge vol-badge {{ getJournalBadgeClass(pub.volume) }}">Vol. {{ pub.volume }}</span>
             @if (pub.article_count > 0) { <span class="article-count-chip">{{ pub.article_count }} Articles</span> }
             <div class="cover-hover-overlay">

@@ -1,350 +1,320 @@
-<!-- features/home/pages/home-page/home-component.html -->
-<div class="min-h-screen bg-linear-to-b from-gray-50 via-white to-gray-50/50">
+<!-- features/home/components/home-component/home-component.html -->
+<div class="home">
 
-  <!-- Hero Section -->
-  <section class="relative pt-32 pb-24 overflow-hidden hero-gradient">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0">
-      <div
-        class="absolute top-0 left-1/4 w-96 h-96 bg-linear-to-br from-primary/10 to-purple-500/10 rounded-full -translate-y-48 blur-3xl">
-      </div>
-      <div
-        class="absolute bottom-0 right-1/4 w-96 h-96 bg-linear-to-tr from-primary/10 to-pink-500/10 rounded-full translate-y-48 blur-3xl">
-      </div>
-    </div>
+  <!-- ============ HERO ============ -->
+  <section class="hero relative overflow-hidden text-white">
+    <div class="hero-grid absolute inset-0" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--a" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--b" aria-hidden="true"></div>
 
-    <div class="container relative mx-auto px-4">
-      <div class="max-w-6xl mx-auto">
-        <div class="glass-effect rounded-3xl p-8 md:p-12 overflow-hidden border-animate">
-          <div class="relative">
-            <!-- University Badge -->
-            <div
-              class="inline-flex items-center gap-3 px-4 py-2 bg-white/80 rounded-full border border-gray-200/50 mb-8">
-              <div class="w-2 h-2 bg-gradient-to-r from-primary to-purple-500 rounded-full animate-pulse"></div>
-              <span class="text-sm font-medium text-gray-700">University of Dhaka - Department of Sociology</span>
-            </div>
+    <div class="container relative mx-auto px-4 pt-14 pb-28 md:pt-20 md:pb-36">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
-            <!-- Main Heading -->
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              <span class="block">Nazmul Karim</span>
-              <span class="animated-gradient block mt-2">Study Center</span>
-            </h1>
+        <!-- Copy -->
+        <div class="lg:col-span-7 reveal">
+          <a href="https://www.du.ac.bd" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-blue-100 backdrop-blur hover:bg-white/15 transition-colors">
+            <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+            University of Dhaka &middot; Established 2000
+          </a>
 
-            <!-- Description -->
-            <p class="text-xl text-gray-700 mb-10 max-w-3xl leading-relaxed">
-              Preserving and promoting the intellectual legacy of <span class="font-semibold text-primary">Professor Dr.
-                A.K. Nazmul Karim</span>,
-              a pioneer in Bangladeshi sociology, through advanced research, publications, and academic discourse.
-            </p>
+          <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight">
+            Nazmul Karim<br>
+            <span class="hero-accent">Study Center</span>
+          </h1>
+          <p class="bangla-font mt-3 text-xl sm:text-2xl text-blue-100/90">নাজমুল করিম স্টাডি সেন্টার</p>
 
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4">
-              <button
-                class="btn-gradient px-8 py-4 rounded-xl text-white font-semibold hover:shadow-xl transition-all duration-300 hover:scale-[1.02] flex items-center gap-3">
-                <i class="pi pi-search text-lg"></i>
-                <span>Explore Research Publications</span>
-              </button>
-              <button
-                class="px-8 py-4 bg-white border border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-primary hover:text-primary transition-all duration-300 hover:scale-[1.02] flex items-center gap-3">
-                <i class="pi pi-calendar text-lg"></i>
-                <span>View Upcoming Events</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VC Intro Section -->
-  <section class="py-16 bg-white border-b border-gray-100">
-    <div class="container mx-auto px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center gap-12">
-          <!-- VC Image -->
-          <div class="w-full md:w-1/3 flex justify-center">
-            <div
-              class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-              <img [src]="vcProfile.image || '/assets/images/vc/vc_profile.jpg'" alt="Professor Niaz Ahmed Khan, PhD"
-                class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            </div>
-          </div>
-
-          <!-- VC Content -->
-          <div class="w-full md:w-2/3 text-center md:text-left">
-            <div class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
-              Vice Chancellor's Message
-            </div>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 font-serif">
-              "Embracing a New Journey of Excellence"
-            </h2>
-            <div class="prose prose-lg text-gray-600 mb-8 max-w-none">
-              <p>
-                Welcome to the official website of the University of Dhaka. It is an honor for me to serve as the Vice
-                Chancellor.
-                Established in 1921, our university has been an integral part of Bangladesh's history, playing a
-                critical role in shaping national aspirations
-                from the Language Movement of 1952 to the recent July uprising of 2024.
-              </p>
-              <p>
-                As we stand at a crossroads, we remain committed to academic excellence, innovative research, and
-                nation-building.
-                We invite new generation scholars and all stakeholders to join us in this journey of positive
-                transformation to convert
-                this university into a global center of excellence.
-              </p>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-900">Professor Niaz Ahmed Khan, PhD</h3>
-              <p class="text-primary font-medium">Vice Chancellor, University of Dhaka</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Statistics Section -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        @for (stat of stats; track stat.label) {
-        <div class="stat-item rounded-2xl p-6 text-center hover-scale border border-gray-100">
-          <i [class]="stat.icon + ' text-2xl text-primary mb-4'"></i>
-          <div class="text-3xl font-bold text-gray-900 mb-2">{{ stat.number }}</div>
-          <div class="text-gray-600 text-sm">{{ stat.label }}</div>
-        </div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- About NKSC Section -->
-  <section class="py-20 bg-gradient-to-b from-white to-gray-50">
-    <div class="container mx-auto px-4">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <!-- About Content -->
-          <div class="space-y-8">
-            <div>
-              <span class="text-sm font-semibold text-primary uppercase tracking-wider">About Us</span>
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 mt-2">{{ aboutNKSC.title }}</h2>
-              <p class="text-lg text-gray-700 leading-relaxed mb-8">
-                {{ aboutNKSC.description }}
-              </p>
-            </div>
-
-            <!-- Highlights -->
-            <div class="space-y-4">
-              <h3 class="text-xl font-semibold text-gray-900">Our Core Objectives:</h3>
-              <div class="grid grid-cols-1 gap-3">
-                @for (highlight of aboutNKSC.highlights; track highlight; let i = $index) {
-                <div
-                  class="flex items-start gap-4 p-4 rounded-xl bg-white border border-gray-100 hover:border-primary/20 transition-all duration-300">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span class="text-primary font-bold">{{ i + 1 }}</span>
-                  </div>
-                  <p class="text-gray-700">{{ highlight }}</p>
-                </div>
-                }
-              </div>
-            </div>
-          </div>
-
-          <!-- Profiles Section -->
-          <div class="flex justify-center">
-            <!-- Removed VC Profile Card as requested -->
-
-            <!-- Taiabur Rahman Profile Card -->
-            @if (taiaburProfile) {
-            <div class="director-glass rounded-3xl p-8 overflow-hidden hover-scale border-animate">
-              <div class="text-center">
-                <!-- Profile Image -->
-                <div class="w-48 h-48 rounded-3xl overflow-hidden border-4 border-white shadow-xl mx-auto mb-6">
-                  <img [src]="taiaburProfile.image" [alt]="taiaburProfile.name" class="w-full h-full object-cover"
-                    (error)="handleImageError($event)">
-                  <div
-                    class="w-full h-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white text-5xl"
-                    style="display: none;">
-                    <i class="pi pi-user"></i>
-                  </div>
-                </div>
-
-                <!-- Name and Designation -->
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ taiaburProfile.name }}</h3>
-                <p class="text-primary font-semibold mb-3">{{ taiaburProfile.designation }}</p>
-
-                <!-- Bio Summary -->
-                <p class="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
-                  {{ taiaburProfile.bio }}
-                </p>
-
-                <!-- Contact Actions -->
-                <div class="grid grid-cols-1 gap-3">
-                  <button (click)="sendEmail(taiaburProfile.email)"
-                    class="btn-gradient py-3 rounded-xl text-white font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-                    <i class="pi pi-envelope"></i>
-                    <span>Email</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Research Focus Section -->
-  <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-6xl mx-auto">
-        <div class="glass-effect rounded-3xl p-8 md:p-12 overflow-hidden border-animate">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Content -->
-            <div class="space-y-6">
-              <div>
-                <span class="text-sm font-semibold text-primary uppercase tracking-wider">Special Research Focus</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3 mt-2">{{ bengaliWomenFeature.title }}</h2>
-                <p class="text-xl font-medium text-gray-700 mb-4">{{ bengaliWomenFeature.tagline }}</p>
-              </div>
-
-              <p class="text-gray-600 leading-relaxed text-lg">
-                {{ bengaliWomenFeature.description }}
-              </p>
-
-              <!-- Keywords -->
-              <div class="flex flex-wrap gap-3 pt-4">
-                @for (keyword of bengaliWomenFeature.keywords; track keyword) {
-                <span
-                  class="px-4 py-2 bg-gradient-to-r from-primary/10 to-purple-500/10 text-primary rounded-full text-sm font-medium border border-primary/20">
-                  {{ keyword }}
-                </span>
-                }
-              </div>
-
-              <!-- CTA Button -->
-              <button
-                class="mt-6 btn-gradient px-8 py-4 rounded-xl text-white font-semibold hover:shadow-xl transition-all duration-300 hover:scale-[1.02] flex items-center gap-3">
-                <i class="pi pi-book"></i>
-                <span>View Related Publications</span>
-              </button>
-            </div>
-
-            <!-- Image -->
-            <div class="flex justify-center">
-              <div class="relative w-full max-w-md">
-                <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl">
-                  <img src="/assets/images/female-researcher.jpg" alt="Bengali Women in Social Research"
-                    class="w-full h-full object-cover"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                  <div
-                    class="w-full h-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex flex-col items-center justify-center text-gray-700 p-8 text-center"
-                    style="display: none;">
-                    <i class="pi pi-users text-5xl mb-6 text-primary"></i>
-                    <p class="text-2xl font-bold mb-3">Bengali Women in Social Research</p>
-                    <p class="text-gray-600">Advancing gender studies through academic research</p>
-                  </div>
-                </div>
-                <!-- Decorative Elements -->
-                <div
-                  class="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-full blur-2xl">
-                </div>
-                <div
-                  class="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-tr from-primary/20 to-pink-500/20 rounded-full blur-2xl">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Core Activities & Resources</h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Specialized services for students, researchers, and faculty members at Nazmul Karim Study Center
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @for (feature of features; track feature.title) {
-        <div class="feature-card rounded-2xl p-8 hover-scale">
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center mb-6">
-            <i [class]="feature.icon + ' text-2xl text-primary'"></i>
-          </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-4">{{ feature.title }}</h3>
-          <p class="text-gray-600 leading-relaxed">{{ feature.description }}</p>
-        </div>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Upcoming Events -->
-  <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Join our academic discussions, workshops, and memorial lectures
+          <p class="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-blue-100/85">
+            Preserving the intellectual legacy of <strong class="font-semibold text-white">Professor Dr. A.K. Nazmul Karim</strong>,
+            pioneer of sociology in Bangladesh, through research, publications and academic discourse.
           </p>
+
+          <div class="mt-9 flex flex-col sm:flex-row gap-3">
+            <a routerLink="/publications"
+               class="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 font-semibold text-primary shadow-lg shadow-black/20 hover:bg-blue-50 transition-all">
+              <i class="pi pi-book"></i>
+              Explore the Journal
+              <i class="pi pi-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+            </a>
+            <a routerLink="/events"
+               class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3.5 font-semibold text-white hover:bg-white/10 transition-colors">
+              <i class="pi pi-calendar"></i>
+              Upcoming Events
+            </a>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          @for (event of upcomingEvents; track event.title) {
-          <div class="glass-effect rounded-2xl p-6 hover-scale border-animate">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-sm font-medium text-gray-500">{{ event.date }}</span>
-              <span [class]="'event-badge ' + event.status + ' px-3 py-1 rounded-full text-xs font-medium'">
-                {{ event.status === 'upcoming' ? 'Upcoming' : 'Completed' }}
+        <!-- Quick explore -->
+        <nav class="lg:col-span-5 reveal reveal--delay" aria-label="Explore the center">
+          <div class="explore-panel">
+            <p class="text-xs font-semibold uppercase tracking-wider text-blue-200">Explore</p>
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              @for (q of quickLinks; track q.label) {
+                <a [routerLink]="q.link" class="explore-tile group">
+                  <span class="explore-icon"><i [class]="q.icon"></i></span>
+                  <span class="mt-3 block font-semibold text-white">{{ q.label }}</span>
+                  <span class="mt-0.5 block text-xs text-blue-100/75">{{ q.hint }}</span>
+                </a>
+              }
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS (overlaps hero) ============ -->
+  <section class="relative z-10 -mt-16 md:-mt-20" aria-label="Center at a glance">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl shadow-neutral-900/5">
+        @for (stat of stats; track stat.label; let i = $index) {
+          <div class="stat p-5 md:p-7" [class.stat--divider]="i > 0">
+            <div class="flex items-center gap-3">
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <i [class]="stat.icon"></i>
               </span>
+              <div>
+                <div class="text-2xl md:text-3xl font-bold text-neutral-900 leading-none">{{ stat.value }}</div>
+                <div class="mt-1 text-xs md:text-sm text-neutral-500">{{ stat.label }}</div>
+              </div>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-3">{{ event.title }}</h3>
-            <p class="text-gray-600 text-sm">{{ event.description }}</p>
-            <button
-              class="mt-6 w-full text-primary hover:text-primary-dark font-medium text-sm flex items-center justify-center gap-2">
-              <span>Learn More</span>
-              <i class="pi pi-arrow-right text-xs"></i>
-            </button>
           </div>
-          }
-        </div>
+        }
       </div>
     </div>
   </section>
 
-  <!-- Mission Statement -->
-  <section class="py-20 bg-linear-to-b from-white to-gray-50">
+  <!-- ============ LEADERSHIP ============ -->
+  <section class="py-20 md:py-24" aria-labelledby="leadership-title">
     <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="glass-effect rounded-3xl p-12 text-center hover-scale border-animate">
-          <div
-            class="w-20 h-20 bg-linear-to-br from-primary/10 to-purple-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8">
-            <i class="pi pi-bullseye text-3xl text-primary"></i>
-          </div>
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
-          <p class="text-xl text-gray-600 leading-relaxed mb-8 max-w-3xl mx-auto">
-            The Nazmul Karim Study Center is dedicated to achieving <span class="font-semibold text-primary">academic
-              excellence</span> in sociology education. We provide a robust platform for innovative research, quality
-            education, and <span class="font-semibold text-primary">community engagement</span> to address contemporary
-            social challenges through the intellectual legacy of Professor Nazmul Karim.
-          </p>
-          <a href="/about"
-            class="inline-flex items-center gap-3 text-primary font-semibold hover:text-primary-dark transition-colors">
-            <span>Learn More About Our Mission</span>
-            <i class="pi pi-arrow-right"></i>
+      <div class="mx-auto max-w-2xl text-center">
+        <span class="eyebrow">Leadership</span>
+        <h2 id="leadership-title" class="section-title">Guiding the Center</h2>
+        <p class="mt-4 text-neutral-600">The council and directors who lead the Nazmul Karim Study Center.</p>
+      </div>
+
+      <div class="mt-14 grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        @for (p of [vcProfile, currentDirector, formerDirector]; track p.name; let i = $index) {
+          <article class="leader-card group" [class.leader-card--featured]="i === 1">
+            @if (i === 1) {
+              <span class="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-600/20">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Present
+              </span>
+            }
+            <div class="flex items-center gap-4">
+              <div class="avatar" [attr.data-initials]="initials(p.name)">
+                <img [src]="p.image" [alt]="p.name" loading="lazy"
+                     (error)="$any($event.target).style.display='none'">
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs font-semibold uppercase tracking-wider text-primary">{{ p.role }}</p>
+                <h3 class="mt-1 text-lg font-bold leading-snug text-neutral-900">{{ p.name }}</h3>
+              </div>
+            </div>
+            <p class="mt-4 text-sm font-medium text-neutral-700">{{ p.subtitle }}</p>
+            <p class="mt-2 text-sm leading-relaxed text-neutral-500 line-clamp-3">{{ p.bio }}</p>
+
+            <div class="mt-auto flex flex-wrap items-center gap-2 pt-6">
+              @if (p.email) {
+                <a [href]="'mailto:' + p.email" class="chip-btn">
+                  <i class="pi pi-envelope text-xs"></i> Email
+                </a>
+              }
+              @if (p.profileUrl) {
+                <a [href]="p.profileUrl" target="_blank" rel="noopener" class="chip-btn">
+                  <i class="pi pi-external-link text-xs"></i> DU Profile
+                </a>
+              }
+            </div>
+          </article>
+        }
+      </div>
+
+      <div class="mt-8 text-center">
+        <a routerLink="/about" class="link-arrow">
+          All former directors <i class="pi pi-arrow-right text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="bg-white py-20 md:py-24 border-y border-neutral-100" aria-labelledby="about-title">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div>
+          <span class="eyebrow">About the Center</span>
+          <h2 id="about-title" class="section-title">A Legacy of Sociological Thought</h2>
+          <p class="mt-5 text-neutral-600 leading-relaxed">{{ aboutText }}</p>
+
+          <ul class="mt-8 space-y-3">
+            @for (o of objectives; track o) {
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <i class="pi pi-check text-[10px]"></i>
+                </span>
+                <span class="text-neutral-700">{{ o }}</span>
+              </li>
+            }
+          </ul>
+
+          <a routerLink="/about" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-white hover:bg-primary-dark transition-colors">
+            Learn more about us <i class="pi pi-arrow-right text-xs"></i>
           </a>
         </div>
+
+        <figure class="quote-card">
+          <i class="pi pi-quote-right quote-mark" aria-hidden="true"></i>
+          <blockquote class="relative text-xl md:text-2xl font-medium leading-relaxed text-neutral-800">
+            Named in his honour, the center seeks to continue his intellectual legacy by encouraging critical social inquiry and interdisciplinary research.
+          </blockquote>
+          <figcaption class="relative mt-8 flex items-center gap-4">
+            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white"><i class="pi pi-book"></i></span>
+            <span>
+              <span class="block font-semibold text-neutral-900">About the Nazmul Karim Study Center</span>
+              <span class="block text-sm text-neutral-500">Journal of Sociology, Vol. 15 Issue 1&amp;2, 2024</span>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PUBLICATIONS ============ -->
+  <section class="py-20 md:py-24" aria-labelledby="pubs-title">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <span class="eyebrow">Publications</span>
+          <h2 id="pubs-title" class="section-title">Journal of Sociology</h2>
+          <p class="mt-3 max-w-xl text-neutral-600">Bilingual, peer-reviewed research from the center &mdash; free to read online.</p>
+        </div>
+        <a routerLink="/publications" class="link-arrow">Browse all issues <i class="pi pi-arrow-right text-xs"></i></a>
+      </div>
+
+      <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+        @if (journalsLoading) {
+          @for (s of [1, 2, 3, 4]; track s) {
+            <div class="aspect-[3/4] rounded-2xl skeleton"></div>
+          }
+        } @else {
+          @for (j of recentJournals; track j.id; let first = $first) {
+            <a routerLink="/publications" class="journal-card group">
+              <div class="relative aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-100 shadow-sm ring-1 ring-neutral-200">
+                @if (first) {
+                  <span class="absolute left-3 top-3 z-10 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2.5 py-1 text-[11px] font-bold text-neutral-900 shadow">
+                    <i class="pi pi-star-fill text-[9px]"></i> Latest Issue
+                  </span>
+                }
+                <img [src]="j.preview_image || fallbackCover" [alt]="journalLabel(j)" loading="lazy"
+                     (error)="onImageError($event, fallbackCover)"
+                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+              </div>
+              <p class="mt-3 text-xs font-semibold text-primary">{{ j.year }}</p>
+              <p class="mt-0.5 text-sm font-semibold text-neutral-900 line-clamp-2 group-hover:text-primary transition-colors">{{ journalLabel(j) }}</p>
+            </a>
+          } @empty {
+            <p class="col-span-full text-center text-neutral-500 py-10">Issues are being updated. Please check back soon.</p>
+          }
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACTIVITIES ============ -->
+  <section class="bg-white py-20 md:py-24 border-y border-neutral-100" aria-labelledby="activities-title">
+    <div class="container mx-auto px-4">
+      <div class="mx-auto max-w-2xl text-center">
+        <span class="eyebrow">What we do</span>
+        <h2 id="activities-title" class="section-title">Core Activities &amp; Resources</h2>
+      </div>
+      <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        @for (a of activities; track a.title) {
+          <a [routerLink]="a.link" class="activity-card group">
+            <span class="activity-icon"><i [class]="a.icon"></i></span>
+            <h3 class="mt-5 text-lg font-bold text-neutral-900">{{ a.title }}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-neutral-600">{{ a.description }}</p>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+              Explore <i class="pi pi-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+            </span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESEARCH FOCUS ============ -->
+  <section class="py-20 md:py-24" aria-labelledby="focus-title">
+    <div class="container mx-auto px-4">
+      <div class="focus-panel">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+          <div class="lg:col-span-3">
+            <span class="eyebrow eyebrow--light">Special research focus</span>
+            <h2 id="focus-title" class="mt-2 text-3xl md:text-4xl font-bold text-white">Bengali Women in Social Research</h2>
+            <p class="mt-4 text-blue-100/90 leading-relaxed">
+              Highlighting the contributions of Bengali women sociologists and researchers in gender-based research and
+              women&rsquo;s empowerment in Bangladesh &mdash; carrying forward Professor Karim&rsquo;s vision of comprehensive social development.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              @for (k of focusKeywords; track k) {
+                <span class="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm text-white">{{ k }}</span>
+              }
+            </div>
+          </div>
+          <div class="lg:col-span-2 flex lg:justify-end">
+            <a routerLink="/publications" class="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-semibold text-primary hover:bg-blue-50 transition-colors">
+              <i class="pi pi-book"></i> Related publications
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section class="pb-24" aria-labelledby="events-title">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <span class="eyebrow">Events</span>
+          <h2 id="events-title" class="section-title">Lectures, Seminars &amp; Workshops</h2>
+        </div>
+        <a routerLink="/events" class="link-arrow">View all events <i class="pi pi-arrow-right text-xs"></i></a>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+        @if (eventsLoading) {
+          @for (s of [1, 2, 3]; track s) {
+            <div class="h-44 rounded-2xl skeleton"></div>
+          }
+        } @else {
+          @for (e of events; track e.title) {
+            <article class="event-card">
+              <div class="flex items-center justify-between gap-3">
+                <span class="date-badge">
+                  <i class="pi pi-calendar text-xs"></i>
+                  {{ e.date ? (e.date | date: 'd MMM yyyy') : 'Date TBA' }}
+                </span>
+                <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                      [ngClass]="e.upcoming ? 'bg-emerald-50 text-emerald-700' : 'bg-neutral-100 text-neutral-600'">
+                  {{ e.upcoming ? 'Upcoming' : 'Completed' }}
+                </span>
+              </div>
+              <h3 class="mt-4 font-bold text-neutral-900 line-clamp-2">{{ e.title }}</h3>
+              <p class="mt-2 text-sm text-neutral-600 line-clamp-3">{{ e.description }}</p>
+              @if (e.location) {
+                <p class="mt-4 text-xs text-neutral-500"><i class="pi pi-map-marker mr-1 text-[10px]"></i>{{ e.location }}</p>
+              }
+            </article>
+          } @empty {
+            <div class="col-span-full rounded-2xl border border-dashed border-neutral-300 bg-white p-10 text-center">
+              <i class="pi pi-calendar text-2xl text-neutral-400"></i>
+              <p class="mt-3 font-medium text-neutral-700">No upcoming events right now</p>
+              <p class="mt-1 text-sm text-neutral-500">See past lectures and seminars in the gallery.</p>
+              <a routerLink="/gallery" class="mt-4 inline-flex link-arrow">Open gallery <i class="pi pi-arrow-right text-xs"></i></a>
+            </div>
+          }
+        }
       </div>
     </div>
   </section>
